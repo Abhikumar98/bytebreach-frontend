@@ -14,7 +14,7 @@ const AuthNavbar: React.FC<{
         className={classNames(
           'w-full cursor-pointer py-6 text-center text-2xl font-semibold',
           authUser === 'client'
-            ? 'rounded-tr-3xl bg-gray-200'
+            ? 'bg-gray rounded-tr-3xl'
             : 'rounded-br-3xl bg-white'
         )}
       >
@@ -25,7 +25,7 @@ const AuthNavbar: React.FC<{
         className={classNames(
           'w-full cursor-pointer py-6 text-center text-2xl font-semibold',
           authUser === 'auditor'
-            ? 'rounded-tl-3xl bg-gray-200'
+            ? 'bg-gray rounded-tl-3xl'
             : 'rounded-bl-3xl bg-white'
         )}
       >

@@ -7,6 +7,9 @@ import {
 import React, { useState } from 'react';
 
 import Envelope from '@/assets/envelope.svg';
+import Github from '@/assets/github-color.svg';
+import Google from '@/assets/google.svg';
+import Wallet from '@/assets/wallet.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
@@ -59,6 +62,7 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         className='w-full'
         onClick={() => handleAuthentication('google')}
+        icon={<Google />}
       >
         Login using your Google account
       </Button>
@@ -67,6 +71,7 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         onClick={() => handleAuthentication('github')}
         className='w-full'
+        icon={<Github />}
       >
         Login using your Github account
       </Button>
@@ -75,10 +80,11 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         onClick={() => handleAuthentication('webauthn')}
         className='w-full'
+        icon={<Wallet />}
       >
         Login using your wallet
       </Button>
-      <div className='h-[1px] w-full bg-gray-400' />
+      <div className='bg-gray h-[1px] w-full' />
       <div>
         <Input
           label='Email'

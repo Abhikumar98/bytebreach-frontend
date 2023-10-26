@@ -5,6 +5,7 @@ const Button: React.FC<
   {
     children?: React.ReactNode;
     isLoading?: boolean;
+    icon?: React.ReactNode;
   } & ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ children, isLoading, type, className, ...props }) => {
   return (
@@ -21,7 +22,14 @@ const Button: React.FC<
       <div
         className={classNames('h-full w-full', isLoading ? 'invisible' : '')}
       >
-        {children}
+        {props.icon ? (
+          <div className='flex h-full w-full items-center space-x-6 text-left'>
+            <div className='h-7 w-7'>{props.icon}</div>
+            <div>{children}</div>
+          </div>
+        ) : (
+          <>{children}</>
+        )}
       </div>
       {isLoading ? (
         <svg

@@ -9,7 +9,7 @@ const Input: React.FC<
         {label}
       </label>
       <input
-        className='block w-full rounded-full border-0 py-3 pl-5 pr-20 text-lg text-gray-900 shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 sm:leading-6'
+        className='ring-gray block w-full rounded-full border-0 py-3 pl-5 pr-20 text-lg text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:leading-6'
         {...inputProps}
       />
       <div className='pointer-events-none absolute inset-y-0 right-0 top-7 flex items-center pr-5'>

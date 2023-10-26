@@ -17,8 +17,6 @@ const AuthContainer = () => {
 
   const [authUser, setAuthUser] = React.useState<UserType>('client');
 
-  console.log({ userInfo });
-
   const [step, setStep] = React.useState<'login' | 'onboarding'>('login');
 
   const handleSuccessfulLogin = (userInfo: Partial<OpenloginUserInfo>) => {
@@ -39,7 +37,7 @@ const AuthContainer = () => {
   }, [!!userInfo, web3auth?.connected]);
 
   return (
-    <div className=' w-[41rem] overflow-hidden rounded-3xl'>
+    <div className=' w-[36rem] overflow-hidden rounded-3xl'>
       {step === 'login' && (
         <AuthNavbar
           authUser={authUser}
@@ -48,7 +46,7 @@ const AuthContainer = () => {
       )}
       <div
         className={classNames(
-          'h-full px-8 py-6',
+          'px-8 py-6',
           step === 'login' ? 'bg-gray-200' : 'bg-white'
         )}
       >

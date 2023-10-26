@@ -23,13 +23,13 @@ const Wrapper: React.FC<{
   }, []);
 
   return (
-    <>
+    <div className=' font-sans'>
       {userInfo ? (
         <DashboardLayout>{children}</DashboardLayout>
       ) : (
         <>{children}</>
       )}
-    </>
+    </div>
   );
 };
 
