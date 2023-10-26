@@ -2,6 +2,7 @@ import { WALLET_ADAPTERS } from '@web3auth/base';
 import {
   LOGIN_PROVIDER_TYPE,
   OpenloginLoginParams,
+  OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
 import React, { useState } from 'react';
 
@@ -10,72 +11,90 @@ import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
-import { AuthOptions } from '@/types';
-
-const ClientAuth = () => {
+const ClientAuth: React.FC<{
+  onLoginSuccess: (user: Partial<OpenloginUserInfo>) => void;
+}> = ({ onLoginSuccess }) => {
   const { web3auth } = useAppContext();
   const [loginLoaders, setLoginLoaders] = useState<
-    Record<AuthOptions, boolean>
+    Partial<Record<LOGIN_PROVIDER_TYPE, boolean>>
   >({
-    email: false,
+    email_passwordless: false,
     github: false,
     google: false,
-    wallet: false,
+    webauthn: false,
   });
+  const [userEmail, setUserEmail] = useState<string>('');
 
-  const handleAuthentication =
-    (authLoader: AuthOptions) => async (authProvider: LOGIN_PROVIDER_TYPE) => {
-      try {
-        if (!web3auth) {
-          throw new Error('Web3Auth not initialised');
-        }
-
-        setLoginLoaders((prev) => ({ ...prev, [authLoader]: true }));
-
-        const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(
-          WALLET_ADAPTERS.OPENLOGIN,
-          { loginProvider: authProvider }
-        );
-
-        const userInfo = await web3auth.getUserInfo();
-
-        console.log({ userInfo });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoginLoaders((prev) => ({ ...prev, [authLoader]: false }));
+  const handleAuthentication = async (authProvider: LOGIN_PROVIDER_TYPE) => {
+    try {
+      if (!web3auth) {
+        throw new Error('Web3Auth not initialised');
       }
-    };
+
+      // await web3auth.logout();
+
+      setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
+
+      await web3auth.connectTo<OpenloginLoginParams>(
+        WALLET_ADAPTERS.OPENLOGIN,
+        { loginProvider: authProvider }
+      );
+
+      const userInfo = await web3auth.getUserInfo();
+
+      onLoginSuccess(userInfo);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoginLoaders((prev) => ({ ...prev, [authProvider]: false }));
+    }
+  };
+
+  const disableButtons = Object.values(loginLoaders).some((loader) => loader);
 
   return (
     <div className=' space-y-6'>
       <Button
+        isLoading={loginLoaders['google']}
+        disabled={disableButtons}
         className='w-full'
-        onClick={() => handleAuthentication('google')('google')}
+        onClick={() => handleAuthentication('google')}
       >
         Login using your Google account
       </Button>
       <Button
-        onClick={() => handleAuthentication('github')('github')}
+        isLoading={loginLoaders['github']}
+        disabled={disableButtons}
+        onClick={() => handleAuthentication('github')}
         className='w-full'
       >
         Login using your Github account
       </Button>
       <Button
-        onClick={() => handleAuthentication('wallet')('webauthn')}
+        isLoading={loginLoaders['webauthn']}
+        disabled={disableButtons}
+        onClick={() => handleAuthentication('webauthn')}
         className='w-full'
       >
         Login using your wallet
       </Button>
       <div className='h-[1px] w-full bg-gray-400' />
       <div>
-        <div className='text-lg font-semibold'>Email</div>
-        <Input placeholder='john@doe.com' icon={<Envelope />} />
+        <Input
+          label='Email'
+          onChange={(e) => setUserEmail(e.target.value)}
+          disabled={disableButtons}
+          value={userEmail}
+          placeholder='john@doe.com'
+          icon={<Envelope />}
+        />
       </div>
 
       <div className='flex justify-center'>
         <Button
-          onClick={() => handleAuthentication('email')('email_passwordless')}
+          isLoading={loginLoaders['email_passwordless']}
+          disabled={disableButtons}
+          onClick={() => handleAuthentication('email_passwordless')}
         >
           Submit
         </Button>

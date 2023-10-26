@@ -5,7 +5,10 @@ import {
 } from '@web3auth/base';
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 import { Web3AuthNoModal } from '@web3auth/no-modal';
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
+import {
+  OpenloginAdapter,
+  OpenloginUserInfo,
+} from '@web3auth/openlogin-adapter';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
 import { IAppContextState } from '@/types';
@@ -16,6 +19,9 @@ const AppContext: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
+  const [connectedUserInfo, setConnectedUserInfo] = useState<
+    Partial<OpenloginUserInfo> | any
+  >(null);
 
   const initialiseWeb3Auth = async () => {
     try {
@@ -39,10 +45,23 @@ const AppContext: React.FC<{
             chainConfig: getEvmChainConfig(1) as CustomChainConfig,
           },
         }),
+        adapterSettings: {
+          clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
+          network: 'sapphire_devnet',
+          uxMode: 'popup',
+        },
       });
       web3auth.configureAdapter(openloginAdapter);
+      // const adapter = new WalletConnectV2Adapter();
+      // web3auth.configureAdapter(adapter);
 
       await web3auth.init();
+
+      if (web3auth.connected) {
+        const userInfo = await web3auth.getUserInfo();
+
+        setConnectedUserInfo(userInfo);
+      }
 
       setWeb3Auth(web3auth);
     } catch (error) {
@@ -58,6 +77,8 @@ const AppContext: React.FC<{
     <AppContextState.Provider
       value={{
         web3auth,
+        userInfo: connectedUserInfo,
+        updateUserInfo: setConnectedUserInfo,
       }}
     >
       {children}
