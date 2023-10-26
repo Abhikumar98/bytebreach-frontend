@@ -3,6 +3,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 
+import { defaultErrorMessage } from '@/lib/helper';
+
 import Logo from '@/assets/logo.svg';
 import Button from '@/atoms/Button';
 import { useAppContext } from '@/context';
@@ -20,7 +22,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
       updateUserInfo(null);
       push('/login');
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     }
   };
 

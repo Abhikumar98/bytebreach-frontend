@@ -6,15 +6,18 @@ const Button: React.FC<
     children?: React.ReactNode;
     isLoading?: boolean;
     icon?: React.ReactNode;
+    variant?: 'primary' | 'secondary';
   } & ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ children, isLoading, type, className, ...props }) => {
+> = ({ children, isLoading, variant = 'secondary', className, ...props }) => {
   return (
     <button
       type='button'
       className={classNames(
-        `relative rounded-full bg-white px-20 py-4 text-xl font-semibold text-black shadow-sm`,
+        `relative rounded-full px-20 py-4 text-xl font-semibold  shadow-sm`,
         className,
-        props.disabled ? 'cursor-not-allowed opacity-60' : ''
+        props.disabled ? 'cursor-not-allowed opacity-60' : '',
+        variant === 'primary' ? 'bg-purple text-white' : '',
+        variant === 'secondary' ? 'bg-white text-black' : ''
       )}
       {...props}
       disabled={isLoading || props.disabled}

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { setInLocalStorage } from '@/lib/helper';
+import { defaultErrorMessage, setInLocalStorage } from '@/lib/helper';
 
 import Building from '@/assets/building.svg';
 import Envelope from '@/assets/envelope.svg';
@@ -28,7 +28,7 @@ const AuditorOnboarding = () => {
       await web3auth?.logout();
       updateUserInfo(null);
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     }
   };
 
@@ -47,7 +47,7 @@ const AuditorOnboarding = () => {
       setInLocalStorage('authenticated', 'true');
       push('/');
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     }
   };
 
@@ -86,7 +86,9 @@ const AuditorOnboarding = () => {
         icon={<Twitter />}
       />
       <div className='flex justify-center space-x-4'>
-        <Button onClick={handleFormSubmit}>Submit</Button>
+        <Button onClick={handleFormSubmit} variant='primary'>
+          Submit
+        </Button>
         <Button onClick={handleLogout}>Logout</Button>
       </div>
     </div>

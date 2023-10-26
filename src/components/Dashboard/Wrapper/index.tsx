@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import { getFromLocalStorage } from '@/lib/helper';
 
@@ -29,6 +30,7 @@ const Wrapper: React.FC<{
       ) : (
         <>{children}</>
       )}
+      <Toaster />
     </div>
   );
 };

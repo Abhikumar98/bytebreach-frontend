@@ -12,6 +12,8 @@ import {
 import { WalletConnectV2Adapter } from '@web3auth/wallet-connect-v2-adapter';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
+import { defaultErrorMessage } from '@/lib/helper';
+
 import { IAppContextState } from '@/types';
 
 const AppContextState = createContext<IAppContextState | null>(null);
@@ -72,7 +74,7 @@ const AppContext: React.FC<{
 
       setWeb3Auth(web3auth);
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     }
   };
 

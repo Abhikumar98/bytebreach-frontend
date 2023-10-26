@@ -12,9 +12,9 @@ const AuthNavbar: React.FC<{
       <div
         onClick={() => handleAuthUserUpdate('client')}
         className={classNames(
-          'w-full cursor-pointer py-6 text-center text-2xl font-semibold',
+          'relative w-full cursor-pointer py-6 text-center text-2xl font-semibold',
           authUser === 'client'
-            ? 'bg-gray rounded-tr-3xl'
+            ? 'bg-gray after:bg-gray rounded-tr-3xl after:absolute after:inset-0 after:z-[-1] after:block after:rounded-tr-3xl'
             : 'rounded-br-3xl bg-white'
         )}
       >

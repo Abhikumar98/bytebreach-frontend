@@ -47,7 +47,7 @@ const AuthContainer = () => {
       <div
         className={classNames(
           'px-8 py-6',
-          step === 'login' ? 'bg-gray-200' : 'bg-white'
+          step === 'login' ? 'bg-gray' : 'bg-white'
         )}
       >
         {authUser === 'client' ? (

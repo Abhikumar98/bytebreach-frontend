@@ -6,6 +6,8 @@ import {
 } from '@web3auth/openlogin-adapter';
 import React, { useState } from 'react';
 
+import { defaultErrorMessage } from '@/lib/helper';
+
 import Envelope from '@/assets/envelope.svg';
 import Github from '@/assets/github-color.svg';
 import Google from '@/assets/google.svg';
@@ -47,7 +49,7 @@ const AuditorAuth: React.FC<{
 
       onLoginSuccess(userInfo);
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     } finally {
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: false }));
     }
@@ -101,6 +103,7 @@ const AuditorAuth: React.FC<{
           isLoading={loginLoaders['email_passwordless']}
           disabled={disableButtons}
           onClick={() => handleAuthentication('email_passwordless')}
+          variant='primary'
         >
           Submit
         </Button>

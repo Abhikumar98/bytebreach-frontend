@@ -6,6 +6,8 @@ import {
 } from '@web3auth/openlogin-adapter';
 import React, { useState } from 'react';
 
+import { defaultErrorMessage } from '@/lib/helper';
+
 import Envelope from '@/assets/envelope.svg';
 import Github from '@/assets/github-color.svg';
 import Google from '@/assets/google.svg';
@@ -34,6 +36,10 @@ const ClientAuth: React.FC<{
         throw new Error('Web3Auth not initialised');
       }
 
+      if (authProvider === 'email_passwordless' && !userEmail) {
+        throw new Error('Email is required');
+      }
+
       // await web3auth.logout();
 
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
@@ -52,7 +58,7 @@ const ClientAuth: React.FC<{
 
       onLoginSuccess(userInfo);
     } catch (error) {
-      console.error(error);
+      defaultErrorMessage(error);
     } finally {
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: false }));
     }
@@ -106,6 +112,7 @@ const ClientAuth: React.FC<{
           isLoading={loginLoaders['email_passwordless']}
           disabled={disableButtons}
           onClick={() => handleAuthentication('email_passwordless')}
+          variant='primary'
         >
           Submit
         </Button>

@@ -1,3 +1,5 @@
+import { toast } from 'react-hot-toast';
+
 export function getFromLocalStorage(key: string): string | null {
   if (typeof window !== 'undefined') {
     return window.localStorage.getItem(key);
@@ -17,3 +19,8 @@ export function getFromSessionStorage(key: string): string | null {
   }
   return null;
 }
+
+export const defaultErrorMessage = (error: any) => {
+  toast.error(error.message);
+  console.error(error);
+};
