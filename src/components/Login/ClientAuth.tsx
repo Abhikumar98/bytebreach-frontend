@@ -37,7 +37,12 @@ const ClientAuth: React.FC<{
 
       await web3auth.connectTo<OpenloginLoginParams>(
         WALLET_ADAPTERS.OPENLOGIN,
-        { loginProvider: authProvider }
+        {
+          loginProvider: authProvider,
+          extraLoginOptions: {
+            login_hint: userEmail,
+          },
+        }
       );
 
       const userInfo = await web3auth.getUserInfo();

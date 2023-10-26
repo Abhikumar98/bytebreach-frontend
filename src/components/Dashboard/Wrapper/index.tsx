@@ -3,11 +3,15 @@ import React, { ReactNode, useEffect } from 'react';
 
 import { getFromLocalStorage } from '@/lib/helper';
 
-import AppContext from '@/context';
+import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 
-const Layout: React.FC<{
+import { useAppContext } from '@/context';
+
+const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
+  const { userInfo } = useAppContext();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -18,7 +22,15 @@ const Layout: React.FC<{
     }
   }, []);
 
-  return <AppContext>{children}</AppContext>;
+  return (
+    <>
+      {userInfo ? (
+        <DashboardLayout>{children}</DashboardLayout>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
 };
 
-export default Layout;
+export default Wrapper;

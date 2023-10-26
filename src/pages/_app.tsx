@@ -2,13 +2,17 @@ import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
 
-import Layout from '@/components/Dashboard/Layout';
+import Wrapper from '@/components/Dashboard/Wrapper';
+
+import AppContext from '@/context';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />;
-    </Layout>
+    <AppContext>
+      <Wrapper>
+        <Component {...pageProps} />
+      </Wrapper>
+    </AppContext>
   );
 }
 

@@ -9,6 +9,7 @@ import {
   OpenloginAdapter,
   OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
+import { WalletConnectV2Adapter } from '@web3auth/wallet-connect-v2-adapter';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
 import { IAppContextState } from '@/types';
@@ -52,8 +53,14 @@ const AppContext: React.FC<{
         },
       });
       web3auth.configureAdapter(openloginAdapter);
-      // const adapter = new WalletConnectV2Adapter();
-      // web3auth.configureAdapter(adapter);
+      const adapter = new WalletConnectV2Adapter({
+        adapterSettings: {
+          walletConnectInitOptions: {
+            projectId: 'ee2e3f010161f953fff75354f09e5b93',
+          },
+        },
+      });
+      web3auth.configureAdapter(adapter);
 
       await web3auth.init();
 

@@ -13,20 +13,17 @@ import { useAppContext } from '@/context';
 import { UserType } from '@/types';
 
 const AuthContainer = () => {
-  const { userInfo, web3auth } = useAppContext();
+  const { userInfo, web3auth, updateUserInfo } = useAppContext();
 
   const [authUser, setAuthUser] = React.useState<UserType>('client');
 
-  const [currentUserInfo, setCurrentUserInfo] =
-    React.useState<Partial<OpenloginUserInfo> | null>(null);
+  console.log({ userInfo });
 
-  console.log({ currentUserInfo });
-
-  const [step, setStep] = React.useState<'login' | 'onboaring'>('login');
+  const [step, setStep] = React.useState<'login' | 'onboarding'>('login');
 
   const handleSuccessfulLogin = (userInfo: Partial<OpenloginUserInfo>) => {
-    setCurrentUserInfo(userInfo);
-    setStep('onboaring');
+    updateUserInfo(userInfo);
+    setStep('onboarding');
   };
 
   const handleAuthUserUpdate = (user: UserType) => {
@@ -34,10 +31,12 @@ const AuthContainer = () => {
   };
 
   useEffect(() => {
-    if (userInfo?.email && userInfo?.idToken) {
+    if (!userInfo) {
+      setStep('login');
+    } else {
       handleSuccessfulLogin(userInfo);
     }
-  }, [userInfo?.email, web3auth?.connected]);
+  }, [!!userInfo, web3auth?.connected]);
 
   return (
     <div className=' w-[41rem] overflow-hidden rounded-3xl'>
