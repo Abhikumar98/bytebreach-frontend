@@ -9,7 +9,7 @@ import { useAppContext } from '@/context';
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { userInfo, isAuthenticated } = useAppContext();
+  const { userInfo, isAuthenticated, isOnboarded } = useAppContext();
 
   const router = useRouter();
 
@@ -19,11 +19,11 @@ const Wrapper: React.FC<{
     }
   }, []);
 
-  console.log(userInfo, isAuthenticated);
+  const showDashboard = userInfo && isAuthenticated && isOnboarded;
 
   return (
     <div className=' font-sans'>
-      {userInfo && isAuthenticated ? (
+      {showDashboard ? (
         <DashboardLayout>{children}</DashboardLayout>
       ) : (
         <>{children}</>

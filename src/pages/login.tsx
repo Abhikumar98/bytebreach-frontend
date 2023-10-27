@@ -1,22 +1,20 @@
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import AuthBranding from '@/components/Login/AuthBranding';
 import AuthContainer from '@/components/Login/AuthContainer';
 
 import InnerGradient from '@/assets/inner-gradient.svg';
 import OuterGradient from '@/assets/outer-gradient.svg';
-import { useAppContext } from '@/context';
 
 const Auth = () => {
-  const { isAuthenticated } = useAppContext();
-  const { push } = useRouter();
+  // const { isAuthenticated } = useAppContext();
+  // const { push } = useRouter();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      push('/');
-    }
-  }, []);
+  // useEffect(() => {
+  //   // if (isAuthenticated) {
+  //   //   push('/');
+  //   // }
+  // }, []);
 
   return (
     <>

@@ -51,7 +51,6 @@ const ClientOnboarding = () => {
       const accounts = await web3.eth.getAccounts();
 
       handleOnboardedUser(accounts?.[0] ?? '');
-      push('/');
     } catch (error) {
       defaultErrorMessage(error);
     }

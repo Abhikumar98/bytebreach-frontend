@@ -64,7 +64,6 @@ const AppContext: React.FC<{
   };
 
   const handleAuthenticationStatusUpdate = (authentication: boolean) => {
-    console.trace('handleAuthenticationStatusUpdate', authentication);
     setInLocalStorage('authenticated', authentication.toString());
     setIsAuthenticated(authentication);
   };
@@ -79,6 +78,8 @@ const AppContext: React.FC<{
     setInLocalStorage('onboarded', JSON.stringify(onboardedUsers));
     setIsOnboarded(true);
     setIsAuthenticated(true);
+    console.log('Pushing from here');
+    push('/');
   };
 
   const initialiseWeb3Auth = async () => {
@@ -146,9 +147,16 @@ const AppContext: React.FC<{
 
         const userOnboarded = await isUserOnboarded(web3auth);
 
-        setIsOnboarded(userOnboarded);
+        setIsOnboarded(!!userOnboarded);
         setIsAuthenticated(!!userInfo);
-        push('/');
+
+        console.log({ userInfo, userOnboarded });
+
+        console.log('Pushing from here instead');
+
+        if (userOnboarded) {
+          push('/');
+        }
       }
     } catch (error) {
       defaultErrorMessage(error);
