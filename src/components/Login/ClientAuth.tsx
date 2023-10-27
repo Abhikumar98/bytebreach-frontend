@@ -56,8 +56,6 @@ const ClientAuth: React.FC<{
         },
       });
 
-      console.log({ response });
-
       const userInfo = await web3auth.getUserInfo();
 
       onLoginSuccess(userInfo);

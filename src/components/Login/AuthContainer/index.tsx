@@ -37,7 +37,6 @@ const AuthContainer = () => {
     const isOnboarded = await isUserOnboarded(web3auth);
 
     if (isOnboarded) {
-      console.log('Pushing from here deo');
       push('/');
       setIsAuthenticated(true);
     }

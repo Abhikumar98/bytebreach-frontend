@@ -31,7 +31,6 @@ export const isUserOnboarded = async (web3Auth: Web3AuthNoModal | null) => {
 
   const web3 = new Web3(web3Auth.provider as any);
   const accounts = await web3.eth.getAccounts();
-  console.log({ accounts });
 
   const onboardedUsers = getFromLocalStorage('onboarded')
     ? JSON.parse(getFromLocalStorage('onboarded') ?? '')
@@ -78,7 +77,7 @@ const AppContext: React.FC<{
     setInLocalStorage('onboarded', JSON.stringify(onboardedUsers));
     setIsOnboarded(true);
     setIsAuthenticated(true);
-    console.log('Pushing from here');
+
     push('/');
   };
 
@@ -149,10 +148,6 @@ const AppContext: React.FC<{
 
         setIsOnboarded(!!userOnboarded);
         setIsAuthenticated(!!userInfo);
-
-        console.log({ userInfo, userOnboarded });
-
-        console.log('Pushing from here instead');
 
         if (userOnboarded) {
           push('/');
