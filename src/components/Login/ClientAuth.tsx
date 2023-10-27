@@ -47,19 +47,14 @@ const ClientAuth: React.FC<{
       const adapter =
         authProvider === 'webauthn'
           ? WALLET_ADAPTERS.WALLET_CONNECT_V2
-          : authProvider;
+          : WALLET_ADAPTERS.OPENLOGIN;
 
-      const response = await web3auth.connectTo<OpenloginLoginParams>(
-        adapter,
-        authProvider === 'webauthn'
-          ? {
-              loginProvider: authProvider,
-              extraLoginOptions: {
-                login_hint: userEmail,
-              },
-            }
-          : undefined
-      );
+      const response = await web3auth.connectTo<OpenloginLoginParams>(adapter, {
+        loginProvider: authProvider,
+        extraLoginOptions: {
+          login_hint: userEmail,
+        },
+      });
 
       console.log({ response });
 

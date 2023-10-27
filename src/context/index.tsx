@@ -10,7 +10,9 @@ import {
   getWalletConnectV2Settings,
   WalletConnectV2Adapter,
 } from '@web3auth/wallet-connect-v2-adapter';
+import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import Web3 from 'web3';
 
 import {
   defaultErrorMessage,
@@ -22,18 +24,61 @@ import { IAppContextState } from '@/types';
 
 const AppContextState = createContext<IAppContextState | null>(null);
 
+export const isUserOnboarded = async (web3Auth: Web3AuthNoModal | null) => {
+  if (!web3Auth) {
+    return null;
+  }
+
+  const web3 = new Web3(web3Auth.provider as any);
+  const accounts = await web3.eth.getAccounts();
+  console.log({ accounts });
+
+  const onboardedUsers = getFromLocalStorage('onboarded')
+    ? JSON.parse(getFromLocalStorage('onboarded') ?? '')
+    : {};
+
+  return onboardedUsers[accounts?.[0] ?? ''];
+};
+
 const AppContext: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
   const [connectedUserInfo, setConnectedUserInfo] = useState<
-    Partial<OpenloginUserInfo> | any
+    (Partial<OpenloginUserInfo> & { account?: string }) | any
   >(null);
 
+  const { push } = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await web3auth?.logout();
+      setConnectedUserInfo(null);
+      setIsAuthenticated(false);
+      push('/login');
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
   const handleAuthenticationStatusUpdate = (authentication: boolean) => {
+    console.trace('handleAuthenticationStatusUpdate', authentication);
     setInLocalStorage('authenticated', authentication.toString());
     setIsAuthenticated(authentication);
+  };
+
+  const handleOnboardedUser = (address: string) => {
+    const onboardedUsers = getFromLocalStorage('onboarded')
+      ? JSON.parse(getFromLocalStorage('onboarded') ?? '')
+      : {};
+
+    onboardedUsers[address] = true;
+
+    setInLocalStorage('onboarded', JSON.stringify(onboardedUsers));
+    setIsOnboarded(true);
+    setIsAuthenticated(true);
   };
 
   const initialiseWeb3Auth = async () => {
@@ -58,34 +103,29 @@ const AppContext: React.FC<{
         ticker: 'ETH',
         tickerName: 'Ethereum',
       };
-
       const web3auth = new Web3AuthNoModal({
         clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
         chainConfig,
         web3AuthNetwork: 'sapphire_devnet',
       });
 
+      const privateKeyProvider = new EthereumPrivateKeyProvider({
+        config: { chainConfig },
+      });
+
       const openloginAdapter = new OpenloginAdapter({
-        privateKeyProvider: new EthereumPrivateKeyProvider({
-          config: {
-            chainConfig,
-          },
-        }),
-        adapterSettings: {
-          clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
-          network: 'sapphire_devnet',
-          uxMode: 'popup',
-        },
+        privateKeyProvider,
       });
       web3auth.configureAdapter(openloginAdapter);
 
+      // adding wallet connect v2 adapter
       const defaultWcSettings = await getWalletConnectV2Settings(
         'eip155',
         [1, 137, 5],
-        'ee2e3f010161f953fff75354f09e5b93'
+        '04309ed1007e77d1f119b85205bb779d'
       );
       const walletConnectModal = new WalletConnectModal({
-        projectId: 'ee2e3f010161f953fff75354f09e5b93',
+        projectId: '04309ed1007e77d1f119b85205bb779d',
       });
       const walletConnectV2Adapter = new WalletConnectV2Adapter({
         adapterSettings: {
@@ -98,14 +138,18 @@ const AppContext: React.FC<{
       web3auth.configureAdapter(walletConnectV2Adapter);
 
       await web3auth.init();
+      setWeb3Auth(web3auth);
 
       if (web3auth.connected) {
         const userInfo = await web3auth.getUserInfo();
-
         setConnectedUserInfo(userInfo);
-      }
 
-      setWeb3Auth(web3auth);
+        const userOnboarded = await isUserOnboarded(web3auth);
+
+        setIsOnboarded(userOnboarded);
+        setIsAuthenticated(!!userInfo);
+        push('/');
+      }
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -119,10 +163,14 @@ const AppContext: React.FC<{
     <AppContextState.Provider
       value={{
         web3auth,
+        handleLogout,
+        handleOnboardedUser,
         userInfo: connectedUserInfo,
         updateUserInfo: setConnectedUserInfo,
         isAuthenticated,
         setIsAuthenticated: handleAuthenticationStatusUpdate,
+        isOnboarded,
+        setIsOnboarded,
       }}
     >
       {children}

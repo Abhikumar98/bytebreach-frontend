@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import Web3 from 'web3';
 
 import { defaultErrorMessage } from '@/lib/helper';
 
@@ -12,7 +13,13 @@ import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
 const AuditorOnboarding = () => {
-  const { web3auth, updateUserInfo, setIsAuthenticated } = useAppContext();
+  const {
+    web3auth,
+    updateUserInfo,
+    handleLogout,
+    setIsAuthenticated,
+    handleOnboardedUser,
+  } = useAppContext();
   // use react-hook-forms later
   const [userOnboardingDetails, setUserOnboardingDetails] = useState({
     fullName: '',
@@ -23,12 +30,9 @@ const AuditorOnboarding = () => {
 
   const { push } = useRouter();
 
-  const handleLogout = async () => {
+  const handleUserLogout = async () => {
     try {
-      await web3auth?.logout();
-
-      updateUserInfo(null);
-      setIsAuthenticated(false);
+      await handleLogout();
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -46,8 +50,12 @@ const AuditorOnboarding = () => {
       // const response = await fetch('/api/login');
       // const data = await response.json();
 
+      const web3 = new Web3(web3auth?.provider as any);
+      const accounts = await web3.eth.getAccounts();
+
+      handleOnboardedUser(accounts?.[0] ?? '');
+
       push('/');
-      setIsAuthenticated(true);
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -91,7 +99,7 @@ const AuditorOnboarding = () => {
         <Button onClick={handleFormSubmit} variant='primary'>
           Submit
         </Button>
-        <Button onClick={handleLogout}>Logout</Button>
+        <Button onClick={handleUserLogout}>Logout</Button>
       </div>
     </div>
   );

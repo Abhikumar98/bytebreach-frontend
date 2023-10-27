@@ -12,16 +12,14 @@ import { useAppContext } from '@/context';
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { updateUserInfo, web3auth, setIsAuthenticated } = useAppContext();
+  const { updateUserInfo, web3auth, handleLogout, setIsAuthenticated } =
+    useAppContext();
 
   const { push } = useRouter();
 
-  const handleLogout = async () => {
+  const handleUserLogout = async () => {
     try {
-      await web3auth?.logout();
-      updateUserInfo(null);
-      setIsAuthenticated(false);
-      push('/login');
+      await handleLogout();
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -107,7 +105,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
               </div>
             </div>
           </div>
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleUserLogout}>Logout</Button>
         </div>
         <div className='lg:pl-72'>
           <div className='sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8'>

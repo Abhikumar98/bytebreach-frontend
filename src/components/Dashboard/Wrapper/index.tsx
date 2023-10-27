@@ -19,7 +19,7 @@ const Wrapper: React.FC<{
     }
   }, []);
 
-  console.log(userInfo && isAuthenticated);
+  console.log(userInfo, isAuthenticated);
 
   return (
     <div className=' font-sans'>

@@ -36,8 +36,6 @@ const AuditorAuth: React.FC<{
         throw new Error('Web3Auth not initialised');
       }
 
-      // await web3auth.logout();
-
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
 
       await web3auth.connectTo<OpenloginLoginParams>(
