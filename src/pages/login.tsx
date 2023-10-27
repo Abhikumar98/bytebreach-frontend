@@ -1,12 +1,23 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 import AuthBranding from '@/components/Login/AuthBranding';
 import AuthContainer from '@/components/Login/AuthContainer';
 
 import InnerGradient from '@/assets/inner-gradient.svg';
 import OuterGradient from '@/assets/outer-gradient.svg';
+import { useAppContext } from '@/context';
 
 const Auth = () => {
+  const { isAuthenticated } = useAppContext();
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      push('/');
+    }
+  }, []);
+
   return (
     <>
       {/* <div className='secondary-background-gradient fixed z-[2] m-0 h-full w-full' /> */}

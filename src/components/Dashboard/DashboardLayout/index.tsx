@@ -12,7 +12,7 @@ import { useAppContext } from '@/context';
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { updateUserInfo, web3auth } = useAppContext();
+  const { updateUserInfo, web3auth, setIsAuthenticated } = useAppContext();
 
   const { push } = useRouter();
 
@@ -20,6 +20,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
     try {
       await web3auth?.logout();
       updateUserInfo(null);
+      setIsAuthenticated(false);
       push('/login');
     } catch (error) {
       defaultErrorMessage(error);

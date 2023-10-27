@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { defaultErrorMessage, setInLocalStorage } from '@/lib/helper';
+import { defaultErrorMessage } from '@/lib/helper';
 
 import Building from '@/assets/building.svg';
 import Envelope from '@/assets/envelope.svg';
@@ -12,7 +12,7 @@ import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
 const AuditorOnboarding = () => {
-  const { web3auth, updateUserInfo } = useAppContext();
+  const { web3auth, updateUserInfo, setIsAuthenticated } = useAppContext();
   // use react-hook-forms later
   const [userOnboardingDetails, setUserOnboardingDetails] = useState({
     fullName: '',
@@ -26,7 +26,9 @@ const AuditorOnboarding = () => {
   const handleLogout = async () => {
     try {
       await web3auth?.logout();
+
       updateUserInfo(null);
+      setIsAuthenticated(false);
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -44,8 +46,8 @@ const AuditorOnboarding = () => {
       // const response = await fetch('/api/login');
       // const data = await response.json();
 
-      setInLocalStorage('authenticated', 'true');
       push('/');
+      setIsAuthenticated(true);
     } catch (error) {
       defaultErrorMessage(error);
     }

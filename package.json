@@ -21,6 +21,7 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@walletconnect/legacy-client": "^2.0.0",
+    "@walletconnect/modal": "^2.6.2",
     "@walletconnect/sign-client": "^2.10.4",
     "@web3auth/ethereum-provider": "^7.0.4",
     "@web3auth/no-modal": "^7.0.4",

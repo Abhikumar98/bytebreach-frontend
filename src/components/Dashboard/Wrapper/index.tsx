@@ -2,8 +2,6 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { getFromLocalStorage } from '@/lib/helper';
-
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 
 import { useAppContext } from '@/context';
@@ -11,21 +9,21 @@ import { useAppContext } from '@/context';
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { userInfo } = useAppContext();
+  const { userInfo, isAuthenticated } = useAppContext();
 
   const router = useRouter();
 
   useEffect(() => {
-    const isAuthenticated = getFromLocalStorage('authenticated');
-
     if (!isAuthenticated || !userInfo) {
       router.push('/login');
     }
   }, []);
 
+  console.log(userInfo && isAuthenticated);
+
   return (
     <div className=' font-sans'>
-      {userInfo ? (
+      {userInfo && isAuthenticated ? (
         <DashboardLayout>{children}</DashboardLayout>
       ) : (
         <>{children}</>
