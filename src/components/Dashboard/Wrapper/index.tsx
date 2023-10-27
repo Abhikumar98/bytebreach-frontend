@@ -18,7 +18,7 @@ const Wrapper: React.FC<{
   useEffect(() => {
     const isAuthenticated = getFromLocalStorage('authenticated');
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userInfo) {
       router.push('/login');
     }
   }, []);

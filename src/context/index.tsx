@@ -39,7 +39,7 @@ const AppContext: React.FC<{
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
         },
-        web3AuthNetwork: 'cyan',
+        web3AuthNetwork: 'sapphire_devnet',
       });
 
       const openloginAdapter = new OpenloginAdapter({
