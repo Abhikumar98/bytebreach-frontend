@@ -12,14 +12,15 @@ const Wrapper: React.FC<{
   const { userInfo, isAuthenticated, isOnboarded } = useAppContext();
 
   const router = useRouter();
+  const showDashboard = userInfo && isAuthenticated && isOnboarded;
+
+  console.log('🚀 ~ file: index.tsx:16 ~ showDashboard:', showDashboard);
 
   useEffect(() => {
-    if (!isAuthenticated || !userInfo) {
+    if (!showDashboard) {
       router.push('/login');
     }
-  }, []);
-
-  const showDashboard = userInfo && isAuthenticated && isOnboarded;
+  }, [showDashboard, router.pathname]);
 
   return (
     <div className=' font-sans'>
