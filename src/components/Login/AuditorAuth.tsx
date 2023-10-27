@@ -38,10 +38,17 @@ const AuditorAuth: React.FC<{
 
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
 
-      await web3auth.connectTo<OpenloginLoginParams>(
-        WALLET_ADAPTERS.OPENLOGIN,
-        { loginProvider: authProvider }
-      );
+      const adapter =
+        authProvider === 'webauthn'
+          ? WALLET_ADAPTERS.WALLET_CONNECT_V2
+          : WALLET_ADAPTERS.OPENLOGIN;
+
+      const response = await web3auth.connectTo<OpenloginLoginParams>(adapter, {
+        loginProvider: authProvider,
+        extraLoginOptions: {
+          login_hint: userEmail,
+        },
+      });
 
       const userInfo = await web3auth.getUserInfo();
 

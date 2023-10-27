@@ -78,7 +78,7 @@ const ClientOnboarding = () => {
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('website')}
-        value={userOnboardingDetails.companyName}
+        value={userOnboardingDetails.website}
         placeholder='www.google.com'
         label='Website'
         icon={<Envelope />}
@@ -86,14 +86,14 @@ const ClientOnboarding = () => {
       <div className='flex space-x-6'>
         <Input
           onChange={(e) => handleFormUpdate(e)('twitter')}
-          value={userOnboardingDetails.website}
+          value={userOnboardingDetails.twitter}
           placeholder='@johndoe'
           label='Twitter'
           icon={<Twitter />}
         />
         <Input
           onChange={(e) => handleFormUpdate(e)('github')}
-          value={userOnboardingDetails.twitter}
+          value={userOnboardingDetails.github}
           placeholder='@coderjohndoe'
           label='Github'
           icon={<Github />}
