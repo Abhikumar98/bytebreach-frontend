@@ -36,7 +36,8 @@ const ClientOnboarding = () => {
   const { push } = useRouter();
 
   const handleFormUpdate =
-    (e: React.ChangeEvent<HTMLInputElement>) => (key: string) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    (key: string) => {
       setUserOnboardingDetails((prev) => ({ ...prev, [key]: e.target.value }));
     };
 
