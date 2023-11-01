@@ -79,7 +79,7 @@ const ClientAuth: React.FC<{
         Login using your Google account
       </Button>
       <div className='bg-gray h-[1px] w-full' />
-      <div className=''>
+      <div>
         <Input
           label='Email'
           onChange={(e) => setUserEmail(e.target.value)}
