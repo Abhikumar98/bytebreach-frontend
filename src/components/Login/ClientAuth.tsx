@@ -1,3 +1,4 @@
+import { Divider } from '@mui/material';
 import { WALLET_ADAPTERS } from '@web3auth/base';
 import {
   LOGIN_PROVIDER_TYPE,
@@ -78,16 +79,17 @@ const ClientAuth: React.FC<{
       >
         Login using your Google account
       </Button>
-      <div className='bg-gray h-[1px] w-full' />
+
+      <Divider />
       <div>
         <Input
           label='Email'
+          id='email'
           onChange={(e) => setUserEmail(e.target.value)}
           disabled={disableButtons}
           value={userEmail}
           placeholder='john@doe.com'
           icon={<Envelope />}
-          color='secondary'
         />
       </div>
 

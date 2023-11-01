@@ -1,17 +1,41 @@
+import styled from '@emotion/styled';
 import React from 'react';
 
-import AuthBranding from '@/components/Login/AuthBranding';
 import AuthContainer from '@/components/Login/AuthContainer';
+
+const StyledLoginContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  justify-content: space-between;
+
+  .auth-container {
+    max-width: 38rem;
+    width: 100%;
+
+    align-self: center;
+    justify-self: center;
+    margin: auto;
+  }
+`;
+
+const StyledImageContainer = styled.img`
+  width: calc(100% / 3);
+  justify-self: end;
+  width: 32rem;
+`;
 
 const Auth = () => {
   return (
     <>
-      <div className='login-page flex h-screen w-screen flex-col items-center justify-center space-y-8'>
-        <div className='z-[5]'>
-          <AuthBranding />
+      <StyledLoginContainer>
+        <div className='auth-container'>
           <AuthContainer />
         </div>
-      </div>
+        {/* <AuthBranding /> */}
+        <StyledImageContainer src='/images/login.png' />
+      </StyledLoginContainer>
     </>
   );
 };

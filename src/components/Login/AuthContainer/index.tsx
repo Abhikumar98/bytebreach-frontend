@@ -60,7 +60,7 @@ const AuthContainer = () => {
   }, [!!userInfo, web3auth?.connected]);
 
   return (
-    <div className=' w-[36rem] overflow-hidden rounded-3xl'>
+    <div className='overflow-hidden rounded-3xl'>
       {step === 'login' && (
         <AuthNavbar
           authUser={authUser}

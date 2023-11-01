@@ -1,3 +1,4 @@
+import { Divider } from '@mui/material';
 import { WALLET_ADAPTERS } from '@web3auth/base';
 import {
   LOGIN_PROVIDER_TYPE,
@@ -98,7 +99,7 @@ const AuditorAuth: React.FC<{
       >
         Login using your wallet
       </Button>
-      <div className='bg-gray h-[1px] w-full' />
+      <Divider />
       <div>
         <Input
           label='Email'
