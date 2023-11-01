@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
-import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import {
+  InputAdornment,
+  TextField,
+  TextFieldProps,
+  useTheme,
+} from '@mui/material';
 import React, { ReactNode } from 'react';
 
 const InputField = styled(TextField)`
@@ -25,13 +30,19 @@ const StyledInputAdjournment = styled(InputAdornment)`
 const Input: React.FC<
   { icon?: ReactNode; label?: string } & TextFieldProps
 > = ({ icon, label, ...inputProps }) => {
+  const theme = useTheme();
+
   return (
-    <div className='relative mt-2 space-y-2'>
-      <label htmlFor={inputProps.id} className='text-lg font-semibold'>
+    <div className='mt-2 space-y-2'>
+      <label htmlFor={inputProps.id} className='font-medium'>
         {label}
       </label>
       <InputField
         InputProps={{
+          sx: {
+            boxShadow: theme.shadows[1],
+            borderRadius: '15rem',
+          },
           endAdornment: (
             <StyledInputAdjournment position='end'>
               {icon}
@@ -39,6 +50,7 @@ const Input: React.FC<
           ),
         }}
         {...inputProps}
+        color='secondary'
         name={inputProps.id}
       />
     </div>

@@ -1,9 +1,11 @@
+import { Divider, styled, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Web3 from 'web3';
 
 import { defaultErrorMessage } from '@/lib/helper';
 
+import ArrowLeft from '@/assets/arrowLeft.svg';
 import Building from '@/assets/building.svg';
 import Envelope from '@/assets/envelope.svg';
 import Github from '@/assets/github.svg';
@@ -13,7 +15,25 @@ import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
+const BackButton = styled('div')`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+
+  svg {
+    height: 30px;
+    width: 30px;
+  }
+`;
+
 const ClientOnboarding = () => {
+  const theme = useTheme();
+
   const { web3auth, handleOnboardedUser, handleLogout } = useAppContext();
 
   // use react-hook-forms later
@@ -23,6 +43,7 @@ const ClientOnboarding = () => {
     website: '',
     twitter: '',
     github: '',
+    inviteCode: '',
   });
 
   const handleUserLogout = async () => {
@@ -59,12 +80,16 @@ const ClientOnboarding = () => {
 
   return (
     <div className=' space-y-4'>
+      <BackButton onClick={handleLogout}>
+        <ArrowLeft />
+      </BackButton>
       <div className='border-b border-b-gray-400 pb-4'>
         <div className='text-2xl font-bold'>Contact details</div>
-        <div className=' text-gray-500'>Enter your details to login</div>
+        <Typography variant='subtitle1'>Enter your details to login</Typography>
       </div>
       <Input
         onChange={(e) => handleFormUpdate(e)('fullName')}
+        id='fullName'
         value={userOnboardingDetails.fullName}
         placeholder='John Doe'
         label='Full Name'
@@ -72,6 +97,7 @@ const ClientOnboarding = () => {
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('companyName')}
+        id='companyName'
         value={userOnboardingDetails.companyName}
         placeholder='Google'
         label='Company Name'
@@ -79,6 +105,7 @@ const ClientOnboarding = () => {
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('website')}
+        id='website'
         value={userOnboardingDetails.website}
         placeholder='www.google.com'
         label='Website'
@@ -87,6 +114,7 @@ const ClientOnboarding = () => {
       <div className='flex space-x-6'>
         <Input
           onChange={(e) => handleFormUpdate(e)('twitter')}
+          id='twitter'
           value={userOnboardingDetails.twitter}
           placeholder='@johndoe'
           label='Twitter'
@@ -94,15 +122,26 @@ const ClientOnboarding = () => {
         />
         <Input
           onChange={(e) => handleFormUpdate(e)('github')}
+          id='github'
           value={userOnboardingDetails.github}
           placeholder='@coderjohndoe'
           label='Github'
           icon={<Github />}
         />
       </div>
+
+      <Divider />
+
+      <Input
+        onChange={(e) => handleFormUpdate(e)('inviteCode')}
+        id='inviteCode'
+        value={userOnboardingDetails.inviteCode}
+        placeholder='D12FSBYT'
+        label='Invite Code'
+      />
+
       <div className='flex justify-center space-x-4'>
         <Button onClick={handleFormSubmit}>Submit</Button>
-        <Button onClick={handleUserLogout}>Logout</Button>
       </div>
     </div>
   );
