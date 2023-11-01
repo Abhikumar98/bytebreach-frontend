@@ -18,8 +18,13 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mui/lab": "^5.0.0-alpha.151",
+    "@mui/material": "^5.14.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@walletconnect/legacy-client": "^2.0.0",
     "@walletconnect/modal": "^2.6.2",
     "@walletconnect/sign-client": "^2.10.4",

@@ -9,9 +9,7 @@ import React, { useState } from 'react';
 import { defaultErrorMessage } from '@/lib/helper';
 
 import Envelope from '@/assets/envelope.svg';
-import Github from '@/assets/github-color.svg';
 import Google from '@/assets/google.svg';
-import Wallet from '@/assets/wallet.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
@@ -75,30 +73,13 @@ const ClientAuth: React.FC<{
         disabled={disableButtons}
         className='w-full'
         onClick={() => handleAuthentication('google')}
-        icon={<Google />}
+        startIcon={<Google />}
+        color='secondary'
       >
         Login using your Google account
       </Button>
-      <Button
-        isLoading={loginLoaders['github']}
-        disabled={disableButtons}
-        onClick={() => handleAuthentication('github')}
-        className='w-full'
-        icon={<Github />}
-      >
-        Login using your Github account
-      </Button>
-      <Button
-        isLoading={loginLoaders['webauthn']}
-        disabled={disableButtons}
-        onClick={() => handleAuthentication('webauthn')}
-        className='w-full'
-        icon={<Wallet />}
-      >
-        Login using your wallet
-      </Button>
       <div className='bg-gray h-[1px] w-full' />
-      <div>
+      <div className=''>
         <Input
           label='Email'
           onChange={(e) => setUserEmail(e.target.value)}
@@ -106,6 +87,7 @@ const ClientAuth: React.FC<{
           value={userEmail}
           placeholder='john@doe.com'
           icon={<Envelope />}
+          color='secondary'
         />
       </div>
 
@@ -114,7 +96,6 @@ const ClientAuth: React.FC<{
           isLoading={loginLoaders['email_passwordless']}
           disabled={disableButtons}
           onClick={() => handleAuthentication('email_passwordless')}
-          variant='primary'
         >
           Submit
         </Button>

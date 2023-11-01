@@ -1,20 +1,47 @@
-import React, { InputHTMLAttributes, ReactNode } from 'react';
+import styled from '@emotion/styled';
+import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import React, { ReactNode } from 'react';
+
+const InputField = styled(TextField)`
+  &.MuiTextField-root,
+  fieldset {
+    border-radius: 15rem;
+  }
+
+  width: 100%;
+
+  .MuiInputBase-root {
+    width: 100%;
+  }
+`;
+
+const StyledInputAdjournment = styled(InputAdornment)`
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
 
 const Input: React.FC<
-  { icon?: ReactNode; label?: string } & InputHTMLAttributes<HTMLInputElement>
+  { icon?: ReactNode; label?: string } & TextFieldProps
 > = ({ icon, label, ...inputProps }) => {
   return (
-    <div className='app-input relative mt-2 space-y-2'>
+    <div className='relative mt-2 space-y-2'>
       <label htmlFor={inputProps.id} className='text-lg font-semibold'>
         {label}
       </label>
-      <input
-        className='ring-gray block w-full rounded-full border-0 py-3 pl-5 pr-20 text-lg text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 sm:leading-6'
+      <InputField
+        InputProps={{
+          endAdornment: (
+            <StyledInputAdjournment position='end'>
+              {icon}
+            </StyledInputAdjournment>
+          ),
+        }}
         {...inputProps}
+        name={inputProps.id}
+        color='secondary'
       />
-      <div className='pointer-events-none absolute inset-y-0 right-0 top-7 flex items-center pr-5'>
-        {icon}
-      </div>
     </div>
   );
 };

@@ -36,6 +36,10 @@ const AuditorAuth: React.FC<{
         throw new Error('Web3Auth not initialised');
       }
 
+      if (authProvider === 'email_passwordless' && !userEmail) {
+        throw new Error('Email is required');
+      }
+
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
 
       const adapter =
@@ -69,7 +73,8 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         className='w-full'
         onClick={() => handleAuthentication('google')}
-        icon={<Google />}
+        startIcon={<Google />}
+        color='secondary'
       >
         Login using your Google account
       </Button>
@@ -78,7 +83,8 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         onClick={() => handleAuthentication('github')}
         className='w-full'
-        icon={<Github />}
+        startIcon={<Github />}
+        color='secondary'
       >
         Login using your Github account
       </Button>
@@ -87,7 +93,8 @@ const AuditorAuth: React.FC<{
         disabled={disableButtons}
         onClick={() => handleAuthentication('webauthn')}
         className='w-full'
-        icon={<Wallet />}
+        startIcon={<Wallet />}
+        color='secondary'
       >
         Login using your wallet
       </Button>
@@ -95,6 +102,7 @@ const AuditorAuth: React.FC<{
       <div>
         <Input
           label='Email'
+          id='email'
           onChange={(e) => setUserEmail(e.target.value)}
           disabled={disableButtons}
           value={userEmail}
@@ -108,7 +116,6 @@ const AuditorAuth: React.FC<{
           isLoading={loginLoaders['email_passwordless']}
           disabled={disableButtons}
           onClick={() => handleAuthentication('email_passwordless')}
-          variant='primary'
         >
           Submit
         </Button>

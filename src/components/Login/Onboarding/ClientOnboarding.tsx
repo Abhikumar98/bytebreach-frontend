@@ -100,9 +100,7 @@ const ClientOnboarding = () => {
         />
       </div>
       <div className='flex justify-center space-x-4'>
-        <Button onClick={handleFormSubmit} variant='primary'>
-          Submit
-        </Button>
+        <Button onClick={handleFormSubmit}>Submit</Button>
         <Button onClick={handleUserLogout}>Logout</Button>
       </div>
     </div>
