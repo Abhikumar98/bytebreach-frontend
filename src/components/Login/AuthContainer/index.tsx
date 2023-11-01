@@ -22,11 +22,11 @@ const AuthContainer = () => {
     setIsAuthenticated,
   } = useAppContext();
 
-  const [authUser, setAuthUser] = React.useState<UserType>('auditor');
+  const [authUser, setAuthUser] = React.useState<UserType>('client');
 
   const { push } = useRouter();
 
-  const [step, setStep] = React.useState<'login' | 'onboarding'>('onboarding');
+  const [step, setStep] = React.useState<'login' | 'onboarding'>('login');
 
   const handleSuccessfulLogin = async (
     userInfo: Partial<OpenloginUserInfo>
@@ -48,8 +48,7 @@ const AuthContainer = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      // TODO: remove before pushing to prod
-      // setStep('login');
+      setStep('login');
     } else {
       handleSuccessfulLogin(userInfo);
     }

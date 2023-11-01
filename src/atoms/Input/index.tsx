@@ -50,7 +50,6 @@ const Input: React.FC<
           ),
         }}
         {...inputProps}
-        color='secondary'
         name={inputProps.id}
       />
     </div>

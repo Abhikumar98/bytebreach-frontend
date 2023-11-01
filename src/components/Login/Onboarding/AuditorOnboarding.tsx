@@ -99,6 +99,7 @@ const AuditorOnboarding = () => {
       <Divider />
       <Input
         onChange={(e) => handleFormUpdate(e)('fullName')}
+        id='fullName'
         value={userOnboardingDetails.fullName}
         placeholder='John Doe'
         label='Full Name'
@@ -106,6 +107,7 @@ const AuditorOnboarding = () => {
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('github')}
+        id='github'
         value={userOnboardingDetails.github}
         placeholder='@codejohndoe'
         label='Github'
@@ -113,12 +115,14 @@ const AuditorOnboarding = () => {
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('tariff')}
+        id='tariff'
         value={userOnboardingDetails.tariff}
         placeholder='$5000'
         label='Weekly Cost'
       />
       <Input
         onChange={(e) => handleFormUpdate(e)('twitter')}
+        id='twitter'
         value={userOnboardingDetails.twitter}
         placeholder='@viraljohndoe'
         label='Twitter'
@@ -127,6 +131,7 @@ const AuditorOnboarding = () => {
       <Div>
         <Input
           onChange={(e) => handleFormUpdate(e)('sherlock')}
+          id='sherlock'
           value={userOnboardingDetails.sherlock}
           placeholder='@detectiveJohnDoe'
           label='Sherlock'
@@ -134,6 +139,7 @@ const AuditorOnboarding = () => {
         />
         <Input
           onChange={(e) => handleFormUpdate(e)('codearena')}
+          id='codearena'
           value={userOnboardingDetails.codearena}
           placeholder='@codingJohnDoe'
           label='Codearena'
@@ -142,6 +148,7 @@ const AuditorOnboarding = () => {
       <Divider />
       <Input
         onChange={(e) => handleFormUpdate(e)('inviteCode')}
+        id='inviteCode'
         value={userOnboardingDetails.inviteCode}
         placeholder='1234SDFS'
         label='Invite Code'

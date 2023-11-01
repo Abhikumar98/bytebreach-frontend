@@ -17,6 +17,8 @@ const Wrapper: React.FC<{
   const router = useRouter();
   const showDashboard = userInfo && isAuthenticated && isOnboarded;
 
+  console.log({ showDashboard });
+
   useEffect(() => {
     if (!showDashboard) {
       router.push('/login');
