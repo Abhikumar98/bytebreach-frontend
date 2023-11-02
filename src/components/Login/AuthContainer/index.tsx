@@ -22,7 +22,7 @@ const AuthContainer = () => {
     setIsAuthenticated,
   } = useAppContext();
 
-  const [authUser, setAuthUser] = React.useState<UserType>('client');
+  const [authUser, setAuthUser] = React.useState<UserType>('auditor');
 
   const { push } = useRouter();
 
@@ -64,7 +64,7 @@ const AuthContainer = () => {
       )}
       <div
         className={classNames(
-          'px-8 py-6',
+          'px-8 py-4',
           step === 'login' ? 'bg-gray' : 'bg-white'
         )}
       >

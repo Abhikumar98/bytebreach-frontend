@@ -1,11 +1,16 @@
-import styled from '@emotion/styled';
 import {
+  Icon,
   InputAdornment,
+  InputLabel,
+  styled,
   TextField,
   TextFieldProps,
+  Tooltip,
   useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
+
+import Info from '@/assets/info.svg';
 
 const InputField = styled(TextField)`
   &.MuiTextField-root,
@@ -27,33 +32,65 @@ const StyledInputAdjournment = styled(InputAdornment)`
   }
 `;
 
-const Input: React.FC<
-  { icon?: ReactNode; label?: string } & TextFieldProps
-> = ({ icon, label, ...inputProps }) => {
-  const theme = useTheme();
+const MandatoryMark = styled('sup')`
+  color: ${({ theme }) => theme.palette.error.main};
+  font-size: 1rem;
+  margin-left: 0.25rem;
+  align-self: start;
+`;
 
-  return (
-    <div className='mt-2 space-y-2'>
-      <label htmlFor={inputProps.id} className='font-medium'>
-        {label}
-      </label>
-      <InputField
-        InputProps={{
-          sx: {
-            boxShadow: theme.shadows[1],
-            borderRadius: '15rem',
-          },
-          endAdornment: (
-            <StyledInputAdjournment position='end'>
-              {icon}
-            </StyledInputAdjournment>
-          ),
-        }}
-        {...inputProps}
-        name={inputProps.id}
-      />
-    </div>
-  );
-};
+const Input: React.FC<
+  {
+    icon?: ReactNode;
+    mandatory?: boolean;
+    label?: string;
+    tooltipMessage?: string;
+  } & TextFieldProps
+> = React.forwardRef(
+  ({ icon, tooltipMessage, mandatory, label, ...inputProps }, ref) => {
+    const theme = useTheme();
+
+    return (
+      <div className='mt-2 space-y-2'>
+        <InputLabel
+          htmlFor={inputProps.name}
+          className='flex items-center font-medium'
+        >
+          {label}
+          {mandatory && <MandatoryMark>*</MandatoryMark>}
+          {tooltipMessage && (
+            <Tooltip title={tooltipMessage}>
+              <Icon
+                sx={{
+                  height: '20px',
+                  width: '20px',
+                  marginLeft: '0.5rem',
+                }}
+              >
+                <Info />
+              </Icon>
+            </Tooltip>
+          )}
+        </InputLabel>
+
+        <InputField
+          InputProps={{
+            sx: {
+              boxShadow: theme.shadows[1],
+              borderRadius: '15rem',
+            },
+            endAdornment: (
+              <StyledInputAdjournment position='end'>
+                {icon}
+              </StyledInputAdjournment>
+            ),
+          }}
+          inputRef={ref}
+          {...inputProps}
+        />
+      </div>
+    );
+  }
+);
 
 export default Input;

@@ -20,3 +20,22 @@ export interface IAppContextState {
 export type AuthOptions = 'google' | 'github' | 'email' | 'wallet';
 
 export type UserType = 'client' | 'auditor';
+
+export interface IClientOnboardingForm {
+  fullName: string;
+  companyName: string;
+  website: string;
+  twitter: string;
+  github: string;
+  inviteCode: string;
+}
+
+export interface IAuditorOnboardingForm {
+  fullName: string;
+  github: string;
+  tariff: number;
+  twitter: string;
+  codearena: string;
+  sherlock: string;
+  inviteCode: string;
+}

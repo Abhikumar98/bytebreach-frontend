@@ -1,6 +1,7 @@
-import { Divider, styled, Typography } from '@mui/material';
+import { Divider, styled, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import Web3 from 'web3';
 
 import { defaultErrorMessage } from '@/lib/helper';
@@ -14,11 +15,7 @@ import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
-const Div = styled('div')`
-  display: flex;
-  gap: 1rem;
-  padding-bottom: 6px;
-`;
+import { IAuditorOnboardingForm } from '@/types';
 
 const BackButton = styled('div')`
   cursor: pointer;
@@ -44,39 +41,30 @@ const AuditorOnboarding = () => {
     setIsAuthenticated,
     handleOnboardedUser,
   } = useAppContext();
-  // use react-hook-forms later
-  const [userOnboardingDetails, setUserOnboardingDetails] = useState({
-    fullName: '',
-    github: '',
-    tariff: 0,
-    twitter: '',
-    codearena: '',
-    sherlock: '',
-    inviteCode: '',
+
+  const theme = useTheme();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IAuditorOnboardingForm>({
+    defaultValues: {
+      fullName: '',
+      github: '',
+      tariff: 0,
+      twitter: '',
+      codearena: '',
+      sherlock: '',
+      inviteCode: '',
+    },
   });
 
   const { push } = useRouter();
 
-  const handleUserLogout = async () => {
+  const handleFormSubmit = async (values: IAuditorOnboardingForm) => {
     try {
-      await handleLogout();
-    } catch (error) {
-      defaultErrorMessage(error);
-    }
-  };
-
-  const handleFormUpdate =
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    (key: string) => {
-      setUserOnboardingDetails((prev) => ({ ...prev, [key]: e.target.value }));
-    };
-
-  const handleFormSubmit = async () => {
-    try {
-      // TODO: add form validation
-
-      // const response = await fetch('/api/login');
-      // const data = await response.json();
+      console.log({ values });
 
       const web3 = new Web3(web3auth?.provider as any);
       const accounts = await web3.eth.getAccounts();
@@ -88,7 +76,7 @@ const AuditorOnboarding = () => {
   };
 
   return (
-    <div className=' space-y-3'>
+    <div className='space-y-4'>
       <BackButton onClick={handleLogout}>
         <ArrowLeft />
       </BackButton>
@@ -97,66 +85,100 @@ const AuditorOnboarding = () => {
         <Typography variant='subtitle1'>Enter your details to login</Typography>
       </div>
       <Divider />
-      <Input
-        onChange={(e) => handleFormUpdate(e)('fullName')}
-        id='fullName'
-        value={userOnboardingDetails.fullName}
-        placeholder='John Doe'
-        label='Full Name'
-        icon={<Person />}
-      />
-      <Input
-        onChange={(e) => handleFormUpdate(e)('github')}
-        id='github'
-        value={userOnboardingDetails.github}
-        placeholder='@codejohndoe'
-        label='Github'
-        icon={<Github />}
-      />
-      <Input
-        onChange={(e) => handleFormUpdate(e)('tariff')}
-        id='tariff'
-        value={userOnboardingDetails.tariff}
-        placeholder='$5000'
-        label='Weekly Cost'
-      />
-      <Input
-        onChange={(e) => handleFormUpdate(e)('twitter')}
-        id='twitter'
-        value={userOnboardingDetails.twitter}
-        placeholder='@viraljohndoe'
-        label='Twitter'
-        icon={<Twitter />}
-      />
-      <Div>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Input
-          onChange={(e) => handleFormUpdate(e)('sherlock')}
-          id='sherlock'
-          value={userOnboardingDetails.sherlock}
-          placeholder='@detectiveJohnDoe'
-          label='Sherlock'
-          icon={<Sherlock />}
+          {...register('fullName', {
+            required: {
+              value: true,
+              message: 'Please enter your full name',
+            },
+          })}
+          mandatory
+          error={!!errors.fullName}
+          placeholder='John Doe'
+          label='Full Name'
+          icon={<Person />}
         />
         <Input
-          onChange={(e) => handleFormUpdate(e)('codearena')}
-          id='codearena'
-          value={userOnboardingDetails.codearena}
-          placeholder='@codingJohnDoe'
-          label='Codearena'
+          {...register('github', {
+            required: {
+              value: true,
+              message: 'Please enter your github username',
+            },
+          })}
+          mandatory
+          error={!!errors.github}
+          placeholder='@codejohndoe'
+          label='Github'
+          icon={<Github />}
         />
-      </Div>
-      <Divider />
-      <Input
-        onChange={(e) => handleFormUpdate(e)('inviteCode')}
-        id='inviteCode'
-        value={userOnboardingDetails.inviteCode}
-        placeholder='1234SDFS'
-        label='Invite Code'
-      />
+        <Input
+          {...register('tariff', {
+            required: {
+              value: true,
+              message: 'Please enter your weekly cost',
+            },
+            min: {
+              value: 1,
+              message: 'Weekly cost cannot be 0',
+            },
+            valueAsNumber: true,
+          })}
+          type='number'
+          error={!!errors.tariff}
+          mandatory
+          placeholder='$5000'
+          label='Weekly Cost'
+        />
+        <Input
+          {...register('twitter')}
+          placeholder='@viraljohndoe'
+          label='Twitter'
+          icon={<Twitter />}
+        />
+        <div className='flex w-full space-x-6'>
+          <div className='w-full'>
+            <Input
+              {...register('sherlock')}
+              placeholder='@detectiveJohnDoe'
+              label='Sherlock'
+              icon={<Sherlock />}
+              fullWidth
+              tooltipMessage='We will import your details from Code Arena.'
+            />
+          </div>
+          <div className='w-full'>
+            <Input
+              {...register('codearena')}
+              placeholder='@codingJohnDoe'
+              label='Codearena'
+              fullWidth
+              tooltipMessage='We will import your details from Code Arena.'
+            />
+          </div>
+        </div>
+        <Divider
+          sx={{
+            paddingTop: theme.spacing(4),
+          }}
+        />
+        <Input
+          {...register('inviteCode', {
+            required: {
+              value: true,
+              message: 'Please enter your invite code',
+            },
+          })}
+          mandatory
+          error={!!errors.inviteCode}
+          placeholder='1234SDFS'
+          label='Invite Code'
+        />
 
-      <div className='flex justify-center space-x-4'>
-        <Button onClick={handleFormSubmit}>Submit</Button>
-      </div>
+        <div className='mt-4 flex justify-center space-x-4'>
+          <Button type='submit'>Submit</Button>
+        </div>
+      </form>
     </div>
   );
 };
