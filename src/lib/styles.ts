@@ -5,12 +5,18 @@ const palette: PaletteOptions = {
     main: '#4F46E5',
   },
   secondary: {
-    main: '#ffffff',
+    dark: '#312E81',
+    light: '#CFD4FF66',
+    main: '#818CF8',
     contrastText: '#070526',
   },
   text: {
     primary: '#070526',
     secondary: '#444444',
+  },
+  background: {
+    paper: '#f6f6f6',
+    default: '#ffffff',
   },
 };
 
@@ -29,16 +35,33 @@ export default createTheme({
   typography: {
     fontFamily: 'DM Sans',
   },
+  shape: {
+    borderRadius: 4,
+  },
   shadows: customisedShadow,
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          padding: '1rem 5rem',
           fontSize: '16px',
           textTransform: 'none',
+          borderRadius: '15rem',
+        },
+        sizeLarge: {
+          padding: '1rem 5rem',
+        },
+        sizeMedium: {
+          padding: '0.5rem 1.5rem',
         },
       },
+      variants: [
+        {
+          props: { variant: 'contained', color: 'secondary' },
+          style: {
+            background: palette.background?.default,
+          },
+        },
+      ],
     },
     MuiInput: {
       styleOverrides: {
@@ -58,6 +81,13 @@ export default createTheme({
           },
         },
       ],
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
     },
 
     // MuiTextField: {

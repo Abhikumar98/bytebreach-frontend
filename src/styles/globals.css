@@ -65,3 +65,8 @@ body {
 button svg {
   @apply h-6 w-6;
 }
+
+.MuiButton-startIcon {
+  height: 24px;
+  width: 24px;
+}

@@ -1,5 +1,6 @@
 import { Web3AuthNoModal } from '@web3auth/no-modal';
 import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
+import { ReactNode } from 'react';
 
 export interface IAppContextState {
   web3auth: Web3AuthNoModal | null;
@@ -38,4 +39,10 @@ export interface IAuditorOnboardingForm {
   codearena: string;
   sherlock: string;
   inviteCode: string;
+}
+
+export interface INavigationRoute {
+  title: string;
+  route: string;
+  icon: ReactNode;
 }
