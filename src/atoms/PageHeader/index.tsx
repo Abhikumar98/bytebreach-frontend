@@ -6,8 +6,6 @@ import useTheme from '@/hooks/useTheme';
 const PageHeader: React.FC<{ title: string }> = ({ title }) => {
   const theme = useTheme();
 
-  console.log({ color: theme.palette?.secondary as Color[800] });
-
   return (
     <Typography
       variant='h2'
