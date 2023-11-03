@@ -12,6 +12,7 @@ import ProjectContainer from '@/components/Project/ProjectSection/ProjectContain
 import ProjectSectionContainer from '@/components/Project/ProjectSection/ProjectSectionContainer';
 
 import PageHeader from '@/atoms/PageHeader';
+import { useAppContext } from '@/context';
 
 import { DashboardTabs } from '@/types';
 
@@ -21,6 +22,8 @@ const Container = styled('div')`
 `;
 
 const HomePage = () => {
+  const { isClientUser } = useAppContext();
+
   const [currentSelectedTab, setCurrentSelectedTab] =
     React.useState<DashboardTabs>(DashboardTabs.ClientOngoing);
 
@@ -32,14 +35,12 @@ const HomePage = () => {
     auditor_done: <AuditorDoneProjects />,
   };
 
-  const isClient = true;
-
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
       <Container>
         <ProjectContainer>
-          {isClient ? (
+          {isClientUser ? (
             <ProjectClient
               currentTab={currentSelectedTab}
               updateCurrentTab={setCurrentSelectedTab}

@@ -1,69 +1,64 @@
-import { styled, Typography, useTheme } from '@mui/material';
+import { styled, Typography } from '@mui/material';
 import React from 'react';
 
 const StyledBugContainer = styled('div')`
-  box-shadow: ${({ theme }) => theme.shadows[2]};
+  background: ${({ theme }) => theme.palette.background.default};
   padding: ${({ theme }) => theme.spacing(8)};
   border-radius: 1rem;
-  background: ${({ theme }) => theme.palette.background.default};
+  box-shadow: ${({ theme }) => theme.shadows[2]};
+`;
 
-  .auditor {
-    display: flex;
-    align-items: center;
+const StyledBugItem = styled('div')`
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
+  cursor: pointer;
+  border-radius: 1rem;
 
-    img {
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
-      margin-right: ${({ theme }) => theme.spacing(4)};
-    }
+  margin: 0 -${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+
+  &:hover {
+    background: ${({ theme }) => theme.palette.background.paper};
   }
 `;
 
 const BugContainer = () => {
-  const theme = useTheme();
+  const bugs = [
+    {
+      title: 'Bug 1',
+      description: 'Bug 1 description',
+    },
+    {
+      title: 'Bug 1',
+      description: 'Bug 1 description',
+    },
+    {
+      title: 'Bug 1',
+      description: 'Bug 1 description',
+    },
+    {
+      title: 'Bug 1',
+      description: 'Bug 1 description',
+    },
+    {
+      title: 'Bug 1',
+      description: 'Bug 1 description',
+    },
+  ];
 
   return (
     <StyledBugContainer>
-      <div className='mb-4'>
-        <Typography fontWeight='bold' component='h5'>
-          Project Title
-        </Typography>
-        <Typography variant='subtitle1'>Actual project name</Typography>
-      </div>
-      <div className='mb-4'>
-        <Typography fontWeight='bold' component='h5'>
-          Code Link
-        </Typography>
-        <Typography variant='subtitle1'>Actual code link</Typography>
-      </div>
-      <div className='mb-4'>
-        <Typography fontWeight='bold' component='h5'>
-          Cost
-        </Typography>
-        <Typography variant='subtitle1'>$1234</Typography>
-      </div>
-      <div className='mb-4'>
-        <Typography
-          fontWeight='bold'
-          component='h5'
-          sx={{
-            marginBottom: theme.spacing?.(2),
-          }}
-        >
-          Auditors
-        </Typography>
-        <div className='auditor'>
-          <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
-          <div className='auditor-details-container'>
-            <Typography component='h5' fontWeight='medium'>
-              Auditor name
+      <Typography fontWeight='bold' component='h2'>
+        Bugs
+      </Typography>
+      <div>
+        {bugs.map((bug, index) => (
+          <StyledBugItem key={index}>
+            <Typography fontWeight='regular' component='h6'>
+              {bug.title}
             </Typography>
-            <Typography fontSize='0.75rem' fontWeight='thin'>
-              Auditor
-            </Typography>
-          </div>
-        </div>
+            <Typography variant='subtitle1'>{bug.description}</Typography>
+          </StyledBugItem>
+        ))}
       </div>
     </StyledBugContainer>
   );

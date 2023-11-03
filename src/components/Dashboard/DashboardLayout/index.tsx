@@ -91,7 +91,7 @@ const navigation: INavigationRoute[] = [
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { handleLogout } = useAppContext();
+  const { handleLogout, isClientUser } = useAppContext();
 
   const [createProjectModalOpen, setCreateProjectModalOpen] =
     useState<boolean>(false);
@@ -123,19 +123,21 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
           <Logo />
           <Typography variant='h5'>Bytebreach</Typography>
         </div>
-        <div className='flex w-full justify-center'>
-          <Button
-            size='medium'
-            sx={{
-              margin: '0 auto',
-            }}
-            variant='outlined'
-            startIcon={<Plus />}
-            onClick={() => handleModalOpenUpdate(true)}
-          >
-            Create new project
-          </Button>
-        </div>
+        {isClientUser && (
+          <div className='flex w-full justify-center'>
+            <Button
+              size='medium'
+              sx={{
+                margin: '0 auto',
+              }}
+              variant='outlined'
+              startIcon={<Plus />}
+              onClick={() => handleModalOpenUpdate(true)}
+            >
+              Create new project
+            </Button>
+          </div>
+        )}
         <SidebarContainer>
           {navigation.map((item, index) => (
             <SidebarNavigationItem

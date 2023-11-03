@@ -23,6 +23,7 @@ export interface IAppContextState {
   setIsOnboarded: (isOnboarded: boolean) => void;
   handleOnboardedUser: (address: string) => void;
   handleLogout: () => Promise<void>;
+  isClientUser: boolean;
 }
 
 export type AuthOptions = 'google' | 'github' | 'email' | 'wallet';
