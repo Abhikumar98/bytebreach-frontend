@@ -1,7 +1,10 @@
-import { Button, styled, Typography } from '@mui/material';
+import { Button, Color, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { defaultErrorMessage } from '@/lib/helper';
+
+import CreateProjectModal from '@/components/Dashboard/DashboardLayout/CreateProjectModal';
 
 import Chat from '@/assets/chat.svg';
 import Logo from '@/assets/logo.svg';
@@ -55,7 +58,7 @@ const SidebarNavigationItem = styled('div', {
   align-items: center;
   padding: 0rem 1rem;
   background: ${({ theme, active }) =>
-    active ? theme.palette.secondary.light : ''};
+    active ? (theme.palette.secondary as Partial<Color>)[100] : ''};
   border-radius: ${({ theme }) => theme.shape.borderRadius}px;
 
   .icon {
@@ -88,8 +91,14 @@ const navigation: INavigationRoute[] = [
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { updateUserInfo, web3auth, handleLogout, setIsAuthenticated } =
-    useAppContext();
+  const { handleLogout } = useAppContext();
+
+  const [createProjectModalOpen, setCreateProjectModalOpen] =
+    useState<boolean>(false);
+
+  const handleModalOpenUpdate = (value: boolean) => {
+    setCreateProjectModalOpen(value);
+  };
 
   const { push } = useRouter();
 
@@ -122,6 +131,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
             }}
             variant='outlined'
             startIcon={<Plus />}
+            onClick={() => handleModalOpenUpdate(true)}
           >
             Create new project
           </Button>
@@ -148,6 +158,10 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
         </Button>
       </SidepanelContainer>
       <DashboardChildrenContainer>{children}</DashboardChildrenContainer>
+      <CreateProjectModal
+        open={createProjectModalOpen}
+        onClose={() => handleModalOpenUpdate(false)}
+      />
     </div>
   );
 };

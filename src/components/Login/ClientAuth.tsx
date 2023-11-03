@@ -39,8 +39,6 @@ const ClientAuth: React.FC<{
         throw new Error('Email is required');
       }
 
-      // await web3auth.logout();
-
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: true }));
 
       const adapter =

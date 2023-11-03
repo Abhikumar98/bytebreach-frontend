@@ -94,7 +94,7 @@ const AuditorOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.fullName}
+          errors={errors}
           placeholder='John Doe'
           label='Full Name'
           icon={<Person />}
@@ -107,7 +107,7 @@ const AuditorOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.github}
+          errors={errors}
           placeholder='@codejohndoe'
           label='Github'
           icon={<Github />}
@@ -125,7 +125,7 @@ const AuditorOnboarding = () => {
             valueAsNumber: true,
           })}
           type='number'
-          error={!!errors.tariff}
+          errors={errors}
           mandatory
           placeholder='$5000'
           label='Weekly Cost'
@@ -170,7 +170,7 @@ const AuditorOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.inviteCode}
+          errors={errors}
           placeholder='1234SDFS'
           label='Invite Code'
         />

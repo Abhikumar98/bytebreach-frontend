@@ -46,3 +46,12 @@ export interface INavigationRoute {
   route: string;
   icon: ReactNode;
 }
+
+export interface ICreateProjectForm {
+  title: string;
+  githubLink: string;
+  category: string;
+  budget: number;
+  estimatedStartTime: string;
+  totalAuditTime: string;
+}

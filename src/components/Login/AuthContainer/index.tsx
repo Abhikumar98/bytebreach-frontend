@@ -22,7 +22,7 @@ const AuthContainer = () => {
     setIsAuthenticated,
   } = useAppContext();
 
-  const [authUser, setAuthUser] = React.useState<UserType>('auditor');
+  const [authUser, setAuthUser] = React.useState<UserType>('client');
 
   const { push } = useRouter();
 

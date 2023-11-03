@@ -1,4 +1,5 @@
 import {
+  Color,
   Icon,
   InputAdornment,
   InputLabel,
@@ -6,9 +7,11 @@ import {
   TextField,
   TextFieldProps,
   Tooltip,
-  useTheme,
+  Typography,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
+
+import useTheme from '@/hooks/useTheme';
 
 import Info from '@/assets/info.svg';
 
@@ -39,16 +42,26 @@ const MandatoryMark = styled('sup')`
   align-self: start;
 `;
 
+const StyledErrorMessage = styled(Typography)`
+  color: ${({ theme }) => theme.palette.error.main};
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  margin-left: 1rem;
+`;
+
 const Input: React.FC<
   {
     icon?: ReactNode;
     mandatory?: boolean;
     label?: string;
     tooltipMessage?: string;
+    errors?: Record<string, any>;
   } & TextFieldProps
 > = React.forwardRef(
-  ({ icon, tooltipMessage, mandatory, label, ...inputProps }, ref) => {
+  ({ icon, tooltipMessage, errors, mandatory, label, ...inputProps }, ref) => {
     const theme = useTheme();
+
+    console.log('color', (theme.palette?.secondary as Color)?.[200]);
 
     return (
       <div className='mt-2 space-y-2'>
@@ -76,7 +89,7 @@ const Input: React.FC<
         <InputField
           InputProps={{
             sx: {
-              boxShadow: theme.shadows[1],
+              boxShadow: theme.shadows?.[1],
               borderRadius: '15rem',
             },
             endAdornment: (
@@ -87,7 +100,15 @@ const Input: React.FC<
           }}
           inputRef={ref}
           {...inputProps}
+          name={inputProps.name}
+          id={inputProps.name}
+          error={!!errors?.[inputProps.name ?? '']}
         />
+        {!!errors?.[inputProps.name ?? '']?.message && (
+          <StyledErrorMessage fontSize={0.75}>
+            {errors?.[inputProps.name ?? '']?.message}
+          </StyledErrorMessage>
+        )}
       </div>
     );
   }

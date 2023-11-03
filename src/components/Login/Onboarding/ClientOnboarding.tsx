@@ -67,6 +67,8 @@ const ClientOnboarding = () => {
     }
   };
 
+  console.log({ errors });
+
   return (
     <div className=' space-y-4'>
       <BackButton onClick={handleLogout}>
@@ -85,7 +87,7 @@ const ClientOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.fullName}
+          errors={errors}
           placeholder='John Doe'
           label='Full Name'
           icon={<Person />}
@@ -98,7 +100,7 @@ const ClientOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.companyName}
+          errors={errors}
           placeholder='Google'
           label='Company Name'
           icon={<Building />}
@@ -109,19 +111,25 @@ const ClientOnboarding = () => {
           label='Website'
           icon={<Envelope />}
         />
-        <div className='flex space-x-6'>
-          <Input
-            {...register('twitter')}
-            placeholder='@johndoe'
-            label='Twitter'
-            icon={<Twitter />}
-          />
-          <Input
-            {...register('github')}
-            placeholder='@coderjohndoe'
-            label='Github'
-            icon={<Github />}
-          />
+        <div className='flex w-full space-x-6'>
+          <div className='w-full'>
+            <Input
+              {...register('twitter')}
+              placeholder='@johndoe'
+              label='Twitter'
+              icon={<Twitter />}
+              fullWidth
+            />
+          </div>
+          <div className='w-full'>
+            <Input
+              {...register('github')}
+              placeholder='@coderjohndoe'
+              label='Github'
+              icon={<Github />}
+              fullWidth
+            />
+          </div>
         </div>
 
         <Divider
@@ -138,7 +146,7 @@ const ClientOnboarding = () => {
             },
           })}
           mandatory
-          error={!!errors.inviteCode}
+          errors={errors}
           placeholder='D12FSBYT'
           label='Invite Code'
         />

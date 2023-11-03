@@ -1,13 +1,21 @@
 import { createTheme, PaletteOptions, Shadows } from '@mui/material';
 
 const palette: PaletteOptions = {
+  contrastThreshold: 1,
   primary: {
+    light: '#6962E9',
     main: '#4F46E5',
+    dark: '#2C22DF',
   },
   secondary: {
-    dark: '#312E81',
     light: '#CFD4FF66',
-    main: '#818CF8',
+    main: '#ffffff',
+    dark: '#f6f6f6',
+
+    100: '#CFD4FF66',
+    700: '#818CF8',
+    800: '#312E81',
+
     contrastText: '#070526',
   },
   text: {
@@ -54,14 +62,7 @@ export default createTheme({
           padding: '0.5rem 1.5rem',
         },
       },
-      variants: [
-        {
-          props: { variant: 'contained', color: 'secondary' },
-          style: {
-            background: palette.background?.default,
-          },
-        },
-      ],
+      variants: [],
     },
     MuiInput: {
       styleOverrides: {
@@ -86,6 +87,22 @@ export default createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+        },
+      },
+    },
+
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: '15rem',
+        },
+      },
+    },
+
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          display: 'inline-table',
         },
       },
     },
