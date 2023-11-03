@@ -3,7 +3,7 @@ import React from 'react';
 
 const StyledProjectSectionContainer = styled('div')`
   background: ${({ theme }) => theme.palette.background.default};
-  padding: 1rem ${({ theme }) => theme.spacing(12)};
+  padding: 1.2rem ${({ theme }) => theme.spacing(12)};
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 `;

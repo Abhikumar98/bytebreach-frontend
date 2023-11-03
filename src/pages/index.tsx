@@ -1,6 +1,12 @@
 import { styled } from '@mui/material';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
+import AuditorDoneProjects from '@/components/Project/Auditor/AuditorDoneProjects';
+import AuditorOngoingProjects from '@/components/Project/Auditor/AuditorOngoingProjects';
+import AuditorRequestedProjects from '@/components/Project/Auditor/AuditorRequestedProjects';
+import ProjectAuditor from '@/components/Project/Auditor/ProjectAuditor';
+import ClientDoneProjects from '@/components/Project/Client/ClientDoneProjects';
+import ClientOngoingProjects from '@/components/Project/Client/ClientOngoingProjects';
 import ProjectClient from '@/components/Project/Client/ProjectClient';
 import ProjectContainer from '@/components/Project/ProjectContainer';
 import ProjectSectionContainer from '@/components/Project/ProjectSectionContainer';
@@ -12,16 +18,36 @@ const Container = styled('div')`
   border-radius: 1rem;
 `;
 
+export type DashboardTabs =
+  | 'client_ongoing'
+  | 'client_done'
+  | 'auditor_requested'
+  | 'auditor_ongoing'
+  | 'auditor_done';
+
 const HomePage = () => {
+  const [currentSelectedTab, setCurrentSelectedTab] =
+    React.useState<DashboardTabs>('client_ongoing');
+
+  const tabComponentMapping: Record<DashboardTabs, ReactNode> = {
+    client_ongoing: <ClientOngoingProjects />,
+    client_done: <ClientDoneProjects />,
+    auditor_requested: <AuditorRequestedProjects />,
+    auditor_ongoing: <AuditorOngoingProjects />,
+    auditor_done: <AuditorDoneProjects />,
+  };
+
+  const isClient = true;
+
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
       <Container>
         <ProjectContainer>
-          <ProjectClient />
+          {isClient ? <ProjectClient /> : <ProjectAuditor />}
         </ProjectContainer>
         <ProjectSectionContainer>
-          <div>something</div>
+          {tabComponentMapping[currentSelectedTab]}
         </ProjectSectionContainer>
       </Container>
     </div>
