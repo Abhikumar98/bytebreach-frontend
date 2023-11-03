@@ -3,23 +3,23 @@ import { createTheme, PaletteOptions, Shadows } from '@mui/material';
 const palette: PaletteOptions = {
   contrastThreshold: 1,
   primary: {
-    light: '#6962E9',
-    main: '#4F46E5',
+    light: '#0644FF',
+    main: '#0037DC',
     dark: '#2C22DF',
   },
   secondary: {
-    light: '#CFD4FF66',
+    light: '#82A2FF66',
     main: '#ffffff',
     dark: '#f6f6f6',
 
-    100: '#CFD4FF66',
-    700: '#818CF8',
-    800: '#312E81',
+    100: '#82A2FF66',
+    700: '#2F63FF',
+    800: '#002BAC',
 
-    contrastText: '#070526',
+    contrastText: '#110D5E',
   },
   text: {
-    primary: '#070526',
+    primary: '#110D5E',
     secondary: '#444444',
   },
   background: {
