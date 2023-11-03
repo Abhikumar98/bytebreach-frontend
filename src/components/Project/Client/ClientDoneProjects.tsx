@@ -1,9 +1,32 @@
 import React from 'react';
 
-import Table from '@/atoms/Table';
+import ProjectSection from '@/components/Project/ProjectSection';
 
 const ClientDoneProjects = () => {
-  return <Table />;
+  const projects = [
+    {
+      name: 'Project 1',
+      status: 'Done',
+    },
+    {
+      name: 'Project 1',
+      status: 'Done',
+    },
+    {
+      name: 'Project 1',
+      status: 'Done',
+    },
+    {
+      name: 'Project 1',
+      status: 'Done',
+    },
+    {
+      name: 'Project 1',
+      status: 'Done',
+    },
+  ];
+
+  return <ProjectSection projects={projects} />;
 };
 
 export default ClientDoneProjects;

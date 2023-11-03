@@ -55,3 +55,11 @@ export interface ICreateProjectForm {
   estimatedStartTime: string;
   totalAuditTime: string;
 }
+
+export enum DashboardTabs {
+  ClientOngoing = 'client_ongoing',
+  ClientDone = 'client_done',
+  AuditorRequested = 'auditor_requested',
+  AuditorOngoing = 'auditor_ongoing',
+  AuditorDone = 'auditor_done',
+}

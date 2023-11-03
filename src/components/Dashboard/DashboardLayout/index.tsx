@@ -36,7 +36,7 @@ const SidepanelContainer = styled('div')`
 
 const DashboardChildrenContainer = styled('div')`
   width: calc(100vw - 15rem);
-  height: 100vh;
+  height: calc(100vh - 5rem);
   background: ${({ theme }) => theme.palette.background.paper};
   padding: ${({ theme }) => theme.spacing(10)};
 `;

@@ -1,23 +1,24 @@
 import { Tab, Tabs } from '@mui/material';
 import React from 'react';
 
-const ProjectAuditor = () => {
-  const [currentTab, setCurrentTab] = React.useState<
-    'requests' | 'ongoing' | 'done'
-  >('requests');
+import { DashboardTabs } from '@/types';
 
+const ProjectAuditor: React.FC<{
+  currentTab: DashboardTabs;
+  updateCurrentTab: (tab: DashboardTabs) => void;
+}> = ({ currentTab, updateCurrentTab }) => {
   return (
     <Tabs
       value={currentTab}
-      onChange={(value, selectedTab) => setCurrentTab(selectedTab)}
+      onChange={(value, selectedTab) => updateCurrentTab(selectedTab)}
       aria-label='basic tabs example'
       sx={{
         paddingBottom: '1rem',
       }}
     >
-      <Tab label='Requests' value='requests' />
-      <Tab label='Ongoing' value='ongoing' />
-      <Tab label='Done' value='done' />
+      <Tab label='Requested' value={DashboardTabs.AuditorRequested} />
+      <Tab label='Ongoing' value={DashboardTabs.AuditorOngoing} />
+      <Tab label='Done' value={DashboardTabs.AuditorDone} />
     </Tabs>
   );
 };
