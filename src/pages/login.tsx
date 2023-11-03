@@ -1,7 +1,12 @@
 import { styled, Theme } from '@mui/material';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 import AuthContainer from '@/components/Login/AuthContainer';
+
+import { useAppContext } from '@/context';
+
+import { AppRoutes } from '@/types';
 
 const StyledLoginContainer = styled('div')`
   display: flex;
@@ -29,6 +34,16 @@ const StyledImageContainer = styled('img')`
 `;
 
 const Auth = () => {
+  const { isAuthenticated, isOnboarded } = useAppContext();
+
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated && isOnboarded) {
+      push(AppRoutes.Homepage);
+    }
+  }, [isAuthenticated, isOnboarded]);
+
   return (
     <>
       <StyledLoginContainer>

@@ -17,6 +17,7 @@ import Web3 from 'web3';
 import {
   defaultErrorMessage,
   getFromLocalStorage,
+  isAuthenticatedRoute,
   setInLocalStorage,
 } from '@/lib/helper';
 
@@ -49,7 +50,7 @@ const AppContext: React.FC<{
     (Partial<OpenloginUserInfo> & { account?: string }) | any
   >(null);
 
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -78,7 +79,11 @@ const AppContext: React.FC<{
     setIsOnboarded(true);
     setIsAuthenticated(true);
 
-    push('/');
+    const isAuthenticated = isAuthenticatedRoute(pathname);
+
+    if (!isAuthenticated) {
+      push('/');
+    }
   };
 
   const initialiseWeb3Auth = async () => {
@@ -150,7 +155,11 @@ const AppContext: React.FC<{
         setIsAuthenticated(!!userInfo);
 
         if (userOnboarded) {
-          push('/');
+          const isAuthenticated = isAuthenticatedRoute(pathname);
+
+          if (!isAuthenticated) {
+            push('/');
+          }
         }
       }
     } catch (error) {

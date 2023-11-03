@@ -2,6 +2,13 @@ import { Web3AuthNoModal } from '@web3auth/no-modal';
 import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 import { ReactNode } from 'react';
 
+export enum AppRoutes {
+  Homepage = '/',
+  Login = '/login',
+  EditPage = '/edit-profile',
+  ProjectDetails = '/projects/{project_id}',
+}
+
 export interface IAppContextState {
   web3auth: Web3AuthNoModal | null;
   userInfo:

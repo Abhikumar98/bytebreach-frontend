@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import { isAuthenticatedRoute } from '@/lib/helper';
+
 import AuditorAuth from '@/components/Login/AuditorAuth';
 import AuthNavbar from '@/components/Login/AuthContainer/AuthNavbar';
 import ClientAuth from '@/components/Login/ClientAuth';
@@ -24,7 +26,7 @@ const AuthContainer = () => {
 
   const [authUser, setAuthUser] = React.useState<UserType>('client');
 
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
 
   const [step, setStep] = React.useState<'login' | 'onboarding'>('login');
 
@@ -37,7 +39,10 @@ const AuthContainer = () => {
     const isOnboarded = await isUserOnboarded(web3auth);
 
     if (isOnboarded) {
-      push('/');
+      const isAuthenticated = isAuthenticatedRoute(pathname);
+      if (!isAuthenticated) {
+        push('/');
+      }
       setIsAuthenticated(true);
     }
   };

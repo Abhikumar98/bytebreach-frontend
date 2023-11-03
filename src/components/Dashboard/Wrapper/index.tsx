@@ -12,7 +12,7 @@ import { useAppContext } from '@/context';
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { userInfo, isAuthenticated, isOnboarded } = useAppContext();
+  const { userInfo, isAuthenticated, isOnboarded, web3auth } = useAppContext();
 
   const router = useRouter();
   const showDashboard = userInfo && isAuthenticated && isOnboarded;
@@ -20,10 +20,11 @@ const Wrapper: React.FC<{
   console.log({ showDashboard });
 
   useEffect(() => {
-    if (!showDashboard) {
+    if (!showDashboard && web3auth) {
+      console.log('pushing to dashboard');
       router.push('/login');
     }
-  }, [showDashboard, router.pathname]);
+  }, [showDashboard, router.pathname, web3auth]);
 
   return (
     <ThemeProvider theme={theme}>
