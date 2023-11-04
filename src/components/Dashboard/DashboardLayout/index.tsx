@@ -24,9 +24,10 @@ const SidepanelContainer = styled('div')`
 
   .logo {
     padding: ${({ theme }) => theme.spacing(2)};
-    margin: 1rem 0;
+    margin: 2.1rem 0;
     display: flex;
     align-items: center;
+    color: ${({ theme }) => (theme.palette.secondary as Partial<Color>)[800]};
   }
   & .logo svg {
     height: 64px;
