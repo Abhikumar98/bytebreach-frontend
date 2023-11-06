@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import React from 'react';
 
-import BugContainer from '@/components/Project/ProjectDetails/BugContainer';
+import BugContainer from '@/components/Project/Bug/BugContainer';
 import ProjectDetailsTile from '@/components/Project/ProjectDetails/ProjectDetailsTile';
 import ProjectTimeline from '@/components/Project/ProjectDetails/ProjectTimeline';
 

@@ -71,3 +71,10 @@ export enum DashboardTabs {
   AuditorOngoing = 'auditor_ongoing',
   AuditorDone = 'auditor_done',
 }
+
+export interface ICreateBugForm {
+  title: string;
+  codeLink: string;
+  description: string;
+  risk: string;
+}
