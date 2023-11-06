@@ -15,14 +15,15 @@ const Wrapper: React.FC<{
   const { userInfo, isAuthenticated, isOnboarded, web3auth } = useAppContext();
 
   const router = useRouter();
-  const showDashboard = userInfo && isAuthenticated && isOnboarded;
+  const showDashboard = true || (userInfo && isAuthenticated && isOnboarded);
 
   console.log({ showDashboard });
 
   useEffect(() => {
     if (!showDashboard && web3auth) {
       console.log('pushing to dashboard');
-      router.push('/login');
+      // temp
+      // router.push('/login');
     }
   }, [showDashboard, router.pathname, web3auth]);
 

@@ -16,8 +16,8 @@ const StyledCreateBugForm = styled('div')`
   padding: ${({ theme }) => theme.spacing(8)}
     ${({ theme }) => theme.spacing(12)};
   border-radius: 1rem;
-  margin: ${({ theme }) => theme.spacing(4)} 0;
   box-shadow: ${({ theme }) => theme.shadows[2]};
+  margin: ${({ theme }) => theme.spacing(4)} 0;
   position: relative;
 
   .back-button-container {

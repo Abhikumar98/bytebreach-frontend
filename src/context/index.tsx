@@ -44,8 +44,10 @@ const AppContext: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
+  // temporary
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  // temporary
+  const [isOnboarded, setIsOnboarded] = useState<boolean>(true);
   const [connectedUserInfo, setConnectedUserInfo] = useState<
     (Partial<OpenloginUserInfo> & { account?: string }) | any
   >(null);

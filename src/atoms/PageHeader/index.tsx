@@ -10,6 +10,7 @@ const PageHeader: React.FC<{ title: string }> = ({ title }) => {
     <Typography
       variant='h3'
       fontWeight='bold'
+      className='mb-8'
       color={
         (theme.palette?.secondary as SimplePaletteColorOptions)?.contrastText
       }
