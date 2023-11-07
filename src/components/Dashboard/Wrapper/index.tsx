@@ -15,7 +15,7 @@ const Wrapper: React.FC<{
   const { userInfo, isAuthenticated, isOnboarded, web3auth } = useAppContext();
 
   const router = useRouter();
-  const showDashboard = true || (userInfo && isAuthenticated && isOnboarded);
+  const showDashboard = userInfo && isAuthenticated && isOnboarded;
 
   console.log({ showDashboard });
 

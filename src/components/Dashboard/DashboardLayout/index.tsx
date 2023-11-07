@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { defaultErrorMessage } from '@/lib/helper';
 
 import CreateProjectModal from '@/components/Dashboard/DashboardLayout/CreateProjectModal';
+import SelectAuditorModal from '@/components/Dashboard/DashboardLayout/SelectAuditorModal';
 
 import Chat from '@/assets/chat.svg';
 import Logo from '@/assets/logo.svg';
@@ -101,6 +102,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
 
   const [createProjectModalOpen, setCreateProjectModalOpen] =
     useState<boolean>(false);
+  const [selectAuditorModalOpen, setSelectAuditorModalOpen] =
+    useState<boolean>(false);
 
   const handleModalOpenUpdate = (value: boolean) => {
     setCreateProjectModalOpen(value);
@@ -171,6 +174,10 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
       <CreateProjectModal
         open={createProjectModalOpen}
         onClose={() => handleModalOpenUpdate(false)}
+      />
+      <SelectAuditorModal
+        open={selectAuditorModalOpen}
+        onClose={() => setSelectAuditorModalOpen(false)}
       />
     </div>
   );
