@@ -22,8 +22,7 @@ const Wrapper: React.FC<{
   useEffect(() => {
     if (!showDashboard && web3auth) {
       console.log('pushing to dashboard');
-      // temp
-      // router.push('/login');
+      router.push('/login');
     }
   }, [showDashboard, router.pathname, web3auth]);
 
