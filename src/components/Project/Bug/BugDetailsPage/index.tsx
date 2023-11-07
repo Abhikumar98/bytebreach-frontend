@@ -2,8 +2,8 @@ import { styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import BugComment from '@/components/Project/Bug/BugDetails/BugComment';
-import BugDetailsOPContainer from '@/components/Project/Bug/BugDetails/BugDetailsOPContainer';
+import BugComment from '@/components/Project/Bug/BugDetailsPage/BugComment';
+import BugDetailsOPContainer from '@/components/Project/Bug/BugDetailsPage/BugDetailsOPContainer';
 
 import BackButton from '@/assets/arrowLeft.svg';
 

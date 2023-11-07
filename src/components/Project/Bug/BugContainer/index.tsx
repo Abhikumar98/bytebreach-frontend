@@ -1,5 +1,8 @@
 import { styled, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
+
+import { AppRoutes } from '@/types';
 
 const StyledBugContainer = styled('div')`
   background: ${({ theme }) => theme.palette.background.default};
@@ -22,25 +25,43 @@ const StyledBugItem = styled('div')`
 `;
 
 const BugContainer = () => {
+  const { query, push, pathname } = useRouter();
+
+  const handleBugRoute = (bugId: string) => {
+    const { projectId } = query;
+
+    push(
+      AppRoutes.BugDetails.replace('{bugId}', bugId).replace(
+        '{projectId}',
+        projectId as string
+      )
+    );
+  };
+
   const bugs = [
     {
       title: 'Bug 1',
+      id: '1',
       description: 'Bug 1 description',
     },
     {
       title: 'Bug 1',
+      id: '1',
       description: 'Bug 1 description',
     },
     {
       title: 'Bug 1',
+      id: '1',
       description: 'Bug 1 description',
     },
     {
       title: 'Bug 1',
+      id: '1',
       description: 'Bug 1 description',
     },
     {
       title: 'Bug 1',
+      id: '1',
       description: 'Bug 1 description',
     },
   ];
@@ -52,7 +73,7 @@ const BugContainer = () => {
       </Typography>
       <div>
         {bugs.map((bug, index) => (
-          <StyledBugItem key={index}>
+          <StyledBugItem onClick={() => handleBugRoute(bug.id)} key={index}>
             <Typography fontWeight='regular' component='h6'>
               {bug.title}
             </Typography>

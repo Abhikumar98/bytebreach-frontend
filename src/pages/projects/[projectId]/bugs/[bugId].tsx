@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BugDetails from '@/components/Project/Bug/BugDetails';
+import BugDetails from '@/components/Project/Bug/BugDetailsPage';
 
 import PageHeader from '@/atoms/PageHeader';
 

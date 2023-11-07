@@ -7,6 +7,8 @@ export enum AppRoutes {
   Login = '/login',
   EditPage = '/edit-profile',
   ProjectDetails = '/projects/{projectId}',
+  NewBug = '/projects/{projectId}/bugs/new',
+  BugDetails = '/projects/{projectId}/bugs/{bugId}',
 }
 
 export interface IAppContextState {
