@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DashboardTabs } from '@/types';
 
-const ProjectClient: React.FC<{
+const ProjectTabClient: React.FC<{
   currentTab: DashboardTabs;
   updateCurrentTab: (tab: DashboardTabs) => void;
 }> = ({ currentTab, updateCurrentTab }) => {
@@ -22,4 +22,4 @@ const ProjectClient: React.FC<{
   );
 };
 
-export default ProjectClient;
+export default ProjectTabClient;

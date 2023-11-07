@@ -25,6 +25,7 @@ const StyledInlineEdit = styled('div')`
 
   .text-wrapper {
     padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(2)}`};
+    margin: -${({ theme }) => theme.spacing(2)};
   }
   input {
     border: none;

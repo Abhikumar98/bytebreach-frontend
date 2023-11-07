@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DashboardTabs } from '@/types';
 
-const ProjectAuditor: React.FC<{
+const ProjectTabAuditor: React.FC<{
   currentTab: DashboardTabs;
   updateCurrentTab: (tab: DashboardTabs) => void;
 }> = ({ currentTab, updateCurrentTab }) => {
@@ -23,4 +23,4 @@ const ProjectAuditor: React.FC<{
   );
 };
 
-export default ProjectAuditor;
+export default ProjectTabAuditor;

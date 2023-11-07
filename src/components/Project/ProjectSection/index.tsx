@@ -1,5 +1,8 @@
 import { styled } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
+
+import { AppRoutes } from '@/types';
 
 const StyledProjectSectionHeader = styled('div')`
   background: ${({ theme }) => theme.palette.background.paper};
@@ -29,6 +32,12 @@ const StyledProjectSectionItem = styled('div')`
 const ProjectSection: React.FC<{
   projects: any[];
 }> = ({ projects }) => {
+  const { push } = useRouter();
+
+  const handleProjectRoute = (projectId: string) => {
+    push(AppRoutes.ProjectDetails.replace('{projectId}', projectId));
+  };
+
   return (
     <div>
       <StyledProjectSectionHeader>
@@ -36,7 +45,10 @@ const ProjectSection: React.FC<{
         <div>Status</div>
       </StyledProjectSectionHeader>
       {projects.map((project, index) => (
-        <StyledProjectSectionItem key={index}>
+        <StyledProjectSectionItem
+          key={index}
+          onClick={() => handleProjectRoute('1')}
+        >
           <div>{project.name}</div>
           <div>{project.status}</div>
         </StyledProjectSectionItem>

@@ -37,9 +37,14 @@ const SidepanelContainer = styled('div')`
 
 const DashboardChildrenContainer = styled('div')`
   width: calc(100vw - 15rem);
-  height: calc(100vh - 5rem);
+  height: 100vh;
   background: ${({ theme }) => theme.palette.background.paper};
-  padding: ${({ theme }) => theme.spacing(10)};
+  overflow: auto;
+  padding: 0 ${({ theme }) => theme.spacing(10)};
+`;
+
+const ScrollContainer = styled('div')`
+  margin: ${({ theme }) => theme.spacing(10)} 0;
 `;
 
 const SidebarContainer = styled('div')`
@@ -160,7 +165,9 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
           Logout
         </Button>
       </SidepanelContainer>
-      <DashboardChildrenContainer>{children}</DashboardChildrenContainer>
+      <DashboardChildrenContainer>
+        <ScrollContainer>{children}</ScrollContainer>
+      </DashboardChildrenContainer>
       <CreateProjectModal
         open={createProjectModalOpen}
         onClose={() => handleModalOpenUpdate(false)}
