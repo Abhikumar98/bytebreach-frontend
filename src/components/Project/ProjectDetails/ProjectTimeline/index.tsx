@@ -1,7 +1,19 @@
 import { styled, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import BackButton from '@/assets/arrowLeft.svg';
+
 const StyledProjectTimeline = styled('div')`
+  svg {
+    height: 24px;
+    width: 24px;
+  }
+
+  .back-container {
+    margin-left: -${({ theme }) => theme.spacing(4)};
+  }
+
   background: ${({ theme }) => theme.palette.background.default};
   padding: ${({ theme }) => theme.spacing(8)};
   border-radius: 1rem;
@@ -16,12 +28,21 @@ const StyledProjectTimeline = styled('div')`
   }
 `;
 
-const ProjectTimeline = () => {
+const ProjectTimeline: React.FC<{
+  projectName: string;
+}> = ({ projectName }) => {
+  const { back } = useRouter();
+
   return (
     <StyledProjectTimeline>
-      <Typography variant='h5' fontWeight='medium'>
-        Project name
-      </Typography>
+      <div className='back-container flex items-center gap-2'>
+        <div onClick={back} className='back-button-container cursor-pointer'>
+          <BackButton />
+        </div>
+        <Typography variant='h5' fontWeight='medium'>
+          {projectName}
+        </Typography>
+      </div>
       <div className='timeline-container'>Timeline</div>
     </StyledProjectTimeline>
   );

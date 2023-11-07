@@ -24,13 +24,13 @@ const ProjectDetails = () => {
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
-      <ProjectTimeline />
+      <ProjectTimeline projectName='Test project name' />
       <StyledProjectContainer>
-        <div className='project-details-tile'>
-          <ProjectDetailsTile />
-        </div>
         <div className='bug-container'>
           <BugContainer />
+        </div>
+        <div className='project-details-tile'>
+          <ProjectDetailsTile />
         </div>
       </StyledProjectContainer>
     </div>

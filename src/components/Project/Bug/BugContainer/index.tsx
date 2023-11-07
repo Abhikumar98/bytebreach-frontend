@@ -2,13 +2,14 @@ import { styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import Plus from '@/assets/plus.svg';
+import Button from '@/atoms/Button';
+import ShadowCard from '@/atoms/ShadowCard';
+
 import { AppRoutes } from '@/types';
 
 const StyledBugContainer = styled('div')`
-  background: ${({ theme }) => theme.palette.background.default};
-  padding: ${({ theme }) => theme.spacing(8)};
-  border-radius: 1rem;
-  box-shadow: ${({ theme }) => theme.shadows[2]};
+  max-height: calc(100% - 4rem);
 `;
 
 const StyledBugItem = styled('div')`
@@ -26,6 +27,12 @@ const StyledBugItem = styled('div')`
 
 const BugContainer = () => {
   const { query, push, pathname } = useRouter();
+
+  const handleCreateBugRoute = () => {
+    const { projectId } = query;
+
+    push(AppRoutes.NewBug.replace('{projectId}', projectId as string));
+  };
 
   const handleBugRoute = (bugId: string) => {
     const { projectId } = query;
@@ -67,21 +74,33 @@ const BugContainer = () => {
   ];
 
   return (
-    <StyledBugContainer>
-      <Typography fontWeight='bold' component='h2'>
-        Bugs
-      </Typography>
-      <div>
-        {bugs.map((bug, index) => (
-          <StyledBugItem onClick={() => handleBugRoute(bug.id)} key={index}>
-            <Typography fontWeight='regular' component='h6'>
-              {bug.title}
-            </Typography>
-            <Typography variant='subtitle1'>{bug.description}</Typography>
-          </StyledBugItem>
-        ))}
-      </div>
-    </StyledBugContainer>
+    <ShadowCard>
+      <StyledBugContainer>
+        <div className='flex items-center justify-between'>
+          <Typography component='h5' fontSize='1.5rem'>
+            Bugs
+          </Typography>
+          <Button
+            onClick={handleCreateBugRoute}
+            startIcon={<Plus />}
+            variant='outlined'
+            size='small'
+          >
+            Create Bug
+          </Button>
+        </div>
+        <div>
+          {bugs.map((bug, index) => (
+            <StyledBugItem onClick={() => handleBugRoute(bug.id)} key={index}>
+              <Typography fontWeight='regular' component='h6'>
+                {bug.title}
+              </Typography>
+              <Typography variant='subtitle1'>{bug.description}</Typography>
+            </StyledBugItem>
+          ))}
+        </div>
+      </StyledBugContainer>
+    </ShadowCard>
   );
 };
 
