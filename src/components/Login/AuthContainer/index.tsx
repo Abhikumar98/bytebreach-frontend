@@ -69,7 +69,7 @@ const AuthContainer = () => {
       )}
       <div
         className={classNames(
-          'px-8 py-4',
+          'px-8 py-6',
           step === 'login' ? 'bg-gray' : 'bg-white'
         )}
       >

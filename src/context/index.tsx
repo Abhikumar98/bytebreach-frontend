@@ -1,15 +1,11 @@
-import { WalletConnectModal } from '@walletconnect/modal';
 import { CHAIN_NAMESPACES } from '@web3auth/base';
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
+import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 import { Web3AuthNoModal } from '@web3auth/no-modal';
 import {
   OpenloginAdapter,
   OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
-import {
-  getWalletConnectV2Settings,
-  WalletConnectV2Adapter,
-} from '@web3auth/wallet-connect-v2-adapter';
 import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import Web3 from 'web3';
@@ -124,24 +120,37 @@ const AppContext: React.FC<{
       });
       web3auth.configureAdapter(openloginAdapter);
 
-      // adding wallet connect v2 adapter
-      const defaultWcSettings = await getWalletConnectV2Settings(
-        'eip155',
-        [1, 137, 5],
-        '04309ed1007e77d1f119b85205bb779d'
-      );
-      const walletConnectModal = new WalletConnectModal({
-        projectId: '04309ed1007e77d1f119b85205bb779d',
-      });
-      const walletConnectV2Adapter = new WalletConnectV2Adapter({
-        adapterSettings: {
-          qrcodeModal: walletConnectModal,
-          ...defaultWcSettings.adapterSettings,
+      const metamaskAdapter = new MetamaskAdapter({
+        clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
+        sessionTime: 3600, // 1 hour in seconds
+        web3AuthNetwork: 'sapphire_devnet',
+        chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: '0x1',
+          rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
         },
-        loginSettings: { ...defaultWcSettings.loginSettings },
       });
 
-      web3auth.configureAdapter(walletConnectV2Adapter);
+      web3auth.configureAdapter(metamaskAdapter);
+
+      // // adding wallet connect v2 adapter
+      // const defaultWcSettings = await getWalletConnectV2Settings(
+      //   'eip155',
+      //   [1, 137, 5],
+      //   '04309ed1007e77d1f119b85205bb779d'
+      // );
+      // const walletConnectModal = new WalletConnectModal({
+      //   projectId: '04309ed1007e77d1f119b85205bb779d',
+      // });
+      // const walletConnectV2Adapter = new WalletConnectV2Adapter({
+      //   adapterSettings: {
+      //     qrcodeModal: walletConnectModal,
+      //     ...defaultWcSettings.adapterSettings,
+      //   },
+      //   loginSettings: { ...defaultWcSettings.loginSettings },
+      // });
+
+      // web3auth.configureAdapter(walletConnectV2Adapter);
 
       await web3auth.init();
       setWeb3Auth(web3auth);

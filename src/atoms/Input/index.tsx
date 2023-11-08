@@ -33,6 +33,8 @@ const StyledInputAdjournment = styled(InputAdornment)`
     width: 24px;
     height: 24px;
   }
+
+  padding-right: 0.5rem;
 `;
 
 const MandatoryMark = styled('sup')`
@@ -91,6 +93,8 @@ const Input: React.FC<
             sx: {
               boxShadow: theme.shadows?.[1],
               borderRadius: '15rem',
+              background: 'white',
+              padding: '0 1rem',
             },
             endAdornment: (
               <StyledInputAdjournment position='end'>
