@@ -63,7 +63,6 @@ export interface ICreateProjectForm {
   category: string;
   budget: number;
   estimatedStartTime: string;
-  totalAuditTime: string;
 }
 
 export enum DashboardTabs {

@@ -48,6 +48,15 @@ export default createTheme({
   },
   shadows: customisedShadow,
   components: {
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          padding: '0 1rem',
+          borderRadius: '15rem !important',
+          boxShadow: customisedShadow[1],
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

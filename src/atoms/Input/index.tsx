@@ -1,5 +1,4 @@
 import {
-  Color,
   Icon,
   InputAdornment,
   InputLabel,
@@ -62,8 +61,6 @@ const Input: React.FC<
 > = React.forwardRef(
   ({ icon, tooltipMessage, errors, mandatory, label, ...inputProps }, ref) => {
     const theme = useTheme();
-
-    console.log('color', (theme.palette?.secondary as Color)?.[200]);
 
     return (
       <div className='mt-2 space-y-2'>
