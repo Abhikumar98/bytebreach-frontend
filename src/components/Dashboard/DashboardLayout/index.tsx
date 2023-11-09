@@ -128,7 +128,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   const [createProjectModalOpen, setCreateProjectModalOpen] =
     useState<boolean>(false);
   const [selectAuditorModalOpen, setSelectAuditorModalOpen] =
-    useState<boolean>(false);
+    useState<boolean>(true);
 
   const handleModalOpenUpdate = (value: boolean) => {
     setCreateProjectModalOpen(value);

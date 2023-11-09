@@ -1,24 +1,73 @@
+import { Divider, Typography } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import Input from '@/atoms/Input';
+import AutoComplete from '@/atoms/AutoComplete';
 import Modal, { ModalFormCTA } from '@/atoms/Modal';
-import Select, { IOption } from '@/atoms/Select';
+import TableComponent, { Column } from '@/atoms/Table';
 
 import { ICreateProjectForm } from '@/types';
 
-const testOptions: IOption[] = [
+interface DataType {
+  key: React.Key;
+  name: string;
+  chinese: number;
+  math: number;
+  english: number;
+}
+
+// Columns definition
+const columns: Column<DataType>[] = [
   {
-    label: 'Option 1',
-    value: 'option-1',
+    title: 'Name',
+    dataIndex: 'name',
+    sorter: (a: DataType, b: DataType) => a.name.localeCompare(b.name),
   },
   {
-    label: 'Option 2',
-    value: 'option-2',
+    title: 'Chinese Score',
+    dataIndex: 'chinese',
+    sorter: (a: DataType, b: DataType) => a.chinese - b.chinese,
   },
   {
-    label: 'Option 3',
-    value: 'option-3',
+    title: 'Math Score',
+    dataIndex: 'math',
+    sorter: (a: DataType, b: DataType) => a.math - b.math,
+  },
+  {
+    title: 'English Score',
+    dataIndex: 'english',
+    sorter: (a: DataType, b: DataType) => a.english - b.english,
+  },
+];
+// Example data
+const data: DataType[] = [
+  {
+    key: '1',
+    name: 'John Brown',
+    chinese: 98,
+    math: 60,
+    english: 70,
+  },
+  {
+    key: '2',
+    name: 'John Brown',
+    chinese: 12,
+    math: 60,
+    english: 70,
+  },
+  {
+    key: '3',
+    name: 'John Brown',
+    chinese: 32,
+    math: 60,
+    english: 70,
+  },
+  {
+    key: '4',
+    name: 'John Brown',
+    chinese: 54,
+    math: 60,
+    english: 70,
   },
 ];
 
@@ -26,6 +75,10 @@ const SelectAuditorModal: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
+  const [allAuditors, setAllAuditors] = React.useState<string[]>([]);
+
+  const [dreamTeam, setDreamTeam] = React.useState<string[]>([]);
+
   const {
     register,
     formState: { errors },
@@ -46,75 +99,39 @@ const SelectAuditorModal: React.FC<{
     console.log({ values });
   };
 
+  const handleCloseModal = () => {
+    onClose();
+    reset();
+  };
+
+  const handleSelectionChange = (selectedKeys: React.Key[]) => {
+    console.log({ selectedKeys });
+  };
+
   return (
     <Modal
       open={open}
       title='Our recommendation'
       description='Enter the details to create a project'
-      onClose={() => {
-        console.log('hello');
-        onClose();
-        reset();
-      }}
+      onClose={handleCloseModal}
     >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <Input
-          {...register('title', {
-            required: {
-              value: true,
-              message: 'Please enter a title',
-            },
-          })}
-          mandatory
-          label='Title'
-          errors={errors}
-          placeholder='Project Title'
+        <TableComponent
+          data={data}
+          columns={columns}
+          isSelectable={true}
+          onSelectionChange={handleSelectionChange}
         />
-        <Input
-          {...register('githubLink', {
-            required: {
-              value: true,
-              message: 'Please enter a github link',
-            },
-          })}
-          mandatory
-          label='GitHub Link / Upload Code'
-          errors={errors}
-          placeholder='https://github.com/xyz'
+
+        <Divider
+          sx={{
+            margin: '1rem 0',
+          }}
         />
-        <Input
-          {...register('budget', {
-            required: {
-              value: true,
-              message: 'Please enter a budget',
-            },
-            min: {
-              value: 1,
-              message: 'Budget cannot be negative',
-            },
-          })}
-          mandatory
-          label='Budget'
-          errors={errors}
-        />
-        <Select
-          {...register('category')}
-          options={testOptions}
-          placeholder='Select a category'
-          label='Category'
-        />
-        <Select
-          {...register('estimatedStartTime')}
-          options={testOptions}
-          label='Estimated start time'
-          placeholder='Select estimated start time'
-        />
-        <Select
-          {...register('totalAuditTime')}
-          options={testOptions}
-          placeholder='Select total audit time'
-          label='Total audit time'
-        />
+        <Typography variant='h6'>Select your dream team</Typography>
+
+        <AutoComplete options={[]} />
+
         <ModalFormCTA>Submit</ModalFormCTA>
       </form>
     </Modal>
