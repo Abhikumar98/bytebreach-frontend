@@ -11,6 +11,10 @@ const MandatoryMark = styled('sup')`
   align-self: start;
 `;
 
+const StyledDatePicker = styled(MaterialDatePicker)`
+  color: black; // testing
+`;
+
 const DatePicker: FC<{
   label?: string;
   value: string | null;
@@ -24,13 +28,14 @@ const DatePicker: FC<{
         {mandatory && <MandatoryMark>*</MandatoryMark>}
       </InputLabel>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <MaterialDatePicker
+        <StyledDatePicker
           value={value}
-          onChange={onChange}
+          onChange={(value) => onChange(String(value))}
           format='DD/MM/YYYY'
           sx={{
             borderRadius: '15rem',
             width: '100%',
+            background: 'white',
           }}
         />
       </LocalizationProvider>

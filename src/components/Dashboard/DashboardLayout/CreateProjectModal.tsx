@@ -1,6 +1,8 @@
-import { styled } from '@mui/material';
+import { styled, Typography } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+
+import useTheme from '@/hooks/useTheme';
 
 import DatePicker from '@/atoms/DatePicker';
 import Input from '@/atoms/Input';
@@ -25,13 +27,16 @@ const testOptions: IOption[] = [
   },
 ];
 
-const StyledInputValue = styled('input')`
-  color: ${({ theme }) => theme.palette.text.secondary};
+const initialRange = [1000, 5000];
+
+const StyledInputValue = styled('div')`
+  input {
+    color: ${({ theme }) => theme.palette.text.secondary};
+  }
   border-radius: 15rem;
   border: 1px solid ${({ theme }) => theme.palette.divider};
   padding: ${({ theme }) => `${theme.spacing(2)} ${theme.spacing(4)}`};
   box-shadow: ${({ theme }) => theme.shadows[1]};
-  min-width: 4rem;
 `;
 
 const CreateProjectModal: React.FC<{
@@ -53,8 +58,10 @@ const CreateProjectModal: React.FC<{
     },
   });
 
+  const theme = useTheme();
+
   const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
-  const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
+  const [sliderValue, setSliderValue] = React.useState<number[]>(initialRange);
 
   const handleFormSubmit = (values: ICreateProjectForm) => {
     console.log({ values });
@@ -66,7 +73,7 @@ const CreateProjectModal: React.FC<{
     onClose();
     reset();
     setSelectedDate(null);
-    setSliderValue([20, 37]);
+    setSliderValue(initialRange);
   };
 
   return (
@@ -110,28 +117,40 @@ const CreateProjectModal: React.FC<{
         />
         <div>
           <RangeSlider
-            min={1}
+            min={10}
             max={10000}
-            step={1}
+            step={10}
             mandatory
             label='Weekly cost'
             value={sliderValue}
             setValue={setSliderValue}
           />
-          <div className='flex items-center space-x-4'>
-            <StyledInputValue
-              value={sliderValue[0]}
-              onChange={(e) => {
-                setSliderValue([Number(e.target.value), sliderValue[1]]);
-              }}
-            />
+          <div className='flex items-center space-x-2'>
+            <Typography color={theme.palette?.text?.secondary}>
+              <StyledInputValue>
+                $
+                <input
+                  className='w-20 border-none text-base outline-none'
+                  value={sliderValue[0]}
+                  onChange={(e) => {
+                    setSliderValue([Number(e.target.value), sliderValue[1]]);
+                  }}
+                />
+              </StyledInputValue>
+            </Typography>
             <span>-</span>
-            <StyledInputValue
-              value={sliderValue[1]}
-              onChange={(e) => {
-                setSliderValue([sliderValue[0], Number(e.target.value)]);
-              }}
-            />
+            <Typography color={theme.palette?.text?.secondary}>
+              <StyledInputValue>
+                $
+                <input
+                  className='w-20 border-none text-base outline-none'
+                  value={sliderValue[1]}
+                  onChange={(e) => {
+                    setSliderValue([sliderValue[0], Number(e.target.value)]);
+                  }}
+                />
+              </StyledInputValue>
+            </Typography>
           </div>
         </div>
         <DatePicker

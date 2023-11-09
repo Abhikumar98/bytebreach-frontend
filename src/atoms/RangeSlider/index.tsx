@@ -15,7 +15,7 @@ const RangeSlider: FC<
     label?: string;
     mandatory?: boolean;
   } & Omit<SliderOwnProps, 'children'>
-> = ({ value, setValue, label, mandatory }) => {
+> = ({ value, setValue, label, mandatory, ...slideProps }) => {
   const handleChange = (_event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
@@ -27,10 +27,10 @@ const RangeSlider: FC<
         {mandatory && <MandatoryMark>*</MandatoryMark>}
       </InputLabel>
       <Slider
-        getAriaLabel={() => 'Temperature range'}
         value={value}
         onChange={handleChange}
         valueLabelDisplay='auto'
+        {...slideProps}
       />
     </div>
   );
