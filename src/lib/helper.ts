@@ -1,3 +1,8 @@
+import { Web3AuthNoModal } from '@web3auth/no-modal';
+import {
+  LOGIN_PROVIDER_TYPE,
+  OpenloginLoginParams,
+} from '@web3auth/openlogin-adapter';
 import { toast } from 'react-hot-toast';
 
 import { AppRoutes } from '@/types';
@@ -41,4 +46,32 @@ export const isAuthenticatedRoute = (route: string) => {
   );
 
   return isCurrentAuthenticatedRoutes;
+};
+import { getPublicCompressed } from '@toruslabs/eccrypto';
+
+export const handleWeb3AuthLogin = async (
+  web3Auth: Web3AuthNoModal,
+  adapter: string,
+  authProvider: LOGIN_PROVIDER_TYPE,
+  userEmail?: string
+) => {
+  const response = await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
+    loginProvider: authProvider,
+    extraLoginOptions: {
+      login_hint: userEmail,
+    },
+  });
+
+  const app_scoped_privkey = await web3Auth.provider?.request({
+    method: 'eth_private_key', // use "private_key" for other non-evm chains
+  });
+
+  const app_pub_key = getPublicCompressed(
+    Buffer.from((app_scoped_privkey as any).padStart(64, '0'), 'hex')
+  ).toString('hex');
+
+  return {
+    response,
+    app_pub_key,
+  };
 };

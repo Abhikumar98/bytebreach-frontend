@@ -1,8 +1,7 @@
-// TableComponent.js
+// TableComponent.tsx
 
 import {
   Checkbox,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -11,34 +10,33 @@ import {
   TableRow,
   TableSortLabel,
 } from '@mui/material';
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 
-// Define the types for the column configuration and table props
 export interface Column<T> {
   title: string;
   dataIndex: keyof T;
   sorter?: (a: T, b: T) => number;
-  render?: (value: any, record: T) => React.ReactNode;
-  align?: 'left' | 'center' | 'right' | 'justify';
+  render?: (value: any, record: T, index: number) => React.ReactNode;
+  align?: 'left' | 'right' | 'center';
+  width?: string; // optional width for each column
 }
 
-export interface TableProps<T> {
+interface TableProps<T> {
   data: T[];
   columns: Column<T>[];
   isSelectable?: boolean;
-  onSelectionChange?: (selectedKeys: React.Key[]) => void;
+  onSelectionChange?: (selectedIndices: number[]) => void;
   onSort?: (dataIndex: keyof T, order: 'asc' | 'desc') => void;
 }
 
-// Define the TableComponent with generic type T
-const TableComponent = <T extends { key: React.Key }>({
+export default function TableComponent<T>({
   data,
   columns,
   isSelectable = false,
   onSelectionChange,
   onSort,
-}: TableProps<T>) => {
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+}: TableProps<T>) {
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
   const [sortedColumn, setSortedColumn] = useState<keyof T | null>(null);
 
@@ -49,112 +47,97 @@ const TableComponent = <T extends { key: React.Key }>({
     onSort?.(dataIndex, isAsc ? 'desc' : 'asc');
   };
 
-  const handleSelect = (key: React.Key) => {
-    const selectedIndex = selectedKeys.indexOf(key);
-    let newSelectedKeys: React.Key[] = [];
-
-    console.log({ key });
-
-    if (selectedIndex === -1) {
-      newSelectedKeys = newSelectedKeys.concat(selectedKeys, key);
-    } else if (selectedIndex >= 0) {
-      newSelectedKeys = newSelectedKeys.concat(
-        selectedKeys.slice(0, selectedIndex),
-        selectedKeys.slice(selectedIndex + 1)
-      );
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelectedIndices = data.map((_, index) => index);
+      setSelectedIndices(newSelectedIndices);
+      onSelectionChange?.(newSelectedIndices);
+    } else {
+      setSelectedIndices([]);
+      onSelectionChange?.([]);
     }
-
-    setSelectedKeys(newSelectedKeys);
-    onSelectionChange?.(newSelectedKeys);
   };
 
-  // Create a sorted copy of the data if a sorter function is provided for the sorted column
-  const sortedData = React.useMemo(() => {
-    return sortedColumn &&
-      columns.find((col) => col.dataIndex === sortedColumn)?.sorter
-      ? [...data].sort(
-          (a, b) =>
-            columns.find((col) => col.dataIndex === sortedColumn)!.sorter!(
-              a,
-              b
-            ) * (orderDirection === 'asc' ? 1 : -1)
-        )
-      : data;
-  }, [data, sortedColumn, orderDirection, columns]);
+  const handleSelect = (index: number) => {
+    const selectedIndexPosition = selectedIndices.indexOf(index);
+    let newSelectedIndices: number[] = [];
+
+    if (selectedIndexPosition === -1) {
+      newSelectedIndices = newSelectedIndices.concat(selectedIndices, index);
+    } else if (selectedIndexPosition !== -1) {
+      newSelectedIndices = selectedIndices.filter((i) => i !== index);
+    }
+
+    setSelectedIndices(newSelectedIndices);
+    onSelectionChange?.(newSelectedIndices);
+  };
+
+  const isSelected = (index: number) => selectedIndices.indexOf(index) !== -1;
 
   return (
-    <Paper>
-      <TableContainer>
-        <Table stickyHeader aria-label='sticky table'>
-          <TableHead>
-            <TableRow>
-              {isSelectable && (
-                <TableCell padding='checkbox'>
-                  <Checkbox
-                    indeterminate={
-                      selectedKeys.length > 0 &&
-                      selectedKeys.length < data.length
-                    }
-                    checked={
-                      data.length > 0 && selectedKeys.length === data.length
-                    }
-                    onChange={(event) => {
-                      setSelectedKeys(
-                        event.target.checked ? data.map((item) => item.key) : []
-                      );
-                      onSelectionChange?.(
-                        event.target.checked ? data.map((item) => item.key) : []
-                      );
-                    }}
-                  />
-                </TableCell>
-              )}
-              {columns.map((column) => (
-                <TableCell
-                  key={column.title}
-                  align={column.dataIndex === 'name' ? 'left' : 'right'}
-                  sortDirection={
-                    sortedColumn === column.dataIndex ? orderDirection : false
+    <TableContainer>
+      <Table sx={{ minWidth: 750 }} size='medium'>
+        <TableHead>
+          <TableRow>
+            {isSelectable && (
+              <TableCell padding='checkbox'>
+                <Checkbox
+                  indeterminate={
+                    selectedIndices.length > 0 &&
+                    selectedIndices.length < data.length
                   }
-                >
-                  {column.sorter ? (
-                    <TableSortLabel
-                      active={sortedColumn === column.dataIndex}
-                      direction={
-                        sortedColumn === column.dataIndex
-                          ? orderDirection
-                          : 'asc'
-                      }
-                      onClick={() => handleRequestSort(column.dataIndex)}
-                    >
-                      {column.title}
-                    </TableSortLabel>
-                  ) : (
-                    column.title
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedData.map((row) => (
+                  checked={
+                    data.length > 0 && selectedIndices.length === data.length
+                  }
+                  onChange={handleSelectAllClick}
+                />
+              </TableCell>
+            )}
+            {columns.map((column) => (
+              <TableCell
+                key={column.dataIndex as string}
+                align='left'
+                sortDirection={
+                  sortedColumn === column.dataIndex ? orderDirection : false
+                }
+              >
+                {column.sorter ? (
+                  <TableSortLabel
+                    active={sortedColumn === column.dataIndex}
+                    direction={
+                      sortedColumn === column.dataIndex ? orderDirection : 'asc'
+                    }
+                    onClick={() => handleRequestSort(column.dataIndex)}
+                    style={{
+                      width: column.width || 'auto',
+                      flex: column.width ? 'none' : 1,
+                    }}
+                  >
+                    {column.title}
+                  </TableSortLabel>
+                ) : (
+                  column.title
+                )}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row, index) => {
+            return (
               <TableRow
                 hover
-                onClick={() => isSelectable && handleSelect(row.key)}
                 role='checkbox'
-                aria-checked={selectedKeys.indexOf(row.key) !== -1}
+                aria-checked={isSelected(index)}
                 tabIndex={-1}
-                key={row.key}
-                selected={selectedKeys.indexOf(row.key) !== -1}
+                key={index}
+                selected={isSelected(index)}
               >
                 {isSelectable && (
                   <TableCell padding='checkbox'>
                     <Checkbox
-                      checked={selectedKeys.indexOf(row.key) !== -1}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleSelect(row.key);
-                      }}
+                      checked={isSelected(index)}
+                      onChange={() => handleSelect(index)}
                     />
                   </TableCell>
                 )}
@@ -162,22 +145,20 @@ const TableComponent = <T extends { key: React.Key }>({
                   const value = row[column.dataIndex];
                   return (
                     <TableCell
-                      key={`${row.key}-${column.dataIndex.toString()}`}
-                      align={column.align || 'right'}
+                      key={`${index}-${column.dataIndex as string}`}
+                      align={column.align || 'left'}
                     >
                       {column.render
-                        ? (column.render(value, row) as ReactNode)
-                        : (value as ReactNode)}
+                        ? (column.render(value, row, index) as React.ReactNode)
+                        : (value as React.ReactNode)}
                     </TableCell>
                   );
                 })}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
-};
-
-export default TableComponent;
+}

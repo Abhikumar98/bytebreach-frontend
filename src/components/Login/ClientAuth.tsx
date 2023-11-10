@@ -2,12 +2,11 @@ import { Divider } from '@mui/material';
 import { WALLET_ADAPTERS } from '@web3auth/base';
 import {
   LOGIN_PROVIDER_TYPE,
-  OpenloginLoginParams,
   OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
 import React, { useState } from 'react';
 
-import { defaultErrorMessage } from '@/lib/helper';
+import { defaultErrorMessage, handleWeb3AuthLogin } from '@/lib/helper';
 
 import Envelope from '@/assets/envelope.svg';
 import Google from '@/assets/google.svg';
@@ -43,16 +42,17 @@ const ClientAuth: React.FC<{
 
       const adapter = WALLET_ADAPTERS.OPENLOGIN;
 
-      const response = await web3auth.connectTo<OpenloginLoginParams>(adapter, {
-        loginProvider: authProvider,
-        extraLoginOptions: {
-          login_hint: userEmail,
-        },
-      });
+      const { response, app_pub_key } = await handleWeb3AuthLogin(
+        web3auth,
+        adapter,
+        authProvider,
+        userEmail
+      );
 
       const userInfo = await web3auth.getUserInfo();
+      const auth = await web3auth.authenticateUser();
 
-      console.log({ userInfo });
+      console.log({ userInfo, auth, response, app_pub_key });
 
       onLoginSuccess(userInfo);
     } catch (error) {

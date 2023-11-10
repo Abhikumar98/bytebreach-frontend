@@ -1,31 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import ProjectSection from '@/components/Project/ProjectSection';
 
+import { getProjectList } from '@/services';
+
+import { IProject } from '@/types';
+
 const ClientOngoingProjects = () => {
-  const projects = [
-    {
-      name: 'Project 1',
-      status: 'Ongoing',
-    },
-    {
-      name: 'Project 1',
-      status: 'Ongoing',
-    },
-    {
-      name: 'Project 1',
-      status: 'Ongoing',
-    },
-    {
-      name: 'Project 1',
-      status: 'Ongoing',
-    },
-    {
-      name: 'Project 1',
-      status: 'Ongoing',
-    },
-  ];
-  return <ProjectSection projects={projects} />;
+  const [onGoingProjects, setOnGoingProjects] = React.useState<IProject[]>([]);
+
+  const handleFetchOnGoingProjects = async () => {
+    try {
+      const response = await getProjectList('ongoing');
+
+      setOnGoingProjects(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchOnGoingProjects();
+  }, []);
+
+  return <ProjectSection projects={onGoingProjects} />;
 };
 
 export default ClientOngoingProjects;

@@ -27,6 +27,8 @@
     "@mui/material": "^5.14.16",
     "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@mui/x-date-pickers-pro": "^6.18.0",
+    "@toruslabs/eccrypto": "^4.0.0",
+    "@toruslabs/openlogin-ed25519": "^6.0.0",
     "@walletconnect/legacy-client": "^2.0.0",
     "@walletconnect/modal": "^2.6.2",
     "@walletconnect/sign-client": "^2.10.4",

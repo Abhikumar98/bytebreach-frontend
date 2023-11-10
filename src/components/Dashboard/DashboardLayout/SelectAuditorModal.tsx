@@ -6,68 +6,57 @@ import AutoComplete from '@/atoms/AutoComplete';
 import Modal, { ModalFormCTA } from '@/atoms/Modal';
 import TableComponent, { Column } from '@/atoms/Table';
 
-import { ICreateProjectForm } from '@/types';
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  chinese: number;
-  math: number;
-  english: number;
-}
+import { IAuditorRecommendationProfile, ICreateProjectForm } from '@/types';
 
 // Columns definition
-const columns: Column<DataType>[] = [
+const columns: Column<IAuditorRecommendationProfile>[] = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    sorter: (a: DataType, b: DataType) => a.name.localeCompare(b.name),
+    dataIndex: 'first_name',
+    sorter: (
+      a: IAuditorRecommendationProfile,
+      b: IAuditorRecommendationProfile
+    ) => a.first_name.localeCompare(b.first_name),
   },
   {
-    title: 'Chinese Score',
-    dataIndex: 'chinese',
-    sorter: (a: DataType, b: DataType) => a.chinese - b.chinese,
+    title: 'Weekly cost',
+    dataIndex: 'auditor_id',
+    sorter: (
+      a: IAuditorRecommendationProfile,
+      b: IAuditorRecommendationProfile
+    ) => a.auditor_id - b.auditor_id,
   },
   {
-    title: 'Math Score',
-    dataIndex: 'math',
-    sorter: (a: DataType, b: DataType) => a.math - b.math,
-  },
-  {
-    title: 'English Score',
-    dataIndex: 'english',
-    sorter: (a: DataType, b: DataType) => a.english - b.english,
+    title: 'Related audits',
+    dataIndex: 'auditor_id',
   },
 ];
 // Example data
-const data: DataType[] = [
+const data: IAuditorRecommendationProfile[] = [
   {
-    key: '1',
-    name: 'John Brown',
-    chinese: 98,
-    math: 60,
-    english: 70,
+    first_name: 'John',
+    last_name: 'Doe',
+    auditor_id: 1,
   },
   {
-    key: '2',
-    name: 'John Brown',
-    chinese: 12,
-    math: 60,
-    english: 70,
+    first_name: 'John',
+    last_name: 'Doe',
+    auditor_id: 1,
   },
   {
-    key: '3',
-    name: 'John Brown',
-    chinese: 32,
-    math: 60,
-    english: 70,
+    first_name: 'John',
+    last_name: 'Doe',
+    auditor_id: 1,
   },
   {
-    key: '4',
-    name: 'John Brown',
-    chinese: 54,
-    math: 60,
-    english: 70,
+    first_name: 'John',
+    last_name: 'Doe',
+    auditor_id: 1,
+  },
+  {
+    first_name: 'John',
+    last_name: 'Doe',
+    auditor_id: 1,
   },
 ];
 

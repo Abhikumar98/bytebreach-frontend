@@ -99,19 +99,25 @@ export interface IAuditorProfile {
   max_weekly_cost: number;
 }
 
+enum IProjectStatus {
+  AUDITOR_SELECTION = 1,
+  AUDITOR_CONFIRMATION = 2,
+  PARITAL_PAYMENT = 3,
+  AUDIT_IN_PROGRESS = 4,
+  MITIGATION_REVIEW = 5,
+  FINAL_PAYMENT = 6,
+}
+
 export interface IProject {
   project_id: number;
   project_title: string;
   code_link: string;
-  state: string;
+  state: IProjectStatus;
 }
 
 export type IAuditorProjectStateRequest = 'requested' | 'ongoing' | 'done';
 
-export type IClientProjectStateRequest = Omit<
-  IAuditorProjectStateRequest,
-  'requested'
->;
+export type IClientProjectStateRequest = 'ongoing' | 'done';
 
 export interface IAuditorQuoteRequest {
   project_id: number;
@@ -120,7 +126,6 @@ export interface IAuditorQuoteRequest {
 }
 
 export interface IAuditorRecommendationProfile {
-  name: string;
   first_name: string;
   last_name: string;
   auditor_id: number;
@@ -172,3 +177,7 @@ export type IBugListItem = Omit<
   IBug,
   'code_section_link' | 'comments' | 'project_id'
 >;
+
+export interface GenericResponse<T> {
+  data: T;
+}

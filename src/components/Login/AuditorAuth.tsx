@@ -2,17 +2,15 @@ import { Divider } from '@mui/material';
 import { WALLET_ADAPTERS } from '@web3auth/base';
 import {
   LOGIN_PROVIDER_TYPE,
-  OpenloginLoginParams,
   OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
 import React, { useState } from 'react';
 
-import { defaultErrorMessage } from '@/lib/helper';
+import { defaultErrorMessage, handleWeb3AuthLogin } from '@/lib/helper';
 
 import Envelope from '@/assets/envelope.svg';
 import Github from '@/assets/github-color.svg';
 import Google from '@/assets/google.svg';
-import Wallet from '@/assets/wallet.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
@@ -48,12 +46,12 @@ const AuditorAuth: React.FC<{
           ? WALLET_ADAPTERS.METAMASK
           : WALLET_ADAPTERS.OPENLOGIN;
 
-      const response = await web3auth.connectTo<OpenloginLoginParams>(adapter, {
-        loginProvider: authProvider,
-        extraLoginOptions: {
-          login_hint: userEmail,
-        },
-      });
+      const { response, app_pub_key } = await handleWeb3AuthLogin(
+        web3auth,
+        adapter,
+        authProvider,
+        userEmail
+      );
 
       const userInfo = await web3auth.getUserInfo();
 
@@ -91,7 +89,7 @@ const AuditorAuth: React.FC<{
       >
         Login using your Github account
       </Button>
-      <Button
+      {/* <Button
         isLoading={loginLoaders['webauthn']}
         disabled={disableButtons}
         onClick={() => handleAuthentication('webauthn')}
@@ -100,7 +98,7 @@ const AuditorAuth: React.FC<{
         color='secondary'
       >
         Login using your wallet
-      </Button>
+      </Button> */}
       <Divider />
       <div>
         <Input

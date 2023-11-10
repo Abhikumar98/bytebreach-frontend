@@ -3,12 +3,12 @@ import axios from 'axios';
 import { getRequest, postRequest } from '@/services/config';
 
 import {
+  GenericResponse,
   IAuditorProjectStateRequest,
   IAuditorQuoteRequest,
   IAuditorRecommendationProfile,
   IBug,
   IBugListItem,
-  IClientProjectStateRequest,
   ICreateBugRequest,
   IGenericResponse,
   IProject,
@@ -26,7 +26,7 @@ const auditorProfileURL = '/auditor-profile';
 
 // project
 const clientProjectListURL = '/client/list';
-const auditorProjectListURL = '/auditor/list';
+const projectListURL = '/list';
 
 // project details
 const clientProjectDetailsURL = '/client/summary';
@@ -45,139 +45,137 @@ const auditorStatusURL = '/auditor-status';
 const auditorConfirmationURL = '/auditor-confirmation';
 
 export const login = async (idToken: string) => {
-  const response = await axios(postRequest(loginURL, { idToken }));
+  const response = await axios<GenericResponse<IGenericResponse>>(
+    postRequest(loginURL, { idToken })
+  );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const logout = async () => {
-  const response = await axios(postRequest(logoutURL, {}));
+  const response = await axios<GenericResponse<IGenericResponse>>(
+    postRequest(logoutURL, {})
+  );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getClientProfile = async () => {
-  const response = await axios<IUserProfile>(getRequest(clientProfileURL));
+  const response = await axios<GenericResponse<IUserProfile>>(
+    getRequest(clientProfileURL)
+  );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postClientProfile = async (
   clientProfile: Partial<IUserProfile>
 ) => {
-  const response = await axios<IUserProfile>(
+  const response = await axios<GenericResponse<IUserProfile>>(
     postRequest(clientProfileURL, clientProfile)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getAuditorProfile = async () => {
-  const response = await axios<IUserProfile>(getRequest(auditorProfileURL));
+  const response = await axios<GenericResponse<IUserProfile>>(
+    getRequest(auditorProfileURL)
+  );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postAuditorProfile = async (
   auditorProfile: Partial<IUserProfile>
 ) => {
-  const response = await axios<IUserProfile>(
+  const response = await axios<GenericResponse<IUserProfile>>(
     postRequest(auditorProfileURL, auditorProfile)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
-export const getClientProjectList = async (
-  projectState: IClientProjectStateRequest
-) => {
-  const response = await axios<IProject[]>(
-    getRequest(`${clientProjectListURL}?project_type=${projectState}`)
-  );
-
-  return response.data;
-};
-
-export const getAuditorProjectList = async (
+export const getProjectList = async (
   projectState: IAuditorProjectStateRequest
 ) => {
-  const response = await axios<IProject[]>(
-    getRequest(`${auditorProjectListURL}?project_type=${projectState}`)
+  const response = await axios<GenericResponse<IProject[]>>(
+    getRequest(`${projectListURL}?project_type=${projectState}`)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getClientProjectSummary = async (projectId: number) => {
-  const response = await axios<IProjectSummaryResponse>(
+  const response = await axios<GenericResponse<IProjectSummaryResponse>>(
     getRequest(`${clientProjectDetailsURL}?project_id=${projectId}`)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postAuditorQuoteURL = async (
   auditorQuoteRequest: IAuditorQuoteRequest
 ) => {
-  const response = await axios<IGenericResponse>(
+  const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(auditorQuoteURL, auditorQuoteRequest)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getAuditorRecommendation = async (projectId: number) => {
-  const response = await axios<IAuditorRecommendationProfile[]>(
-    getRequest(`${auditorRecommendationURL}?project_id=${projectId}`)
-  );
+  const response = await axios<
+    GenericResponse<IAuditorRecommendationProfile[]>
+  >(getRequest(`${auditorRecommendationURL}?project_id=${projectId}`));
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getAuditorStatus = async (projectId: number) => {
-  const response = await axios<IAuditorProjectStateRequest>(
+  const response = await axios<GenericResponse<IAuditorProjectStateRequest>>(
     getRequest(`${auditorStatusURL}?project_id=${projectId}`)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postAuditorConfirmation = async (projectId: number) => {
-  const response = await axios<IGenericResponse>(
+  const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(auditorConfirmationURL, { project_id: projectId })
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postBug = async (bug: ICreateBugRequest) => {
-  const response = await axios<IGenericResponse>(
+  const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(createBugURL, bug)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getBugList = async (projectId: number) => {
-  const response = await axios<IBugListItem[]>(
+  const response = await axios<GenericResponse<IBugListItem[]>>(
     getRequest(`${listBugURL}?project_id=${projectId}`)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const getBugDetails = async (bugId: number) => {
-  const response = await axios<IBug>(
+  const response = await axios<GenericResponse<IBug>>(
     getRequest(`${bugDetailsURL}?bug_id=${bugId}`)
   );
 
-  return response.data;
+  return response.data.data;
 };
 
 export const postBugComment = async (bugId: number, comment: string) => {
-  const response = await axios<IGenericResponse>(
+  const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(bugCommentURL, { bug_id: bugId, comment })
   );
 
-  return response.data;
+  return response.data.data;
 };

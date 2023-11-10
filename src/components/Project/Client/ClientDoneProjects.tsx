@@ -1,32 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import ProjectSection from '@/components/Project/ProjectSection';
 
-const ClientDoneProjects = () => {
-  const projects = [
-    {
-      name: 'Project 1',
-      status: 'Done',
-    },
-    {
-      name: 'Project 1',
-      status: 'Done',
-    },
-    {
-      name: 'Project 1',
-      status: 'Done',
-    },
-    {
-      name: 'Project 1',
-      status: 'Done',
-    },
-    {
-      name: 'Project 1',
-      status: 'Done',
-    },
-  ];
+import { getProjectList } from '@/services';
 
-  return <ProjectSection projects={projects} />;
+import { IProject } from '@/types';
+
+const ClientDoneProjects = () => {
+  const [doneProjects, setDoneProjects] = React.useState<IProject[]>([]);
+
+  const handleFetchOnGoingProjects = async () => {
+    try {
+      const response = await getProjectList('done');
+
+      setDoneProjects(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchOnGoingProjects();
+  }, []);
+
+  return <ProjectSection projects={doneProjects} />;
 };
 
 export default ClientDoneProjects;
