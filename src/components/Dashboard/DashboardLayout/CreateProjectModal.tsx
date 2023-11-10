@@ -1,31 +1,24 @@
 import { styled, Typography } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { defaultErrorMessage } from '@/lib/helper';
 import useTheme from '@/hooks/useTheme';
 
 import DatePicker from '@/atoms/DatePicker';
 import Input from '@/atoms/Input';
 import Modal, { ModalFormCTA } from '@/atoms/Modal';
 import RangeSlider from '@/atoms/RangeSlider';
-import Select, { IOption } from '@/atoms/Select';
+import Select from '@/atoms/Select';
+import { postProject } from '@/services';
 
-import { ICreateProjectForm } from '@/types';
-
-const testOptions: IOption[] = [
-  {
-    label: 'Option 1',
-    value: 'option-1',
-  },
-  {
-    label: 'Option 2',
-    value: 'option-2',
-  },
-  {
-    label: 'Option 3',
-    value: 'option-3',
-  },
-];
+import {
+  ICreateProjectForm,
+  IProjectCategory,
+  IProjectCreateRequest,
+  projectCategoryMap,
+} from '@/types';
 
 const initialRange = [1000, 5000];
 
@@ -42,7 +35,8 @@ const StyledInputValue = styled('div')`
 const CreateProjectModal: React.FC<{
   open: boolean;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+  onSubmit: (projectId: number) => void;
+}> = ({ open, onClose, onSubmit }) => {
   const {
     register,
     formState: { errors },
@@ -52,27 +46,41 @@ const CreateProjectModal: React.FC<{
     defaultValues: {
       title: '',
       githubLink: '',
-      category: '',
-      budget: 0,
+      category: IProjectCategory.LIQUID_STAKING,
       estimatedStartTime: '',
     },
   });
 
   const theme = useTheme();
 
-  const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs>(dayjs());
   const [sliderValue, setSliderValue] = React.useState<number[]>(initialRange);
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<IProjectCategory>(IProjectCategory.LIQUID_STAKING);
 
-  const handleFormSubmit = (values: ICreateProjectForm) => {
-    console.log({ values });
+  const handleFormSubmit = async (values: ICreateProjectForm) => {
+    try {
+      const createProjectRequest: IProjectCreateRequest = {
+        title: values.title,
+        code_link: values.githubLink,
+        category: selectedCategory,
+        start_date: selectedDate.toISOString(),
+        min_cost: sliderValue[0],
+        max_cost: sliderValue[1],
+      };
+
+      const response = await postProject(createProjectRequest);
+
+      onSubmit(response.project_id);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
   };
-
-  console.log({ sliderValue });
 
   const handleModalClose = () => {
     onClose();
     reset();
-    setSelectedDate(null);
+    setSelectedDate(dayjs());
     setSliderValue(initialRange);
   };
 
@@ -109,8 +117,11 @@ const CreateProjectModal: React.FC<{
           placeholder='https://github.com/xyz'
         />
         <Select
-          {...register('category')}
-          options={testOptions}
+          value={selectedCategory}
+          onChange={({ target: { value } }) =>
+            setSelectedCategory(value as IProjectCategory)
+          }
+          options={projectCategoryMap}
           placeholder='Select a category'
           label='Category'
           mandatory

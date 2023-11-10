@@ -2,6 +2,8 @@ import { Web3AuthNoModal } from '@web3auth/no-modal';
 import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 import { ReactNode } from 'react';
 
+import { IOption } from '@/atoms/Select';
+
 export enum AppRoutes {
   Homepage = '/',
   Login = '/login',
@@ -60,8 +62,6 @@ export interface INavigationRoute {
 export interface ICreateProjectForm {
   title: string;
   githubLink: string;
-  category: string;
-  budget: number;
   estimatedStartTime: string;
 }
 
@@ -99,7 +99,67 @@ export interface IAuditorProfile {
   max_weekly_cost: number;
 }
 
-enum IProjectStatus {
+export enum IProjectCategory {
+  LIQUID_STAKING = 1,
+  DEXES = 2,
+  BRIDGE = 3,
+  YIELD = 4,
+  CDP = 5,
+  SERVICES = 6,
+  YIELD_AGGREGATOR = 7,
+  CROSS_CHAIN = 8,
+  RWA = 9,
+}
+
+export const projectCategoryMap: IOption[] = [
+  {
+    value: IProjectCategory.LIQUID_STAKING,
+    label: 'Liquid Staking',
+  },
+  {
+    value: IProjectCategory.DEXES,
+    label: 'Dexes',
+  },
+  {
+    value: IProjectCategory.BRIDGE,
+    label: 'Bridge',
+  },
+  {
+    value: IProjectCategory.YIELD,
+    label: 'Yield',
+  },
+  {
+    value: IProjectCategory.CDP,
+    label: 'CDP',
+  },
+  {
+    value: IProjectCategory.SERVICES,
+    label: 'Services',
+  },
+  {
+    value: IProjectCategory.YIELD_AGGREGATOR,
+    label: 'Yield Aggregator',
+  },
+  {
+    value: IProjectCategory.CROSS_CHAIN,
+    label: 'Cross Chain',
+  },
+  {
+    value: IProjectCategory.RWA,
+    label: 'RWA',
+  },
+];
+
+export interface IProjectCreateRequest {
+  title: string;
+  code_link: string;
+  category: IProjectCategory;
+  min_cost: number;
+  max_cost: number;
+  start_date: string;
+}
+
+export enum IProjectStatus {
   AUDITOR_SELECTION = 1,
   AUDITOR_CONFIRMATION = 2,
   PARITAL_PAYMENT = 3,

@@ -9,7 +9,7 @@ import React from 'react';
 
 export interface IOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 const MandatoryMark = styled('sup')`

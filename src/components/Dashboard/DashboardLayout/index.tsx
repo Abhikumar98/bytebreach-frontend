@@ -129,9 +129,13 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
     useState<boolean>(false);
   const [selectAuditorModalOpen, setSelectAuditorModalOpen] =
     useState<boolean>(false);
+  const [currentActiveProject, setCurrentActiveProject] = useState<
+    number | null
+  >(null);
 
   const handleModalOpenUpdate = (value: boolean) => {
     setCreateProjectModalOpen(value);
+    setCurrentActiveProject(null);
   };
 
   const { push } = useRouter();
@@ -146,6 +150,12 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
 
   const handleRouteUpdate = (item: INavigationRoute) => {
     push(item.route);
+  };
+
+  const handleCreateModalSubmit = (projectId: number) => {
+    setSelectAuditorModalOpen(true);
+    setCreateProjectModalOpen(false);
+    setCurrentActiveProject(projectId);
   };
 
   const { pathname } = useRouter();
@@ -216,6 +226,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
       <CreateProjectModal
         open={createProjectModalOpen}
         onClose={() => handleModalOpenUpdate(false)}
+        onSubmit={handleCreateModalSubmit}
       />
       <SelectAuditorModal
         open={selectAuditorModalOpen}

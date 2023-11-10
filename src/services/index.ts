@@ -12,9 +12,15 @@ import {
   ICreateBugRequest,
   IGenericResponse,
   IProject,
+  IProjectCreateRequest,
   IProjectSummaryResponse,
   IUserProfile,
 } from '@/types';
+
+const resourceMap = {
+  AUTH: '/auth',
+  PROJECT: '/project',
+};
 
 // auth
 const loginURL = '/login-social';
@@ -25,7 +31,7 @@ const clientProfileURL = '/client-profile';
 const auditorProfileURL = '/auditor-profile';
 
 // project
-const clientProjectListURL = '/client/list';
+const createProjectURL = '/create';
 const projectListURL = '/list';
 
 // project details
@@ -101,6 +107,14 @@ export const getProjectList = async (
 ) => {
   const response = await axios<GenericResponse<IProject[]>>(
     getRequest(`${projectListURL}?project_type=${projectState}`)
+  );
+
+  return response.data.data;
+};
+
+export const postProject = async (project: IProjectCreateRequest) => {
+  const response = await axios<GenericResponse<IProject>>(
+    postRequest(createProjectURL, project)
   );
 
   return response.data.data;

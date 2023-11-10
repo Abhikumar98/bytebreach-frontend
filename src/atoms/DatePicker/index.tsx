@@ -2,6 +2,7 @@ import { InputLabel, styled } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker as MaterialDatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Dayjs } from 'dayjs';
 import React, { FC } from 'react';
 
 const MandatoryMark = styled('sup')`
@@ -17,9 +18,9 @@ const StyledDatePicker = styled(MaterialDatePicker)`
 
 const DatePicker: FC<{
   label?: string;
-  value: string | null;
+  value: Dayjs | null;
   mandatory?: boolean;
-  onChange: (date: string | null) => void;
+  onChange: (date: Dayjs) => void;
 }> = ({ value, label, onChange, mandatory }) => {
   return (
     <div className='mt-2 space-y-2'>
@@ -30,7 +31,7 @@ const DatePicker: FC<{
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StyledDatePicker
           value={value}
-          onChange={(value) => onChange(String(value))}
+          onChange={(value) => onChange(value as Dayjs)}
           format='DD/MM/YYYY'
           sx={{
             borderRadius: '15rem',
