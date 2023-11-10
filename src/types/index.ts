@@ -79,3 +79,96 @@ export interface ICreateBugForm {
   description: string;
   risk: string;
 }
+
+export interface IUserProfile {
+  first_name: string;
+  last_name: string;
+  company_name: string;
+  website_url: string;
+  twitter_url: string;
+  github_url: string;
+}
+
+export interface IAuditorProfile {
+  first_name: string;
+  last_name: string;
+  github_url: string;
+  sherlock_url: string;
+  codeareana_url: string;
+  min_weekly_cost: number;
+  max_weekly_cost: number;
+}
+
+export interface IProject {
+  project_id: number;
+  project_title: string;
+  code_link: string;
+  state: string;
+}
+
+export type IAuditorProjectStateRequest = 'requested' | 'ongoing' | 'done';
+
+export type IClientProjectStateRequest = Omit<
+  IAuditorProjectStateRequest,
+  'requested'
+>;
+
+export interface IAuditorQuoteRequest {
+  project_id: number;
+  quotation_time: number;
+  quotation_cost: number;
+}
+
+export interface IAuditorRecommendationProfile {
+  name: string;
+  first_name: string;
+  last_name: string;
+  auditor_id: number;
+}
+
+export interface IGenericResponse {
+  success: boolean;
+}
+
+export interface IProjectSummaryResponse {
+  project_title: string;
+  code_link: string;
+}
+
+export interface IAuditorStatusResponse {
+  name: string;
+  auditor_id: number;
+  first_name: string;
+  last_name: string;
+  state: string;
+  quotation_time: number;
+  quotation_cost: number;
+}
+
+export type IBugRiskRating = 'low' | 'medium' | 'high';
+
+export interface IBug {
+  bug_id: number;
+  project_id: number;
+  title: string;
+  description: string;
+  risk_rating: IBugRiskRating;
+  code_section_link: string;
+  comments: Comment[];
+}
+
+export interface IBugComment {
+  comment_id: number;
+  comment: string;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  created_at: string;
+}
+
+export type ICreateBugRequest = Omit<IBug, 'comments' | 'bug_id'>;
+
+export type IBugListItem = Omit<
+  IBug,
+  'code_section_link' | 'comments' | 'project_id'
+>;
