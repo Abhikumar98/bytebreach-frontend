@@ -232,14 +232,14 @@ export interface IBug {
   description: string;
   risk_rating: IBugRiskRating;
   code_section_link: string;
-  comments: Comment[];
+  comments: IBugComment[];
   user_id: number;
 }
 
 export interface IBugComment {
   comment_id: number;
   comment: string;
-  user_id: string;
+  user_id: number;
   first_name: string;
   last_name: string;
   created_at: string;

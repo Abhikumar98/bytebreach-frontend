@@ -3,6 +3,7 @@ import {
   IAuditorRecommendationProfile,
   IAuditorStatusResponse,
   IBug,
+  IBugComment,
   IBugListItem,
   IProject,
   IProjectStatus,
@@ -115,16 +116,25 @@ export const mockAuditorStatusResponse: IAuditorStatusResponse = {
   quotation_cost: 123,
 };
 
+export const mockComment: IBugComment = {
+  comment_id: 123,
+  user_id: 123,
+  first_name: 'Gooey',
+  last_name: 'Pooey',
+  comment: 'test comment is wtf',
+  created_at: new Date().toISOString(),
+};
+
 export const mockBug: IBug = {
-  first_name: 'test bug first_name',
-  last_name: 'test bug last_name',
+  first_name: 'John',
+  last_name: 'Doee',
   bug_id: 12345,
   project_id: 1234,
-  title: 'test bug title',
+  title: 'This is weird bug title',
   description: 'test bug description',
   risk_rating: 'low',
   code_section_link: 'test bug code_section_link',
-  comments: [],
+  comments: [mockComment, mockComment, mockComment],
   user_id: 12356,
 };
 

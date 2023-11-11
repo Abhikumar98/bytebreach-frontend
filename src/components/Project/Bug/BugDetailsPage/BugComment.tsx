@@ -1,5 +1,7 @@
 import { styled, Typography } from '@mui/material';
-import React from 'react';
+import dayjs from 'dayjs';
+import React, { FC } from 'react';
+import Markdown from 'react-markdown';
 
 const StyledBugDetailsOPContainer = styled('div')`
   display: flex;
@@ -17,27 +19,30 @@ const StyledBugDetailsOPContainer = styled('div')`
   .description-container {
     margin-top: ${({ theme }) => theme.spacing(2)};
     background: ${({ theme }) => theme.palette.background.default};
-    padding: ${({ theme }) => theme.spacing(4)}
-      ${({ theme }) => theme.spacing(6)};
+    padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(6)}`};
     border-radius: 2rem;
-    width: 100%;
+    width: calc(100% - 3rem);
     box-shadow: ${({ theme }) => theme.shadows[2]};
     margin-left: -${({ theme }) => theme.spacing(6)};
   }
 `;
 
-const BugComment = () => {
+const BugComment: FC<{
+  name: string;
+  description: string;
+  postedAt: string;
+}> = ({ name, description, postedAt }) => {
   return (
     <StyledBugDetailsOPContainer>
       <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
       <div className='w-full'>
-        <Typography fontWeight={500}>Name of commenter</Typography>
-        <Typography>
-          Description Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Similique, cumque? Doloribus, consequatur praesentium ipsum natus
-          tenetur, dicta voluptas atque numquam quae quibusdam mollitia in.
-          Neque aliquam consequatur veniam nemo iusto.
-        </Typography>
+        <div className='flex items-end space-x-4'>
+          <Typography fontWeight={500}>{name} </Typography>
+          <Typography fontSize='0.75rem'>
+            {dayjs(postedAt).format('DD MMM, YYYY HH:MM A')}
+          </Typography>
+        </div>
+        <Markdown className='w-full'>{description}</Markdown>
       </div>
     </StyledBugDetailsOPContainer>
   );

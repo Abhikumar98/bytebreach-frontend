@@ -1,20 +1,23 @@
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled, Typography } from '@mui/material';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Markdown from 'react-markdown';
+
+import useTheme from '@/hooks/useTheme';
 
 import BackButton from '@/assets/arrowLeft.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import Select, { IOption } from '@/atoms/Select';
 
-import { ICreateBugForm } from '@/types';
+import { IBugRiskRating, ICreateBugForm } from '@/types';
 
 const StyledCreateBugForm = styled('div')`
   background: ${({ theme }) => theme.palette.background.default};
-  padding: ${({ theme }) => theme.spacing(8)}
-    ${({ theme }) => theme.spacing(12)};
+  padding: ${({ theme }) => `${theme.spacing(8)} ${theme.spacing(12)}`};
   border-radius: 1rem;
   box-shadow: ${({ theme }) => theme.shadows[2]};
   margin: ${({ theme }) => theme.spacing(4)} 0;
@@ -44,6 +47,8 @@ const StyledCreateBugForm = styled('div')`
 `;
 
 const CreateBugForm = () => {
+  const theme = useTheme();
+
   const {
     register,
     formState: { errors },
@@ -80,6 +85,8 @@ const CreateBugForm = () => {
     },
   ];
 
+  const [bugRisk, setBugRisk] = React.useState<IBugRiskRating>('low');
+
   const handleFormSubmit = (values: ICreateBugForm) => {
     console.log({ values });
   };
@@ -109,7 +116,8 @@ const CreateBugForm = () => {
           placeholder='Bug Title'
         />
         <Select
-          {...register('risk')}
+          onChange={(value) => setBugRisk(value as unknown as IBugRiskRating)}
+          value={bugRisk}
           options={riskOptions}
           placeholder='Select a risk'
           label='Risk'
@@ -138,12 +146,24 @@ const CreateBugForm = () => {
 
         <div className='flex items-center space-x-4'>
           <div onClick={() => setDescriptionMode('text')}>
-            <Typography className='cursor-pointer' fontWeight={500}>
+            <Typography
+              className={classNames(
+                'cursor-pointer rounded-md px-2 py-1',
+                descriptionMode === 'text' ? ' bg-gray' : ''
+              )}
+              fontWeight={500}
+            >
               Edit
             </Typography>
           </div>
           <div onClick={() => setDescriptionMode('markdown')}>
-            <Typography className='cursor-pointer' fontWeight={500}>
+            <Typography
+              className={classNames(
+                'cursor-pointer rounded-md px-2 py-1',
+                descriptionMode === 'markdown' ? ' bg-gray' : ''
+              )}
+              fontWeight={500}
+            >
               Preview
             </Typography>
           </div>
@@ -151,14 +171,14 @@ const CreateBugForm = () => {
 
         {descriptionMode === 'text' ? (
           <div className='w-full'>
-            <textarea
-              // component='textarea'
+            <TextareaAutosize
+              minRows={4}
               className='min-h[5rem] resize-y rounded-xl p-4'
               {...register('description')}
             />
           </div>
         ) : (
-          <Markdown className='markdown-container'>
+          <Markdown className='markdown-container p-4'>
             {getValues('description')}
           </Markdown>
         )}

@@ -1,16 +1,20 @@
 import { styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import BugComment from '@/components/Project/Bug/BugDetailsPage/BugComment';
 import BugDetailsOPContainer from '@/components/Project/Bug/BugDetailsPage/BugDetailsOPContainer';
 
 import BackButton from '@/assets/arrowLeft.svg';
+import { getBugDetails } from '@/services';
+
+import { IBug } from '@/types';
 
 const StyledBugDetailContainer = styled('div')`
   background: ${({ theme }) => theme.palette.background.default};
-  padding: ${({ theme }) => theme.spacing(8)}
-    ${({ theme }) => theme.spacing(12)};
+  padding: ${({ theme }) => `${theme.spacing(8)} ${theme.spacing(12)}`};
   border-radius: 1rem;
   margin: ${({ theme }) => theme.spacing(4)} 0;
   box-shadow: ${({ theme }) => theme.shadows[2]};
@@ -46,7 +50,26 @@ const StyledBugDetailContainer = styled('div')`
 `;
 
 const BugDetails = () => {
-  const { back } = useRouter();
+  const {
+    back,
+    query: { projectId, bugId },
+  } = useRouter();
+
+  const [bugDetails, setBugDetails] = React.useState<IBug | null>(null);
+
+  const fetchBugDetails = async () => {
+    try {
+      const response = await getBugDetails(Number(bugId));
+
+      setBugDetails(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBugDetails();
+  }, []);
 
   return (
     <StyledBugDetailContainer>
@@ -54,18 +77,30 @@ const BugDetails = () => {
         <BackButton />
       </div>
       <Typography variant='h5' fontWeight='medium'>
-        Report a bug
+        Bug discussion
       </Typography>
 
-      <div className='bug-scroll-container'>
-        <BugDetailsOPContainer />
+      {bugDetails && (
+        <>
+          <div className='bug-scroll-container'>
+            <BugDetailsOPContainer
+              markdown={bugDetails?.description ?? ''}
+              firstName={bugDetails?.first_name}
+              lastName={bugDetails?.last_name}
+              title={bugDetails?.title}
+            />
 
-        <BugComment />
-        <BugComment />
-        <BugComment />
-        <BugComment />
-        <BugComment />
-      </div>
+            {bugDetails?.comments?.map((comment) => (
+              <BugComment
+                key={comment.comment_id}
+                name={`${comment.first_name} ${comment.last_name}`}
+                description={comment.comment}
+                postedAt={comment.created_at}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </StyledBugDetailContainer>
   );
 };

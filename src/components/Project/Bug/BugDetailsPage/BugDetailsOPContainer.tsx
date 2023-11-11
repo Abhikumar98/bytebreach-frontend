@@ -1,5 +1,5 @@
 import { styled, Typography } from '@mui/material';
-import React from 'react';
+import React, { FC } from 'react';
 import Markdown from 'react-markdown';
 
 const StyledBugDetailsOPContainer = styled('div')`
@@ -17,33 +17,33 @@ const StyledBugDetailsOPContainer = styled('div')`
   .description-container {
     margin-top: ${({ theme }) => theme.spacing(2)};
     background: ${({ theme }) => theme.palette.background.default};
-    padding: ${({ theme }) => theme.spacing(4)}
-      ${({ theme }) => theme.spacing(6)};
+    padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(6)}`};
     border-radius: 2rem;
-    width: 100%;
+    width: calc(100% - 3rem);
     box-shadow: ${({ theme }) => theme.shadows[2]};
     margin-left: -${({ theme }) => theme.spacing(6)};
   }
 `;
 
-const BugDetailsOPContainer = () => {
-  const markdown = `
-  
-Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas, enim optio consequuntur soluta est cupiditate officia provident? Incidunt, atque. Maiores ipsum ex corporis totam laudantium est dolorem laboriosam exercitationem dicta?
-
-  `;
-
+const BugDetailsOPContainer: FC<{
+  markdown: string;
+  title: string;
+  firstName: string;
+  lastName: string;
+}> = ({ markdown, title, firstName, lastName }) => {
   return (
     <StyledBugDetailsOPContainer>
       <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
       <div className='w-full'>
-        <Typography>Original Poster</Typography>
+        <Typography>
+          {firstName} {lastName}
+        </Typography>
         <Typography variant='h5' fontWeight={600}>
-          Original Poster
+          {title}
         </Typography>
         <div className='description-container'>
           <Typography fontWeight={500}>Description</Typography>
-          <Markdown>{markdown}</Markdown>
+          <Markdown className='py-4'>{markdown}</Markdown>
         </div>
       </div>
     </StyledBugDetailsOPContainer>

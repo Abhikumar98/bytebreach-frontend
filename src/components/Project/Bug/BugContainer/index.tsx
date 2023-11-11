@@ -1,14 +1,17 @@
 import { styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import ArrowRight from '@/assets/arrowRight.svg';
 import Plus from '@/assets/plus.svg';
 import Button from '@/atoms/Button';
 import ShadowCard from '@/atoms/ShadowCard';
 import { useAppContext } from '@/context';
+import { getBugList } from '@/services';
 
-import { AppRoutes } from '@/types';
+import { AppRoutes, IBugListItem } from '@/types';
 
 const StyledBugContainer = styled('div')`
   max-height: calc(100% - 4rem);
@@ -31,58 +34,42 @@ const StyledBugItem = styled('div')`
 `;
 
 const BugContainer = () => {
-  const { query, push, pathname } = useRouter();
+  const { query, push } = useRouter();
+
+  const projectId = query.projectId?.toString();
+
   const { isClientUser } = useAppContext();
 
-  const handleCreateBugRoute = () => {
-    const { projectId } = query;
+  const [bugList, setBugList] = React.useState<IBugListItem[]>([]);
 
+  const handleCreateBugRoute = () => {
     push(AppRoutes.NewBug.replace('{projectId}', projectId as string));
   };
 
-  const handleBugRoute = (bugId: string) => {
-    const { projectId } = query;
-
+  const handleBugRoute = (bugId: number) => {
     push(
-      AppRoutes.BugDetails.replace('{bugId}', bugId).replace(
+      AppRoutes.BugDetails.replace('{bugId}', String(bugId)).replace(
         '{projectId}',
         projectId as string
       )
     );
   };
 
-  const bugs = [
-    {
-      title: 'Bug 1',
-      id: '1',
-      description:
-        'Description lorem ipsum dolor set lorem ipsum dolor set lorem ipsum dolor set',
-    },
-    {
-      title: 'Bug 1',
-      id: '1',
-      description:
-        'Description lorem ipsum dolor set lorem ipsum dolor set lorem ipsum dolor set',
-    },
-    {
-      title: 'Bug 1',
-      id: '1',
-      description:
-        'Description lorem ipsum dolor set lorem ipsum dolor set lorem ipsum dolor set',
-    },
-    {
-      title: 'Bug 1',
-      id: '1',
-      description:
-        'Description lorem ipsum dolor set lorem ipsum dolor set lorem ipsum dolor set',
-    },
-    {
-      title: 'Bug 1',
-      id: '1',
-      description:
-        'Description lorem ipsum dolor set lorem ipsum dolor set lorem ipsum dolor set',
-    },
-  ];
+  const handleGetBugList = async () => {
+    try {
+      const response = await getBugList(Number(projectId));
+
+      setBugList(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    if (projectId) {
+      handleGetBugList();
+    }
+  }, [projectId]);
 
   return (
     <ShadowCard>
@@ -103,8 +90,11 @@ const BugContainer = () => {
           )}
         </div>
         <div>
-          {bugs.map((bug, index) => (
-            <StyledBugItem onClick={() => handleBugRoute(bug.id)} key={index}>
+          {bugList.map((bug, index) => (
+            <StyledBugItem
+              onClick={() => bug.bug_id && handleBugRoute(bug.bug_id)}
+              key={index}
+            >
               <div>
                 <Typography fontWeight='regular' component='h6'>
                   {bug.title}

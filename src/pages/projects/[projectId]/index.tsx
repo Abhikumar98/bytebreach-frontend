@@ -7,6 +7,8 @@ import ProjectTimeline from '@/components/Project/ProjectDetails/ProjectTimeline
 
 import PageHeader from '@/atoms/PageHeader';
 
+import { IProject } from '@/types';
+
 const StyledProjectContainer = styled('div')`
   display: flex;
   gap: 1rem;
@@ -21,6 +23,10 @@ const StyledProjectContainer = styled('div')`
 `;
 
 const ProjectDetails = () => {
+  const [projectDetails, setProjectDetails] = React.useState<IProject | null>(
+    null
+  );
+
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />

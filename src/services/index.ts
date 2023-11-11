@@ -7,7 +7,6 @@ import {
   mockAuditorStatusResponse,
   mockBug,
   mockBugList,
-  mockClientProjectSummary,
   mockProjectData,
   mockProjectList,
   mockUserProfile,
@@ -25,7 +24,6 @@ import {
   IGenericResponse,
   IProject,
   IProjectCreateRequest,
-  IProjectSummaryResponse,
   IProjectTabStateRequest,
   IUserProfile,
 } from '@/types';
@@ -51,7 +49,6 @@ const createProjectURL = `${resourceMap.PROJECT}/create`;
 const projectListURL = `${resourceMap.PROJECT}/list`;
 
 // project details
-const clientProjectDetailsURL = `/client/summary`;
 
 // auditors quote
 const auditorQuoteURL = `${resourceMap.PROJECT}/quote`;
@@ -177,18 +174,18 @@ export const postProject = async (
   return response.data.data;
 };
 
-export const getClientProjectSummary = async (
-  projectId: number
-): Promise<IProjectSummaryResponse> => {
-  if (mockResponse) {
-    return mockClientProjectSummary;
-  }
-  const response = await axios<GenericResponse<IProjectSummaryResponse>>(
-    getRequest(`${clientProjectDetailsURL}?project_id=${projectId}`)
-  );
+// export const getClientProjectSummary = async (
+//   projectId: number
+// ): Promise<IProjectSummaryResponse> => {
+//   if (mockResponse) {
+//     return mockClientProjectSummary;
+//   }
+//   const response = await axios<GenericResponse<IProjectSummaryResponse>>(
+//     getRequest(`${clientProjectDetailsURL}?project_id=${projectId}`)
+//   );
 
-  return response.data.data;
-};
+//   return response.data.data;
+// };
 
 export const postAuditorQuoteURL = async (
   auditorQuoteRequest: IAuditorQuoteRequest
