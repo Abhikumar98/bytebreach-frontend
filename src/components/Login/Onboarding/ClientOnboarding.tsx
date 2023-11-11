@@ -1,7 +1,7 @@
 import { Divider, styled, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import Web3 from 'web3';
 
 import { defaultErrorMessage } from '@/lib/helper';
 
@@ -14,8 +14,9 @@ import Twitter from '@/assets/twitter.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
+import { postClientProfile } from '@/services';
 
-import { IClientOnboardingForm } from '@/types';
+import { AppRoutes, IClientOnboardingForm, IUserProfile } from '@/types';
 const BackButton = styled('div')`
   cursor: pointer;
   display: flex;
@@ -53,15 +54,22 @@ const ClientOnboarding = () => {
 
   const { web3auth, handleOnboardedUser, handleLogout } = useAppContext();
 
-  // const { push } = useRouter();
+  const { push } = useRouter();
 
   const handleFormSubmit = async (values: IClientOnboardingForm) => {
     try {
-      console.log({ values });
+      const clientProfileRequest: Partial<IUserProfile> = {
+        first_name: values.fullName.split(' ')[0],
+        last_name: values.fullName.split(' ')[1],
+        company_name: values.companyName,
+        website_url: values.website,
+        twitter_url: values.twitter,
+        github_url: values.github,
+      };
 
-      const web3 = new Web3(web3auth?.provider as any);
-      const accounts = await web3.eth.getAccounts();
-      handleOnboardedUser(accounts?.[0] ?? '');
+      await postClientProfile(clientProfileRequest);
+
+      push(AppRoutes.Homepage);
     } catch (error) {
       defaultErrorMessage(error);
     }

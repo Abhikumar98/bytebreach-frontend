@@ -46,7 +46,8 @@ const AuditorAuth: React.FC<{
           ? WALLET_ADAPTERS.METAMASK
           : WALLET_ADAPTERS.OPENLOGIN;
 
-      const { response, app_pub_key } = await handleWeb3AuthLogin(
+      await handleWeb3AuthLogin(
+        'auditor',
         web3auth,
         adapter,
         authProvider,
@@ -54,8 +55,6 @@ const AuditorAuth: React.FC<{
       );
 
       const userInfo = await web3auth.getUserInfo();
-
-      console.log({ userInfo });
 
       onLoginSuccess(userInfo);
     } catch (error) {

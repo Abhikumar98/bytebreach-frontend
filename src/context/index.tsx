@@ -45,7 +45,7 @@ const AppContext: React.FC<{
   const [connectedUserInfo, setConnectedUserInfo] = useState<
     (Partial<OpenloginUserInfo> & { account?: string }) | any
   >(null);
-  const [isClientUser, setIsClientUser] = useState<boolean>(true);
+  const [isClientUser, setIsClientUser] = useState<boolean>(false);
 
   const { push, pathname } = useRouter();
 

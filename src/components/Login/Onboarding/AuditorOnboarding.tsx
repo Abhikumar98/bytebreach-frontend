@@ -2,7 +2,6 @@ import { Divider, styled, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import Web3 from 'web3';
 
 import { defaultErrorMessage } from '@/lib/helper';
 
@@ -14,8 +13,9 @@ import Twitter from '@/assets/twitter.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
+import { postAuditorProfile } from '@/services';
 
-import { IAuditorOnboardingForm } from '@/types';
+import { AppRoutes, IAuditorOnboardingForm, IAuditorProfile } from '@/types';
 
 const BackButton = styled('div')`
   cursor: pointer;
@@ -64,12 +64,18 @@ const AuditorOnboarding = () => {
 
   const handleFormSubmit = async (values: IAuditorOnboardingForm) => {
     try {
-      console.log({ values });
+      const auditorProfileRequest: Partial<IAuditorProfile> = {
+        first_name: values.fullName.split(' ')[0],
+        last_name: values.fullName.split(' ')[1],
+        github_url: values.github,
+        codeareana_url: values.codearena,
+        sherlock_url: values.sherlock,
+        min_weekly_cost: values.tariff,
+        max_weekly_cost: values.tariff,
+      };
 
-      const web3 = new Web3(web3auth?.provider as any);
-      const accounts = await web3.eth.getAccounts();
-
-      handleOnboardedUser(accounts?.[0] ?? '');
+      await postAuditorProfile(auditorProfileRequest);
+      push(AppRoutes.Homepage);
     } catch (error) {
       defaultErrorMessage(error);
     }

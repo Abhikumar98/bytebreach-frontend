@@ -42,7 +42,8 @@ const ClientAuth: React.FC<{
 
       const adapter = WALLET_ADAPTERS.OPENLOGIN;
 
-      const { response, app_pub_key } = await handleWeb3AuthLogin(
+      await handleWeb3AuthLogin(
+        'client',
         web3auth,
         adapter,
         authProvider,
@@ -50,9 +51,6 @@ const ClientAuth: React.FC<{
       );
 
       const userInfo = await web3auth.getUserInfo();
-      const auth = await web3auth.authenticateUser();
-
-      console.log({ userInfo, auth, response, app_pub_key });
 
       onLoginSuccess(userInfo);
     } catch (error) {

@@ -49,13 +49,18 @@ export const isAuthenticatedRoute = (route: string) => {
 };
 import { getPublicCompressed } from '@toruslabs/eccrypto';
 
+import { login } from '@/services';
+
 export const handleWeb3AuthLogin = async (
+  clientType: 'client' | 'auditor',
   web3Auth: Web3AuthNoModal,
   adapter: string,
   authProvider: LOGIN_PROVIDER_TYPE,
   userEmail?: string
-) => {
-  const response = await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
+): Promise<{
+  app_pub_key: string;
+}> => {
+  await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
     loginProvider: authProvider,
     extraLoginOptions: {
       login_hint: userEmail,
@@ -70,8 +75,15 @@ export const handleWeb3AuthLogin = async (
     Buffer.from((app_scoped_privkey as any).padStart(64, '0'), 'hex')
   ).toString('hex');
 
-  return {
-    response,
-    app_pub_key,
-  };
+  const userInfo = await web3Auth.getUserInfo();
+
+  try {
+    await login(userInfo.idToken ?? '', app_pub_key, clientType);
+
+    return {
+      app_pub_key,
+    };
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
