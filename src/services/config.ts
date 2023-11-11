@@ -5,14 +5,14 @@ const baseAppUrl = process.env.NEXT_PUBLIC_ENVIRONMENT;
 
 console.log({ baseAppUrl });
 
-const setHeaders = () => {
+const setHeaders = (authToken?: string) => {
   const additionalHeaders: Record<string, string> = {};
 
   const cookies = new Cookies();
   const authCookie = cookies.get('token');
 
-  if (authCookie) {
-    additionalHeaders['Authorization'] = 'Bearer ' + authCookie;
+  if (authToken) {
+    additionalHeaders['Authorization'] = 'Bearer ' + authToken;
   }
 
   additionalHeaders['Content-Type'] = 'application/json';
@@ -21,7 +21,11 @@ const setHeaders = () => {
   return additionalHeaders;
 };
 
-export const postRequest = (url: string, data: any): AxiosRequestConfig => {
+export const postRequest = (
+  url: string,
+  data: any,
+  authToken?: string
+): AxiosRequestConfig => {
   const options: AxiosRequestConfig = {
     method: 'POST',
     baseURL: baseAppUrl,
@@ -32,7 +36,7 @@ export const postRequest = (url: string, data: any): AxiosRequestConfig => {
     options.data = data;
   }
 
-  options.headers = setHeaders();
+  options.headers = setHeaders(authToken);
 
   return options;
 };

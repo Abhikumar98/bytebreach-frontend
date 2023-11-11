@@ -228,10 +228,13 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
         onClose={() => handleModalOpenUpdate(false)}
         onSubmit={handleCreateModalSubmit}
       />
-      <SelectAuditorModal
-        open={selectAuditorModalOpen}
-        onClose={() => setSelectAuditorModalOpen(false)}
-      />
+      {currentActiveProject ? (
+        <SelectAuditorModal
+          open={selectAuditorModalOpen}
+          onClose={() => setSelectAuditorModalOpen(false)}
+          currentProjectId={currentActiveProject}
+        />
+      ) : null}
     </div>
   );
 };

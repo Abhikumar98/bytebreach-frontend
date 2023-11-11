@@ -1,0 +1,323 @@
+[
+  {
+    "resource": "auth",
+    "apis": [
+      {
+        "method": "POST",
+        "endpoint": "/login-social",
+        "request_header": {
+          "authorization": "id_token"
+        },
+        "request": {
+          "public_key": "string",
+          "login_type": "string(client/auditor)"
+        },
+        "response_body": {
+          "data": {
+            "is_onboarding_done": "boolean"
+          }
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/logout",
+        "request_header": "cookies",
+        "request": {},
+        "response_body": {},
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/client-profile",
+        "request_header": "cookies",
+        "request": {},
+        "response_body": {
+          "data": {
+            "first_name": "string",
+            "last_name": "string",
+            "company_name": "string",
+            "website_url": "string",
+            "twitter_url": "string",
+            "github_url": "string"
+          }
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/client-profile",
+        "request_header": "cookies",
+        "request": {
+          "first_name": "string(optional)",
+          "last_name": "string(optional)",
+          "company_name": "string(optional)",
+          "website_url": "string(optional)",
+          "twitter_url": "string(optional)",
+          "github_url": "string(optional)"
+        },
+        "response_body": {
+          "data": {
+            "first_name": "string",
+            "last_name": "string",
+            "company_name": "string",
+            "website_url": "string",
+            "twitter_url": "string",
+            "github_url": "string"
+          }
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/auditor-profile",
+        "request_header": "cookies",
+        "request": {},
+        "response_body": {
+          "first_name": "string",
+          "last_name": "string",
+          "github_url": "string",
+          "sherlock_url": "string",
+          "codeareana_url": "string",
+          "min_weekly_cost": "integer",
+          "max_weekly_cost": "integer"
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/auditor-profile",
+        "request_header": "cookies",
+        "request": {
+          "first_name": "string(optional)",
+          "last_name": "string(optional)",
+          "github_url": "string(optional)",
+          "sherlock_url": "string(optional)",
+          "codeareana_url": "string(optional)",
+          "min_weekly_cost": "integer(optional)",
+          "max_weekly_cost": "integer(optional)"
+        },
+        "response_body": {
+          "data": {
+            "first_name": "string",
+            "last_name": "string",
+            "github_url": "string",
+            "sherlock_url": "string",
+            "codeareana_url": "string",
+            "min_weekly_cost": "integer",
+            "max_weekly_cost": "integer"
+          }
+        },
+        "response_header": "cookies"
+      }
+    ]
+  },
+  {
+    "resource": "project",
+    "apis": [
+      {
+        "method": "POST",
+        "endpoint": "/create",
+        "request_header": "cookies",
+        "request": {
+          "title": "string",
+          "code_link": "string",
+          "category": "integer",
+          "start_date": "string",
+          "min_budget": "integer",
+          "max_budget": "integer"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/list",
+        "request_header": "cookies",
+        "request": {
+          "project_type": "string[requests/ongoing/done]"
+        },
+        "response_body": {
+          "data": [
+            {
+              "project_id": "integer",
+              "project_title": "string",
+              "code_link": "string",
+              "status": "string"
+            }
+          ]
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/quote",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer",
+          "quotation_time": "integer",
+          "quotation_cost": "integer",
+          "quote_action": "string(accept/reject)"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/auditor-recommendation",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer"
+        },
+        "response_body": {
+          "data": [
+            {
+              "auditor_id": "integer",
+              "first_name": "string",
+              "last_name": "string",
+              "min_weekly_cost": "integer",
+              "max_weekly_cost": "integer"
+            }
+          ]
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/select-recommendation",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer",
+          "auditor_ids": "integer[]"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/auditor-status",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer"
+        },
+        "response_body": {
+          "data": [
+            {
+              "auditor_id": "integer",
+              "first_name": "string",
+              "last_name": "string",
+              "state": "string",
+              "quotation_time": "integer",
+              "quotation_cost": "integer"
+            }
+          ]
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/auditor-confirmation",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer",
+          "auditor_ids": "integer[]"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      }
+    ]
+  },
+  {
+    "resource": "project/bug",
+    "apis": [
+      {
+        "method": "POST",
+        "endpoint": "/create",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer",
+          "risk_rating": "string[low/medium/high]",
+          "title": "string",
+          "code_section_link": "string",
+          "description": "string"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/list",
+        "request_header": "cookies",
+        "request": {
+          "project_id": "integer"
+        },
+        "response_body": {
+          "data": [
+            {
+              "bug_id": "integer",
+              "title": "string",
+              "description": "string",
+              "risk_rating": "string",
+              "first_name": "string",
+              "last_name": "string"
+            }
+          ]
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "GET",
+        "endpoint": "/detail",
+        "request_header": "cookies",
+        "request": {
+          "bug_id": "integer"
+        },
+        "response_body": {
+          "data": {
+            "title": "string",
+            "description": "string",
+            "risk_rating": "string",
+            "code_section_link": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "user_id": "integer",
+            "comments": [
+              {
+                "comment_id": "integer",
+                "comment": "string",
+                "user_id": "string",
+                "first_name": "string",
+                "last_name": "string",
+                "created_at": "string"
+              }
+            ]
+          }
+        },
+        "response_header": "cookies"
+      },
+      {
+        "method": "POST",
+        "endpoint": "/comment",
+        "request_header": "cookies",
+        "request": {
+          "bug_id": "integer",
+          "comment": "string"
+        },
+        "response_body": {
+          "success": true
+        },
+        "response_header": "cookies"
+      }
+    ]
+  }
+]

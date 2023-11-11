@@ -25,7 +25,7 @@ interface TableProps<T> {
   data: T[];
   columns: Column<T>[];
   isSelectable?: boolean;
-  onSelectionChange?: (selectedIndices: number[]) => void;
+  onSelectionChange?: (selectedIndices: T[]) => void;
   onSort?: (dataIndex: keyof T, order: 'asc' | 'desc') => void;
 }
 
@@ -51,7 +51,7 @@ export default function TableComponent<T>({
     if (event.target.checked) {
       const newSelectedIndices = data.map((_, index) => index);
       setSelectedIndices(newSelectedIndices);
-      onSelectionChange?.(newSelectedIndices);
+      onSelectionChange?.(data);
     } else {
       setSelectedIndices([]);
       onSelectionChange?.([]);
@@ -69,7 +69,14 @@ export default function TableComponent<T>({
     }
 
     setSelectedIndices(newSelectedIndices);
-    onSelectionChange?.(newSelectedIndices);
+
+    // return selected elements based on indices
+
+    const selectedElementFromIndicies = newSelectedIndices.map(
+      (i) => data[i]
+    ) as T[];
+
+    onSelectionChange?.(selectedElementFromIndicies);
   };
 
   const isSelected = (index: number) => selectedIndices.indexOf(index) !== -1;

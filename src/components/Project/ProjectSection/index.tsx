@@ -2,6 +2,8 @@ import { styled } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ProjectStatusPill from '@/components/Project/ProjectSection/ProjectStatusPill';
+
 import { AppRoutes, IProject } from '@/types';
 
 const StyledProjectSectionHeader = styled('div')`
@@ -50,7 +52,9 @@ const ProjectSection: React.FC<{
           onClick={() => handleProjectRoute(project.project_id.toString())}
         >
           <div>{project.project_title}</div>
-          <div>{project.state}</div>
+          <div>
+            <ProjectStatusPill status={project.status} />
+          </div>
         </StyledProjectSectionItem>
       ))}
     </div>

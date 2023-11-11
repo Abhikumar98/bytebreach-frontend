@@ -1,12 +1,24 @@
 import axios from 'axios';
 
 import { getRequest, postRequest } from '@/services/config';
+import {
+  mockAuditorProfile,
+  mockAuditorRecommendation,
+  mockAuditorStatusResponse,
+  mockBug,
+  mockBugList,
+  mockClientProjectSummary,
+  mockProjectData,
+  mockProjectList,
+  mockUserProfile,
+} from '@/services/mockData';
 
 import {
   GenericResponse,
-  IAuditorProjectStateRequest,
+  IAuditorProfile,
   IAuditorQuoteRequest,
   IAuditorRecommendationProfile,
+  IAuditorStatusResponse,
   IBug,
   IBugListItem,
   ICreateBugRequest,
@@ -14,51 +26,74 @@ import {
   IProject,
   IProjectCreateRequest,
   IProjectSummaryResponse,
+  IProjectTabStateRequest,
   IUserProfile,
 } from '@/types';
 
 const resourceMap = {
   AUTH: '/auth',
   PROJECT: '/project',
+  BUG: '/project/bug',
 };
 
+const mockResponse = true;
+
 // auth
-const loginURL = '/login-social';
-const logoutURL = '/logout';
+const loginURL = `${resourceMap.AUTH}/login-social`;
+const logoutURL = `${resourceMap.AUTH}/logout`;
 
 // profile
-const clientProfileURL = '/client-profile';
-const auditorProfileURL = '/auditor-profile';
+const clientProfileURL = `${resourceMap.AUTH}/client-profile`;
+const auditorProfileURL = `${resourceMap.AUTH}/auditor-profile`;
 
 // project
-const createProjectURL = '/create';
-const projectListURL = '/list';
+const createProjectURL = `${resourceMap.PROJECT}/create`;
+const projectListURL = `${resourceMap.PROJECT}/list`;
 
 // project details
-const clientProjectDetailsURL = '/client/summary';
+const clientProjectDetailsURL = `/client/summary`;
 
 // auditors quote
-const auditorQuoteURL = '/quote';
+const auditorQuoteURL = `${resourceMap.PROJECT}/quote`;
 
 // bug
-const createBugURL = '/bug';
-const listBugURL = '/list';
-const bugDetailsURL = '/detail';
-const bugCommentURL = '/comment';
+const createBugURL = `${resourceMap.BUG}/create`;
+const listBugURL = `${resourceMap.BUG}/list`;
+const bugDetailsURL = `${resourceMap.BUG}/detail`;
+const bugCommentURL = `/comment`;
 
-const auditorRecommendationURL = '/auditor-recommendation';
-const auditorStatusURL = '/auditor-status';
-const auditorConfirmationURL = '/auditor-confirmation';
+const auditorRecommendationURL = `${resourceMap.PROJECT}/auditor-recommendation`;
+const selectedAuditorRecommendationURL = `${resourceMap.PROJECT}/select-recommendation`;
+const auditorStatusURL = `${resourceMap.PROJECT}/auditor-status`;
+const auditorConfirmationURL = `${resourceMap.PROJECT}/auditor-confirmation`;
 
-export const login = async (idToken: string) => {
+export const login = async (
+  idToken: string,
+  publicKey: string,
+  loginType: 'client' | 'auditor'
+): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return {
+      success: true,
+    };
+  }
   const response = await axios<GenericResponse<IGenericResponse>>(
-    postRequest(loginURL, { idToken })
+    postRequest(
+      loginURL,
+      { public_key: publicKey, login_type: loginType },
+      idToken
+    )
   );
 
   return response.data.data;
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return {
+      success: true,
+    };
+  }
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(logoutURL, {})
   );
@@ -66,7 +101,10 @@ export const logout = async () => {
   return response.data.data;
 };
 
-export const getClientProfile = async () => {
+export const getClientProfile = async (): Promise<IUserProfile> => {
+  if (mockResponse) {
+    return mockUserProfile;
+  }
   const response = await axios<GenericResponse<IUserProfile>>(
     getRequest(clientProfileURL)
   );
@@ -76,7 +114,10 @@ export const getClientProfile = async () => {
 
 export const postClientProfile = async (
   clientProfile: Partial<IUserProfile>
-) => {
+): Promise<IUserProfile> => {
+  if (mockResponse) {
+    return mockUserProfile;
+  }
   const response = await axios<GenericResponse<IUserProfile>>(
     postRequest(clientProfileURL, clientProfile)
   );
@@ -84,8 +125,11 @@ export const postClientProfile = async (
   return response.data.data;
 };
 
-export const getAuditorProfile = async () => {
-  const response = await axios<GenericResponse<IUserProfile>>(
+export const getAuditorProfile = async (): Promise<IAuditorProfile> => {
+  if (mockResponse) {
+    return mockAuditorProfile;
+  }
+  const response = await axios<GenericResponse<IAuditorProfile>>(
     getRequest(auditorProfileURL)
   );
 
@@ -93,9 +137,12 @@ export const getAuditorProfile = async () => {
 };
 
 export const postAuditorProfile = async (
-  auditorProfile: Partial<IUserProfile>
-) => {
-  const response = await axios<GenericResponse<IUserProfile>>(
+  auditorProfile: Partial<IAuditorProfile>
+): Promise<IAuditorProfile> => {
+  if (mockResponse) {
+    return mockAuditorProfile;
+  }
+  const response = await axios<GenericResponse<IAuditorProfile>>(
     postRequest(auditorProfileURL, auditorProfile)
   );
 
@@ -103,8 +150,12 @@ export const postAuditorProfile = async (
 };
 
 export const getProjectList = async (
-  projectState: IAuditorProjectStateRequest
-) => {
+  projectState: IProjectTabStateRequest
+): Promise<IProject[]> => {
+  if (mockResponse) {
+    return mockProjectList;
+  }
+
   const response = await axios<GenericResponse<IProject[]>>(
     getRequest(`${projectListURL}?project_type=${projectState}`)
   );
@@ -112,7 +163,13 @@ export const getProjectList = async (
   return response.data.data;
 };
 
-export const postProject = async (project: IProjectCreateRequest) => {
+export const postProject = async (
+  project: IProjectCreateRequest
+): Promise<IProject> => {
+  if (mockResponse) {
+    return mockProjectData;
+  }
+
   const response = await axios<GenericResponse<IProject>>(
     postRequest(createProjectURL, project)
   );
@@ -120,7 +177,12 @@ export const postProject = async (project: IProjectCreateRequest) => {
   return response.data.data;
 };
 
-export const getClientProjectSummary = async (projectId: number) => {
+export const getClientProjectSummary = async (
+  projectId: number
+): Promise<IProjectSummaryResponse> => {
+  if (mockResponse) {
+    return mockClientProjectSummary;
+  }
   const response = await axios<GenericResponse<IProjectSummaryResponse>>(
     getRequest(`${clientProjectDetailsURL}?project_id=${projectId}`)
   );
@@ -130,7 +192,10 @@ export const getClientProjectSummary = async (projectId: number) => {
 
 export const postAuditorQuoteURL = async (
   auditorQuoteRequest: IAuditorQuoteRequest
-) => {
+): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return {};
+  }
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(auditorQuoteURL, auditorQuoteRequest)
   );
@@ -138,7 +203,13 @@ export const postAuditorQuoteURL = async (
   return response.data.data;
 };
 
-export const getAuditorRecommendation = async (projectId: number) => {
+export const getAuditorRecommendation = async (
+  projectId: number
+): Promise<IAuditorRecommendationProfile[]> => {
+  if (mockResponse) {
+    return mockAuditorRecommendation;
+  }
+
   const response = await axios<
     GenericResponse<IAuditorRecommendationProfile[]>
   >(getRequest(`${auditorRecommendationURL}?project_id=${projectId}`));
@@ -146,31 +217,68 @@ export const getAuditorRecommendation = async (projectId: number) => {
   return response.data.data;
 };
 
-export const getAuditorStatus = async (projectId: number) => {
-  const response = await axios<GenericResponse<IAuditorProjectStateRequest>>(
+export const postSelectRecommendation = async (
+  auditorIds: number[]
+): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return {};
+  }
+  const response = await axios<GenericResponse<IGenericResponse>>(
+    postRequest(selectedAuditorRecommendationURL, { auditor_ids: auditorIds })
+  );
+
+  return response.data.data;
+};
+
+export const getAuditorStatus = async (
+  projectId: number
+): Promise<IAuditorStatusResponse> => {
+  if (mockResponse) {
+    return mockAuditorStatusResponse;
+  }
+  const response = await axios<GenericResponse<IAuditorStatusResponse>>(
     getRequest(`${auditorStatusURL}?project_id=${projectId}`)
   );
 
   return response.data.data;
 };
 
-export const postAuditorConfirmation = async (projectId: number) => {
+export const postAuditorConfirmation = async (
+  projectId: number,
+  auditorIds: number[]
+): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return {
+      success: true,
+    };
+  }
   const response = await axios<GenericResponse<IGenericResponse>>(
-    postRequest(auditorConfirmationURL, { project_id: projectId })
+    postRequest(auditorConfirmationURL, {
+      project_id: projectId,
+      auditor_ids: auditorIds,
+    })
   );
 
   return response.data.data;
 };
 
-export const postBug = async (bug: ICreateBugRequest) => {
-  const response = await axios<GenericResponse<IGenericResponse>>(
+export const postBug = async (bug: ICreateBugRequest): Promise<IBug> => {
+  if (mockResponse) {
+    return mockBug;
+  }
+  const response = await axios<GenericResponse<IBug>>(
     postRequest(createBugURL, bug)
   );
 
   return response.data.data;
 };
 
-export const getBugList = async (projectId: number) => {
+export const getBugList = async (
+  projectId: number
+): Promise<IBugListItem[]> => {
+  if (mockResponse) {
+    return mockBugList;
+  }
   const response = await axios<GenericResponse<IBugListItem[]>>(
     getRequest(`${listBugURL}?project_id=${projectId}`)
   );
@@ -178,7 +286,10 @@ export const getBugList = async (projectId: number) => {
   return response.data.data;
 };
 
-export const getBugDetails = async (bugId: number) => {
+export const getBugDetails = async (bugId: number): Promise<IBug> => {
+  if (mockResponse) {
+    return mockBug;
+  }
   const response = await axios<GenericResponse<IBug>>(
     getRequest(`${bugDetailsURL}?bug_id=${bugId}`)
   );
@@ -186,7 +297,13 @@ export const getBugDetails = async (bugId: number) => {
   return response.data.data;
 };
 
-export const postBugComment = async (bugId: number, comment: string) => {
+export const postBugComment = async (
+  bugId: number,
+  comment: string
+): Promise<IGenericResponse> => {
+  if (mockResponse) {
+    return { success: true };
+  }
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(bugCommentURL, { bug_id: bugId, comment })
   );

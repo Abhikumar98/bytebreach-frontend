@@ -1,10 +1,13 @@
 import { Autocomplete, AutocompleteProps } from '@mui/material';
 import { TextField } from '@mui/material';
-import React, { FC } from 'react';
+import React from 'react';
 
-type AutoCompletePropsType = AutocompleteProps<string, false, false, false>;
+type AutoCompletePropsType<T> = AutocompleteProps<T, false, false, false>;
 
-const AutoComplete: FC<Partial<AutoCompletePropsType>> = ({ options }) => {
+const AutoComplete = <T,>({
+  options,
+  ...props
+}: Partial<AutoCompletePropsType<T>>) => {
   return (
     <Autocomplete
       disablePortal
@@ -12,6 +15,7 @@ const AutoComplete: FC<Partial<AutoCompletePropsType>> = ({ options }) => {
       renderInput={(params) => (
         <TextField {...params} placeholder='Search for auditors' />
       )}
+      {...props}
     />
   );
 };

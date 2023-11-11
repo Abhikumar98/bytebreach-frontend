@@ -154,8 +154,8 @@ export interface IProjectCreateRequest {
   title: string;
   code_link: string;
   category: IProjectCategory;
-  min_cost: number;
-  max_cost: number;
+  min_budget: number;
+  max_budget: number;
   start_date: string;
 }
 
@@ -168,14 +168,23 @@ export enum IProjectStatus {
   FINAL_PAYMENT = 6,
 }
 
+export const projectStatusText = {
+  [IProjectStatus.AUDITOR_SELECTION]: 'Auditor Selection',
+  [IProjectStatus.AUDITOR_CONFIRMATION]: 'Auditor Confirmation',
+  [IProjectStatus.PARITAL_PAYMENT]: 'Partial Payment',
+  [IProjectStatus.AUDIT_IN_PROGRESS]: 'Audit in Progress',
+  [IProjectStatus.MITIGATION_REVIEW]: 'Mitigation Review',
+  [IProjectStatus.FINAL_PAYMENT]: 'Final Payment',
+};
+
 export interface IProject {
   project_id: number;
   project_title: string;
   code_link: string;
-  state: IProjectStatus;
+  status: IProjectStatus;
 }
 
-export type IAuditorProjectStateRequest = 'requested' | 'ongoing' | 'done';
+export type IProjectTabStateRequest = 'requested' | 'ongoing' | 'done';
 
 export type IClientProjectStateRequest = 'ongoing' | 'done';
 
@@ -183,12 +192,15 @@ export interface IAuditorQuoteRequest {
   project_id: number;
   quotation_time: number;
   quotation_cost: number;
+  quote_action: 'accept' | 'reject';
 }
 
 export interface IAuditorRecommendationProfile {
   first_name: string;
   last_name: string;
   auditor_id: number;
+  min_weekly_cost: number;
+  max_weekly_cost: number;
 }
 
 export interface IGenericResponse {
@@ -201,7 +213,6 @@ export interface IProjectSummaryResponse {
 }
 
 export interface IAuditorStatusResponse {
-  name: string;
   auditor_id: number;
   first_name: string;
   last_name: string;
@@ -213,13 +224,16 @@ export interface IAuditorStatusResponse {
 export type IBugRiskRating = 'low' | 'medium' | 'high';
 
 export interface IBug {
-  bug_id: number;
+  first_name: string;
+  last_name: string;
+  bug_id?: number;
   project_id: number;
   title: string;
   description: string;
   risk_rating: IBugRiskRating;
   code_section_link: string;
   comments: Comment[];
+  user_id: number;
 }
 
 export interface IBugComment {

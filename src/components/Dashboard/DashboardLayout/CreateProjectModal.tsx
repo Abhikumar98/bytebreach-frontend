@@ -65,8 +65,8 @@ const CreateProjectModal: React.FC<{
         code_link: values.githubLink,
         category: selectedCategory,
         start_date: selectedDate.toISOString(),
-        min_cost: sliderValue[0],
-        max_cost: sliderValue[1],
+        min_budget: sliderValue[0],
+        max_budget: sliderValue[1],
       };
 
       const response = await postProject(createProjectRequest);
