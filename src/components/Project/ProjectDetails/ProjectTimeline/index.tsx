@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import BackButton from '@/assets/arrowLeft.svg';
+import Timeline from '@/atoms/Timeline';
+
+import { AppRoutes, clientProjectTimelineSteps, IProjectStatus } from '@/types';
 
 const StyledProjectTimeline = styled('div')`
   svg {
@@ -30,20 +33,33 @@ const StyledProjectTimeline = styled('div')`
 
 const ProjectTimeline: React.FC<{
   projectName: string;
-}> = ({ projectName }) => {
-  const { back } = useRouter();
+  projectStatus: IProjectStatus;
+}> = ({ projectName, projectStatus }) => {
+  const { push } = useRouter();
+
+  const backToProjects = () => {
+    push(AppRoutes.Homepage);
+  };
 
   return (
     <StyledProjectTimeline>
       <div className='back-container flex items-center gap-2'>
-        <div onClick={back} className='back-button-container cursor-pointer'>
+        <div
+          onClick={backToProjects}
+          className='back-button-container cursor-pointer'
+        >
           <BackButton />
         </div>
         <Typography variant='h5' fontWeight='medium'>
           {projectName}
         </Typography>
       </div>
-      <div className='timeline-container'>Timeline</div>
+      <div className='timeline-container'>
+        <Timeline
+          steps={clientProjectTimelineSteps}
+          currentValue={projectStatus}
+        />
+      </div>
     </StyledProjectTimeline>
   );
 };

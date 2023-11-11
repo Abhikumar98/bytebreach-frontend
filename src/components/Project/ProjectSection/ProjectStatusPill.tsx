@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import React, { FC } from 'react';
 
-import { IProjectStatus, projectStatusText } from '@/types';
+import { IProjectStatus, clientProjectStatusText } from '@/types';
 
 const StyledProjectStatusPill = styled('div', {
   shouldForwardProp: (prop) => prop !== 'status',
@@ -21,7 +21,7 @@ const ProjectStatusPill: FC<{
 }> = ({ status }) => {
   return (
     <StyledProjectStatusPill status={status}>
-      {projectStatusText[status]}
+      {clientProjectStatusText[status]}
     </StyledProjectStatusPill>
   );
 };

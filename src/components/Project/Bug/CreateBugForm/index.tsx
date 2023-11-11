@@ -6,14 +6,20 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import Markdown from 'react-markdown';
 
-import useTheme from '@/hooks/useTheme';
+import { defaultErrorMessage } from '@/lib/helper';
 
 import BackButton from '@/assets/arrowLeft.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import Select, { IOption } from '@/atoms/Select';
+import { postBug } from '@/services';
 
-import { IBugRiskRating, ICreateBugForm } from '@/types';
+import {
+  AppRoutes,
+  IBugRiskRating,
+  ICreateBugForm,
+  ICreateBugRequest,
+} from '@/types';
 
 const StyledCreateBugForm = styled('div')`
   background: ${({ theme }) => theme.palette.background.default};
@@ -47,7 +53,10 @@ const StyledCreateBugForm = styled('div')`
 `;
 
 const CreateBugForm = () => {
-  const theme = useTheme();
+  const {
+    query: { projectId },
+    push,
+  } = useRouter();
 
   const {
     register,
@@ -87,13 +96,36 @@ const CreateBugForm = () => {
 
   const [bugRisk, setBugRisk] = React.useState<IBugRiskRating>('low');
 
-  const handleFormSubmit = (values: ICreateBugForm) => {
-    console.log({ values });
+  const handleFormSubmit = async (values: ICreateBugForm) => {
+    try {
+      const createBugRequest: ICreateBugRequest = {
+        title: values.title,
+        code_section_link: values.codeLink,
+        description: values.description,
+        risk_rating: bugRisk,
+        project_id: Number(projectId),
+      };
+
+      const response = await postBug(createBugRequest);
+
+      reset();
+      push(
+        AppRoutes.BugDetails.replace(
+          '{bugId}',
+          String(response.bug_id)
+        ).replace('{projectId}', projectId as string)
+      );
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
   };
+
+  const backToProjects = () =>
+    push(AppRoutes.ProjectDetails.replace('{projectId}', String(projectId)));
 
   return (
     <StyledCreateBugForm>
-      <div onClick={back} className='back-button-container'>
+      <div onClick={backToProjects} className='back-button-container'>
         <BackButton />
       </div>
       <Typography variant='h5' fontWeight='medium'>

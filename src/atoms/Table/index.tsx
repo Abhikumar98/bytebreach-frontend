@@ -19,6 +19,7 @@ export interface Column<T> {
   render?: (value: any, record: T, index: number) => React.ReactNode;
   align?: 'left' | 'right' | 'center';
   width?: string; // optional width for each column
+  disabled?: (record: T) => boolean;
 }
 
 interface TableProps<T> {
@@ -48,8 +49,12 @@ export default function TableComponent<T>({
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
+
     if (event.target.checked) {
-      const newSelectedIndices = data.map((_, index) => index);
+      const newSelectedIndices = data
+        .filter((_, index) => !columns[0]?.disabled?.(data[index]))
+        .map((_, index) => index);
       setSelectedIndices(newSelectedIndices);
       onSelectionChange?.(data);
     } else {
@@ -81,6 +86,10 @@ export default function TableComponent<T>({
 
   const isSelected = (index: number) => selectedIndices.indexOf(index) !== -1;
 
+  const selectableIndices = data
+    .map((_, index) => index)
+    .filter((index) => !columns[0]?.disabled?.(data[index]));
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 750 }} size='medium'>
@@ -94,7 +103,8 @@ export default function TableComponent<T>({
                     selectedIndices.length < data.length
                   }
                   checked={
-                    data.length > 0 && selectedIndices.length === data.length
+                    data.length > 0 &&
+                    selectedIndices.length === selectableIndices.length
                   }
                   onChange={handleSelectAllClick}
                 />
@@ -145,6 +155,7 @@ export default function TableComponent<T>({
                     <Checkbox
                       checked={isSelected(index)}
                       onChange={() => handleSelect(index)}
+                      disabled={columns[0]?.disabled?.(row)}
                     />
                   </TableCell>
                 )}

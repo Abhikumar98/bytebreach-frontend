@@ -1,4 +1,5 @@
 import {
+  IAuditorConfirmationStatus,
   IAuditorProfile,
   IAuditorRecommendationProfile,
   IAuditorStatusResponse,
@@ -99,7 +100,7 @@ export const mockProjectData: IProject = {
   project_id: 123,
   project_title: 'Test 1 project_title',
   code_link: 'Test 1 code_link',
-  status: IProjectStatus.PARITAL_PAYMENT,
+  status: IProjectStatus.AUDITOR_CONFIRMATION,
 };
 
 export const mockClientProjectSummary: IProjectSummaryResponse = {
@@ -107,14 +108,32 @@ export const mockClientProjectSummary: IProjectSummaryResponse = {
   code_link: 'test code_link',
 };
 
-export const mockAuditorStatusResponse: IAuditorStatusResponse = {
-  auditor_id: 1234,
-  first_name: 'test first_name',
-  last_name: 'test last_name',
-  state: 'test state',
-  quotation_time: 123,
-  quotation_cost: 123,
-};
+export const mockAuditorStatusResponse: IAuditorStatusResponse[] = [
+  {
+    auditor_id: 1234,
+    first_name: 'test first_name',
+    last_name: 'test last_name',
+    state: IAuditorConfirmationStatus.PENDING,
+    quotation_time: 123,
+    quotation_cost: 123,
+  },
+  {
+    auditor_id: 1234,
+    first_name: 'test first_name',
+    last_name: 'test last_name',
+    state: IAuditorConfirmationStatus.QUOTATION_SUBMITTED,
+    quotation_time: 123,
+    quotation_cost: 123,
+  },
+  {
+    auditor_id: 1234,
+    first_name: 'test first_name',
+    last_name: 'test last_name',
+    state: IAuditorConfirmationStatus.QUOTATION_REJECTED,
+    quotation_time: 123,
+    quotation_cost: 123,
+  },
+];
 
 export const mockComment: IBugComment = {
   comment_id: 123,

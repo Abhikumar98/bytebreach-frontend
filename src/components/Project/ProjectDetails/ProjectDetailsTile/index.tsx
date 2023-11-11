@@ -1,5 +1,7 @@
 import { styled, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import React, { FC } from 'react';
+
+import { IProject } from '@/types';
 
 const StyledProjectDetailsTile = styled('div')`
   box-shadow: ${({ theme }) => theme.shadows[2]};
@@ -20,7 +22,9 @@ const StyledProjectDetailsTile = styled('div')`
   }
 `;
 
-const ProjectDetailsTile = () => {
+const ProjectDetailsTile: FC<{
+  projectDetails: IProject | null;
+}> = ({ projectDetails }) => {
   const theme = useTheme();
 
   return (
@@ -29,13 +33,15 @@ const ProjectDetailsTile = () => {
         <Typography fontWeight='bold' component='h5'>
           Project Title
         </Typography>
-        <Typography variant='subtitle1'>Actual project name</Typography>
+        <Typography variant='subtitle1'>
+          {projectDetails?.project_title}
+        </Typography>
       </div>
       <div className='mb-4'>
         <Typography fontWeight='bold' component='h5'>
           Code Link
         </Typography>
-        <Typography variant='subtitle1'>Actual code link</Typography>
+        <Typography variant='subtitle1'>{projectDetails?.code_link}</Typography>
       </div>
       <div className='mb-4'>
         <Typography fontWeight='bold' component='h5'>

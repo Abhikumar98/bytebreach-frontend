@@ -1,13 +1,20 @@
 import { styled } from '@mui/material';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { ReactNode, useEffect } from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import BugContainer from '@/components/Project/Bug/BugContainer';
+import AuditorQuotation from '@/components/Project/ProjectDetails/AuditorQuotation';
+import AuditorTable from '@/components/Project/ProjectDetails/AuditorTable';
+import PartialPayment from '@/components/Project/ProjectDetails/PartialPaymentSection';
 import ProjectDetailsTile from '@/components/Project/ProjectDetails/ProjectDetailsTile';
 import ProjectTimeline from '@/components/Project/ProjectDetails/ProjectTimeline';
 
 import PageHeader from '@/atoms/PageHeader';
+import { getProjectDetails } from '@/services';
 
-import { IProject } from '@/types';
+import { IProject, IProjectStatus } from '@/types';
 
 const StyledProjectContainer = styled('div')`
   display: flex;
@@ -17,26 +24,76 @@ const StyledProjectContainer = styled('div')`
   .project-details-tile {
     width: calc(100% / 3);
   }
-  .bug-container {
+  .section-container {
     width: calc((100% / 3) * 2);
   }
 `;
 
 const ProjectDetails = () => {
+  const {
+    query: { projectId },
+  } = useRouter();
+
   const [projectDetails, setProjectDetails] = React.useState<IProject | null>(
     null
   );
 
+  const handleFetchProjectDetails = async () => {
+    try {
+      const response = await getProjectDetails(projectId as string);
+
+      setProjectDetails(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchProjectDetails();
+  }, []);
+
+  const clientProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
+    [IProjectStatus.AUDITOR_SELECTION]: (
+      <div className='flex items-center gap-2' />
+    ),
+    [IProjectStatus.AUDITOR_CONFIRMATION]: (
+      <AuditorTable handleUpdateProject={handleFetchProjectDetails} />
+    ),
+    [IProjectStatus.PARITAL_PAYMENT]: <PartialPayment />,
+    [IProjectStatus.AUDIT_IN_PROGRESS]: <BugContainer />,
+    [IProjectStatus.MITIGATION_REVIEW]: <BugContainer />,
+    [IProjectStatus.FINAL_PAYMENT]: <BugContainer />,
+  };
+
+  const auditorProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
+    [IProjectStatus.AUDITOR_SELECTION]: (
+      <div className='flex items-center gap-2' />
+    ),
+    [IProjectStatus.AUDITOR_CONFIRMATION]: (
+      <AuditorQuotation handleUpdateProject={handleFetchProjectDetails} />
+    ),
+    [IProjectStatus.PARITAL_PAYMENT]: <PartialPayment />,
+    [IProjectStatus.AUDIT_IN_PROGRESS]: <BugContainer />,
+    [IProjectStatus.MITIGATION_REVIEW]: <BugContainer />,
+    [IProjectStatus.FINAL_PAYMENT]: <BugContainer />,
+  };
+
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
-      <ProjectTimeline projectName='Test project name' />
+      <ProjectTimeline
+        projectStatus={
+          projectDetails?.status ?? IProjectStatus.AUDITOR_SELECTION
+        }
+        projectName={projectDetails?.project_title ?? ''}
+      />
       <StyledProjectContainer>
-        <div className='bug-container'>
-          <BugContainer />
+        <div className='section-container'>
+          {projectDetails?.status &&
+            auditorProjectSectionStatusMap[projectDetails?.status]}
         </div>
         <div className='project-details-tile'>
-          <ProjectDetailsTile />
+          <ProjectDetailsTile projectDetails={projectDetails} />
         </div>
       </StyledProjectContainer>
     </div>

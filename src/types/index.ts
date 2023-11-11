@@ -3,6 +3,7 @@ import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 import { ReactNode } from 'react';
 
 import { IOption } from '@/atoms/Select';
+import { TimelineStep } from '@/atoms/Timeline';
 
 export enum AppRoutes {
   Homepage = '/',
@@ -168,7 +169,7 @@ export enum IProjectStatus {
   FINAL_PAYMENT = 6,
 }
 
-export const projectStatusText = {
+export const clientProjectStatusText = {
   [IProjectStatus.AUDITOR_SELECTION]: 'Auditor Selection',
   [IProjectStatus.AUDITOR_CONFIRMATION]: 'Auditor Confirmation',
   [IProjectStatus.PARITAL_PAYMENT]: 'Partial Payment',
@@ -176,6 +177,69 @@ export const projectStatusText = {
   [IProjectStatus.MITIGATION_REVIEW]: 'Mitigation Review',
   [IProjectStatus.FINAL_PAYMENT]: 'Final Payment',
 };
+
+export const auditorProjectStatusText = {
+  [IProjectStatus.AUDITOR_SELECTION]: 'Client Request',
+  [IProjectStatus.AUDITOR_CONFIRMATION]: 'Client Confirmation',
+  [IProjectStatus.PARITAL_PAYMENT]: 'Partial Payment',
+  [IProjectStatus.AUDIT_IN_PROGRESS]: 'Audit in Progress',
+  [IProjectStatus.MITIGATION_REVIEW]: 'Final Report',
+  [IProjectStatus.FINAL_PAYMENT]: 'Final Payment',
+};
+
+export const clientProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
+  {
+    label: 'Auditor Selection',
+    value: IProjectStatus.AUDITOR_SELECTION,
+  },
+  {
+    label: 'Auditor Confirmation',
+    value: IProjectStatus.AUDITOR_CONFIRMATION,
+  },
+  {
+    label: 'Partial Payment',
+    value: IProjectStatus.PARITAL_PAYMENT,
+  },
+  {
+    label: 'Audit in Progress',
+    value: IProjectStatus.AUDIT_IN_PROGRESS,
+  },
+  {
+    label: 'Mitigation Review',
+    value: IProjectStatus.MITIGATION_REVIEW,
+  },
+  {
+    label: 'Final Payment',
+    value: IProjectStatus.FINAL_PAYMENT,
+  },
+];
+
+export const auditorProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
+  {
+    label: 'Client Request',
+    value: IProjectStatus.AUDITOR_SELECTION,
+  },
+  {
+    label: 'Client Confirmation',
+    value: IProjectStatus.AUDITOR_CONFIRMATION,
+  },
+  {
+    label: 'Partial Payment',
+    value: IProjectStatus.PARITAL_PAYMENT,
+  },
+  {
+    label: 'Audit in Progress',
+    value: IProjectStatus.AUDIT_IN_PROGRESS,
+  },
+  {
+    label: 'Final Report',
+    value: IProjectStatus.MITIGATION_REVIEW,
+  },
+  {
+    label: 'Final Payment',
+    value: IProjectStatus.FINAL_PAYMENT,
+  },
+];
 
 export interface IProject {
   project_id: number;
@@ -212,14 +276,30 @@ export interface IProjectSummaryResponse {
   code_link: string;
 }
 
+export enum IAuditorConfirmationStatus {
+  PENDING = 1,
+  QUOTATION_SUBMITTED = 2,
+  QUOTATION_REJECTED = 3,
+  CLIENT_ACCEPTED = 4,
+  CLIENT_REJECTED = 5,
+}
+
 export interface IAuditorStatusResponse {
   auditor_id: number;
   first_name: string;
   last_name: string;
-  state: string;
+  state: IAuditorConfirmationStatus;
   quotation_time: number;
   quotation_cost: number;
 }
+
+export const auditorStatusLabel = {
+  [IAuditorConfirmationStatus.PENDING]: 'Pending',
+  [IAuditorConfirmationStatus.QUOTATION_SUBMITTED]: 'Quotation Submitted',
+  [IAuditorConfirmationStatus.QUOTATION_REJECTED]: 'Quotation Rejected',
+  [IAuditorConfirmationStatus.CLIENT_ACCEPTED]: 'Client Accepted',
+  [IAuditorConfirmationStatus.CLIENT_REJECTED]: 'Client Rejected',
+};
 
 export type IBugRiskRating = 'low' | 'medium' | 'high';
 
@@ -245,7 +325,10 @@ export interface IBugComment {
   created_at: string;
 }
 
-export type ICreateBugRequest = Omit<IBug, 'comments' | 'bug_id'>;
+export type ICreateBugRequest = Pick<
+  IBug,
+  'title' | 'project_id' | 'description' | 'code_section_link' | 'risk_rating'
+>;
 
 export type IBugListItem = Omit<
   IBug,

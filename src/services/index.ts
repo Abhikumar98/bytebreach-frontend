@@ -187,11 +187,13 @@ export const postProject = async (
 //   return response.data.data;
 // };
 
-export const postAuditorQuoteURL = async (
+export const postAuditorQuote = async (
   auditorQuoteRequest: IAuditorQuoteRequest
 ): Promise<IGenericResponse> => {
   if (mockResponse) {
-    return {};
+    return {
+      success: true,
+    };
   }
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(auditorQuoteURL, auditorQuoteRequest)
@@ -218,10 +220,15 @@ export const postSelectRecommendation = async (
   auditorIds: number[]
 ): Promise<IGenericResponse> => {
   if (mockResponse) {
-    return {};
+    return {
+      success: true,
+    };
   }
   const response = await axios<GenericResponse<IGenericResponse>>(
-    postRequest(selectedAuditorRecommendationURL, { auditor_ids: auditorIds })
+    postRequest(selectedAuditorRecommendationURL, {
+      auditor_ids: auditorIds,
+      // project_id: projectId,
+    })
   );
 
   return response.data.data;
@@ -229,11 +236,11 @@ export const postSelectRecommendation = async (
 
 export const getAuditorStatus = async (
   projectId: number
-): Promise<IAuditorStatusResponse> => {
+): Promise<IAuditorStatusResponse[]> => {
   if (mockResponse) {
     return mockAuditorStatusResponse;
   }
-  const response = await axios<GenericResponse<IAuditorStatusResponse>>(
+  const response = await axios<GenericResponse<IAuditorStatusResponse[]>>(
     getRequest(`${auditorStatusURL}?project_id=${projectId}`)
   );
 
@@ -303,6 +310,19 @@ export const postBugComment = async (
   }
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(bugCommentURL, { bug_id: bugId, comment })
+  );
+
+  return response.data.data;
+};
+
+export const getProjectDetails = async (
+  projectId: string
+): Promise<IProject> => {
+  if (mockResponse) {
+    return mockProjectData;
+  }
+  const response = await axios<GenericResponse<IProject>>(
+    getRequest(`${projectListURL}?project_id=${projectId}`)
   );
 
   return response.data.data;
