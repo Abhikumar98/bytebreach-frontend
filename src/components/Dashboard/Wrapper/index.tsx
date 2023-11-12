@@ -27,17 +27,14 @@ const Wrapper: React.FC<{
 
   const showDashboard = userInfo && isAuthenticated && isOnboarded;
 
-  console.log({ showDashboard });
-
   useEffect(() => {
     if (!showDashboard && web3auth) {
-      console.log('pushing to dashboard');
       router.push('/login');
     }
   }, [showDashboard, router.pathname, web3auth]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme('light')}>
       <Container
         sx={{
           fontFamily: 'DM Sans',

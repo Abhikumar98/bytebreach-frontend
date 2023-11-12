@@ -28,7 +28,7 @@ const SidepanelContainer = styled('div')`
   width: 15rem;
   height: 100vh;
   padding: 0 0.5rem;
-  background: white;
+  background: ${({ theme }) => theme.palette.background.default};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
