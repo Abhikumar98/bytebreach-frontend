@@ -1,4 +1,5 @@
 import { Divider, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { defaultErrorMessage } from '@/lib/helper';
@@ -6,9 +7,9 @@ import { defaultErrorMessage } from '@/lib/helper';
 import AutoComplete from '@/atoms/AutoComplete';
 import Modal, { ModalFormCTA } from '@/atoms/Modal';
 import TableComponent, { Column } from '@/atoms/Table';
-import { getAuditorRecommendation } from '@/services';
+import { getAuditorRecommendation, postSelectRecommendation } from '@/services';
 
-import { IAuditorRecommendationProfile } from '@/types';
+import { AppRoutes, IAuditorRecommendationProfile } from '@/types';
 
 // Columns definition
 const columns: Column<IAuditorRecommendationProfile>[] = [
@@ -49,13 +50,11 @@ const SelectAuditorModal: React.FC<{
     IAuditorRecommendationProfile[]
   >([]);
 
-  console.log({ allAuditors });
+  const { push } = useRouter();
 
   const [selectedAuditors, setSelectedAuditors] = React.useState<
     IAuditorRecommendationProfile[]
   >([]);
-
-  const [dreamTeam, setDreamTeam] = React.useState<string[]>([]);
 
   const handleCloseModal = () => {
     onClose();
@@ -69,8 +68,16 @@ const SelectAuditorModal: React.FC<{
 
   const handleModalSubmit = async () => {
     try {
-      // await createProject(values);
-      // handleCloseModal();
+      const auditorIds = selectedAuditors.map((auditor) => auditor.auditor_id);
+
+      await postSelectRecommendation(auditorIds, Number(currentProjectId));
+
+      push(
+        AppRoutes.ProjectDetails.replace(
+          '{projectId}',
+          currentProjectId.toString()
+        )
+      );
     } catch (error) {
       defaultErrorMessage(error);
     }

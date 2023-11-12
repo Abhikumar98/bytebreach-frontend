@@ -12,6 +12,7 @@ export enum AppRoutes {
   ProjectDetails = '/projects/{projectId}',
   NewBug = '/projects/{projectId}/bugs/new',
   BugDetails = '/projects/{projectId}/bugs/{bugId}',
+  AuditorPage = '/auditor/{auditorId}',
 }
 
 export interface IAppContextState {

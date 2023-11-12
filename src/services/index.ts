@@ -217,7 +217,8 @@ export const getAuditorRecommendation = async (
 };
 
 export const postSelectRecommendation = async (
-  auditorIds: number[]
+  auditorIds: number[],
+  projectId: number
 ): Promise<IGenericResponse> => {
   if (mockResponse) {
     return {
@@ -227,7 +228,7 @@ export const postSelectRecommendation = async (
   const response = await axios<GenericResponse<IGenericResponse>>(
     postRequest(selectedAuditorRecommendationURL, {
       auditor_ids: auditorIds,
-      // project_id: projectId,
+      project_id: projectId,
     })
   );
 

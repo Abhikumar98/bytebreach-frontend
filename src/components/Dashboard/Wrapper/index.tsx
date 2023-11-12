@@ -9,12 +9,22 @@ import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 
 import { useAppContext } from '@/context';
 
+import { AppRoutes } from '@/types';
+
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const { userInfo, isAuthenticated, isOnboarded, web3auth } = useAppContext();
 
   const router = useRouter();
+
+  const hideDashboardFromRoutes = [
+    AppRoutes.Login,
+    AppRoutes.AuditorPage.replace('{auditorId}', '[profileId]'),
+  ] as string[];
+
+  const isDashboardHidden = hideDashboardFromRoutes.includes(router.pathname);
+
   const showDashboard = userInfo && isAuthenticated && isOnboarded;
 
   console.log({ showDashboard });
@@ -37,7 +47,7 @@ const Wrapper: React.FC<{
           height: '100vh',
         }}
       >
-        {showDashboard ? (
+        {showDashboard && !isDashboardHidden ? (
           <DashboardLayout>{children}</DashboardLayout>
         ) : (
           <>{children}</>
