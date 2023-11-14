@@ -18,7 +18,7 @@ import { useAppContext } from '@/context';
 const AuditorAuth: React.FC<{
   onLoginSuccess: (user: Partial<OpenloginUserInfo>) => void;
 }> = ({ onLoginSuccess }) => {
-  const { web3auth } = useAppContext();
+  const { web3auth, handleLogout } = useAppContext();
   const [loginLoaders, setLoginLoaders] = useState<
     Partial<Record<LOGIN_PROVIDER_TYPE, boolean>>
   >({
@@ -59,6 +59,7 @@ const AuditorAuth: React.FC<{
       onLoginSuccess(userInfo);
     } catch (error) {
       defaultErrorMessage(error);
+      await handleLogout();
     } finally {
       setLoginLoaders((prev) => ({ ...prev, [authProvider]: false }));
     }

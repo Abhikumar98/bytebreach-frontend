@@ -34,35 +34,35 @@ const resourceMap = {
   BUG: '/project/bug',
 };
 
-const mockResponse = true;
+const mockResponse = false;
 
 // auth
-const loginURL = `${resourceMap.AUTH}/login-social`;
-const logoutURL = `${resourceMap.AUTH}/logout`;
+const loginURL = `${resourceMap.AUTH}/login-social/`;
+const logoutURL = `${resourceMap.AUTH}/logout/`;
 
 // profile
-const clientProfileURL = `${resourceMap.AUTH}/client-profile`;
-const auditorProfileURL = `${resourceMap.AUTH}/auditor-profile`;
+const clientProfileURL = `${resourceMap.AUTH}/client-profile/`;
+const auditorProfileURL = `${resourceMap.AUTH}/auditor-profile/`;
 
 // project
-const createProjectURL = `${resourceMap.PROJECT}/create`;
-const projectListURL = `${resourceMap.PROJECT}/list`;
+const createProjectURL = `${resourceMap.PROJECT}/create/`;
+const projectListURL = `${resourceMap.PROJECT}/list/`;
 
 // project details
 
 // auditors quote
-const auditorQuoteURL = `${resourceMap.PROJECT}/quote`;
+const auditorQuoteURL = `${resourceMap.PROJECT}/quote/`;
 
 // bug
-const createBugURL = `${resourceMap.BUG}/create`;
-const listBugURL = `${resourceMap.BUG}/list`;
-const bugDetailsURL = `${resourceMap.BUG}/detail`;
-const bugCommentURL = `/comment`;
+const createBugURL = `${resourceMap.BUG}/create/`;
+const listBugURL = `${resourceMap.BUG}/list/`;
+const bugDetailsURL = `${resourceMap.BUG}/detail/`;
+const bugCommentURL = `/comment/`;
 
-const auditorRecommendationURL = `${resourceMap.PROJECT}/auditor-recommendation`;
-const selectedAuditorRecommendationURL = `${resourceMap.PROJECT}/select-recommendation`;
-const auditorStatusURL = `${resourceMap.PROJECT}/auditor-status`;
-const auditorConfirmationURL = `${resourceMap.PROJECT}/auditor-confirmation`;
+const auditorRecommendationURL = `${resourceMap.PROJECT}/auditor-recommendation/`;
+const selectedAuditorRecommendationURL = `${resourceMap.PROJECT}/select-recommendation/`;
+const auditorStatusURL = `${resourceMap.PROJECT}/auditor-status/`;
+const auditorConfirmationURL = `${resourceMap.PROJECT}/auditor-confirmation/`;
 
 export const login = async (
   idToken: string,

@@ -1,9 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { Cookies } from 'react-cookie';
 
-const baseAppUrl = process.env.NEXT_PUBLIC_ENVIRONMENT;
-
-console.log({ baseAppUrl });
+const baseAppUrl = `https://dev.api.bytebreach.xyz/api/v1/`;
 
 const setHeaders = (authToken?: string) => {
   const additionalHeaders: Record<string, string> = {};
@@ -35,6 +33,8 @@ export const postRequest = (
   if (data) {
     options.data = data;
   }
+
+  // options.withCredentials = true;
 
   options.headers = setHeaders(authToken);
 

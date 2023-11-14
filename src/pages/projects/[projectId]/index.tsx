@@ -12,6 +12,7 @@ import ProjectDetailsTile from '@/components/Project/ProjectDetails/ProjectDetai
 import ProjectTimeline from '@/components/Project/ProjectDetails/ProjectTimeline';
 
 import PageHeader from '@/atoms/PageHeader';
+import { useAppContext } from '@/context';
 import { getProjectDetails } from '@/services';
 
 import { IProject, IProjectStatus } from '@/types';
@@ -33,6 +34,8 @@ const ProjectDetails = () => {
   const {
     query: { projectId },
   } = useRouter();
+
+  const { isClientUser } = useAppContext();
 
   const [projectDetails, setProjectDetails] = React.useState<IProject | null>(
     null
@@ -90,7 +93,9 @@ const ProjectDetails = () => {
       <StyledProjectContainer>
         <div className='section-container'>
           {projectDetails?.status &&
-            auditorProjectSectionStatusMap[projectDetails?.status]}
+            (isClientUser
+              ? clientProjectSectionStatusMap[projectDetails?.status]
+              : auditorProjectSectionStatusMap[projectDetails?.status])}
         </div>
         <div className='project-details-tile'>
           <ProjectDetailsTile projectDetails={projectDetails} />

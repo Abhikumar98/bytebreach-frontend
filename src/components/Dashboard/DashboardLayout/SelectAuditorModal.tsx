@@ -71,7 +71,7 @@ const SelectAuditorModal: React.FC<{
       const auditorIds = selectedAuditors.map((auditor) => auditor.auditor_id);
 
       await postSelectRecommendation(auditorIds, Number(currentProjectId));
-
+      handleCloseModal();
       push(
         AppRoutes.ProjectDetails.replace(
           '{projectId}',
