@@ -7,7 +7,9 @@ import { defaultErrorMessage } from '@/lib/helper';
 import BugContainer from '@/components/Project/Bug/BugContainer';
 import AuditorQuotation from '@/components/Project/ProjectDetails/AuditorQuotation';
 import AuditorTable from '@/components/Project/ProjectDetails/AuditorTable';
-import PartialPayment from '@/components/Project/ProjectDetails/PartialPaymentSection';
+import AuditorFinalPaymentSection from '@/components/Project/ProjectDetails/FinalPaymentSection/AuditorFinalPaymentSection';
+import ClientFinalPaymentSection from '@/components/Project/ProjectDetails/FinalPaymentSection/ClientFinalPaymentSection';
+import PartialPayment from '@/components/Project/ProjectDetails/PartialPaymentSection/ClientPartialPaymentSection';
 import ProjectDetailsTile from '@/components/Project/ProjectDetails/ProjectDetailsTile';
 import ProjectTimeline from '@/components/Project/ProjectDetails/ProjectTimeline';
 
@@ -65,7 +67,7 @@ const ProjectDetails = () => {
     [IProjectStatus.PARITAL_PAYMENT]: <PartialPayment />,
     [IProjectStatus.AUDIT_IN_PROGRESS]: <BugContainer />,
     [IProjectStatus.MITIGATION_REVIEW]: <BugContainer />,
-    [IProjectStatus.FINAL_PAYMENT]: <BugContainer />,
+    [IProjectStatus.FINAL_PAYMENT]: <ClientFinalPaymentSection />,
   };
 
   const auditorProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
@@ -78,7 +80,7 @@ const ProjectDetails = () => {
     [IProjectStatus.PARITAL_PAYMENT]: <PartialPayment />,
     [IProjectStatus.AUDIT_IN_PROGRESS]: <BugContainer />,
     [IProjectStatus.MITIGATION_REVIEW]: <BugContainer />,
-    [IProjectStatus.FINAL_PAYMENT]: <BugContainer />,
+    [IProjectStatus.FINAL_PAYMENT]: <AuditorFinalPaymentSection />,
   };
 
   console.log({

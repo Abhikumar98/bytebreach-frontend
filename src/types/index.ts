@@ -162,7 +162,7 @@ export enum IProjectStatus {
 
 export const clientProjectStatusText = {
   [IProjectStatus.AUDITOR_SELECTION]: 'Auditor Selection',
-  [IProjectStatus.AUDITOR_CONFIRMATION]: 'Auditor Confirmation',
+  [IProjectStatus.AUDITOR_CONFIRMATION]: 'Auditor Quotation and Confirmation',
   [IProjectStatus.PARITAL_PAYMENT]: 'Partial Payment',
   [IProjectStatus.AUDIT_IN_PROGRESS]: 'Audit in Progress',
   [IProjectStatus.MITIGATION_REVIEW]: 'Mitigation Review',
@@ -184,11 +184,11 @@ export const clientProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
     value: IProjectStatus.AUDITOR_SELECTION,
   },
   {
-    label: 'Auditor Confirmation',
+    label: 'Auditor Quotation and Confirmation',
     value: IProjectStatus.AUDITOR_CONFIRMATION,
   },
   {
-    label: 'Partial Payment',
+    label: 'Client Confirmation and partial payment',
     value: IProjectStatus.PARITAL_PAYMENT,
   },
   {
@@ -196,7 +196,7 @@ export const clientProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
     value: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
-    label: 'Mitigation Review',
+    label: 'Audit Ends Mitigation review',
     value: IProjectStatus.MITIGATION_REVIEW,
   },
   {
@@ -223,7 +223,7 @@ export const auditorProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
     value: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
-    label: 'Final Report',
+    label: 'Audit Ends Mitigation review',
     value: IProjectStatus.MITIGATION_REVIEW,
   },
   {

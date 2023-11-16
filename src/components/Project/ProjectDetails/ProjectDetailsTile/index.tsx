@@ -47,9 +47,61 @@ const ProjectDetailsTile: FC<{
         <>
           <div className='mb-4'>
             <Typography fontWeight='bold' component='h5'>
-              Cost
+              Audit breakup
             </Typography>
-            <Typography variant='subtitle1'>$1234</Typography>
+            <div className='flex items-center space-x-4'>
+              <Typography variant='subtitle1'>Total audit time:</Typography>
+              <Typography variant='subtitle1'>5 weeks</Typography>
+            </div>
+            <div className='flex items-center space-x-4'>
+              <Typography
+                sx={{
+                  color: theme.palette.text.disabled,
+                  width: '7rem',
+                }}
+                variant='subtitle2'
+              >
+                Audit fee:
+              </Typography>
+              <Typography
+                sx={{
+                  color: theme.palette.text.disabled,
+                }}
+                variant='subtitle2'
+              >
+                $ 1000
+              </Typography>
+            </div>
+            <div className='flex items-center space-x-4'>
+              <Typography
+                sx={{
+                  color: theme.palette.text.disabled,
+                  width: '7rem',
+                }}
+                variant='subtitle2'
+              >
+                Platform fee:
+              </Typography>
+              <Typography
+                sx={{
+                  color: theme.palette.text.disabled,
+                }}
+                variant='subtitle2'
+              >
+                $ 234
+              </Typography>
+            </div>
+            <div className='flex items-center space-x-4'>
+              <Typography
+                variant='subtitle1'
+                sx={{
+                  width: '7rem',
+                }}
+              >
+                Total cost:
+              </Typography>
+              <Typography variant='subtitle1'>$ 1,234</Typography>
+            </div>
           </div>
           <div className='mb-4'>
             <Typography
@@ -67,7 +119,7 @@ const ProjectDetailsTile: FC<{
                 <Typography component='h5' fontWeight='medium'>
                   Auditor name
                 </Typography>
-                <Typography fontSize='0.75rem' fontWeight='thin'>
+                <Typography fontSize='0.75rem' fontWeight='7hin'>
                   Auditor
                 </Typography>
               </div>

@@ -100,7 +100,7 @@ export const mockProjectData: IProject = {
   project_id: 123,
   project_title: 'Test 1 project_title',
   code_link: 'Test 1 code_link',
-  status: IProjectStatus.AUDIT_IN_PROGRESS,
+  status: IProjectStatus.PARITAL_PAYMENT,
 };
 
 export const mockClientProjectSummary: IProjectSummaryResponse = {

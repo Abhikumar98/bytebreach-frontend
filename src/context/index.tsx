@@ -25,7 +25,7 @@ const AppContext: React.FC<{
   const [connectedUserInfo, setConnectedUserInfo] = useState<
     IAuditorProfile | IUserProfile | null
   >(null);
-  const [isClientUser, setIsClientUser] = useState<boolean>(true);
+  const [isClientUser, setIsClientUser] = useState<boolean>(false);
   const cookie = new Cookies();
   const { handleLogin } = useWeb3Auth();
 
