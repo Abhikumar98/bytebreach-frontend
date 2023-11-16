@@ -1,12 +1,13 @@
-import { styled } from '@mui/material';
+import { Color, styled } from '@mui/material';
 import React, { FC } from 'react';
 
-import { IProjectStatus, clientProjectStatusText } from '@/types';
+import { clientProjectStatusText, IProjectStatus } from '@/types';
 
 const StyledProjectStatusPill = styled('div', {
   shouldForwardProp: (prop) => prop !== 'status',
 })<{ status: IProjectStatus }>`
-  background: ${({ theme }) => theme.palette.secondary.light};
+  background: ${({ theme }) =>
+    (theme.palette.secondary as Partial<Color>)[100]};
   color: ${({ theme }) => theme.palette.secondary.contrastText};
   border-radius: 0.5rem;
   padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
