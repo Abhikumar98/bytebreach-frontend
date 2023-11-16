@@ -101,8 +101,59 @@ export const handleWeb3AuthLogin = async (
       sessionid: token,
     } = await login(userInfo.idToken ?? '', app_pub_key, clientType);
 
-    cookie.set(COOKIES.token, token);
-    cookie.set(COOKIES.csrfToken, csrfToken);
+    const tokenCookieSettings = token.split(';').reduce(
+      (acc, property) => {
+        const [key, value] = property.split('=');
+
+        return {
+          ...acc,
+          [key.trim()]: value,
+        };
+      },
+      {
+        sessionid: '',
+        expires: '',
+        'Max-Age': '',
+        Path: '',
+        SameSite: '',
+      }
+    );
+
+    const csrfTokenCookieSettings = csrfToken.split(';').reduce(
+      (acc, property) => {
+        const [key, value] = property.split('=');
+
+        return {
+          ...acc,
+          [key.trim()]: value,
+        };
+      },
+      {
+        csrftoken: '',
+        expires: '',
+        'Max-Age': '',
+        Path: '',
+        SameSite: '',
+      }
+    );
+
+    console.log({ tokenCookieSettings, csrfTokenCookieSettings });
+
+    cookie.set(COOKIES.token, tokenCookieSettings['sessionid'], {
+      // httpOnly: true,
+      // expires: new Date(tokenCookieSettings.expires),
+      // maxAge: Number(tokenCookieSettings['Max-Age']),
+      // path: tokenCookieSettings.Path,
+      // sameSite: 'none',
+    });
+
+    cookie.set(COOKIES.csrfToken, csrfTokenCookieSettings['csrftoken'], {
+      // httpOnly: true,
+      // expires: new Date(csrfTokenCookieSettings.expires),
+      // maxAge: Number(csrfTokenCookieSettings['Max-Age']),
+      // path: csrfTokenCookieSettings.Path,
+      // sameSite: 'none',
+    });
 
     return {
       app_pub_key,

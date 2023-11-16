@@ -1,24 +1,13 @@
 import { AxiosRequestConfig } from 'axios';
-import { Cookies } from 'react-cookie';
-
-import { COOKIES } from '@/lib/helper';
 
 const baseAppUrl = `https://dev.api.bytebreach.xyz/api/v1/`;
 
 const setHeaders = (authToken?: string) => {
   const additionalHeaders: Record<string, string> = {};
 
-  const cookies = new Cookies();
-  const authCookie = cookies.get('token');
-
   if (authToken) {
     additionalHeaders['Authorization'] = 'Bearer ' + authToken;
   }
-
-  const cookie = new Cookies();
-
-  additionalHeaders['sessionid'] = cookie.get(COOKIES.token);
-  additionalHeaders['csrftoken'] = cookie.get(COOKIES.csrfToken);
 
   additionalHeaders['Content-Type'] = 'application/json';
   additionalHeaders['Accept'] = 'application/json';
@@ -41,9 +30,11 @@ export const postRequest = (
     options.data = data;
   }
 
-  // options.withCredentials = true;
+  options.withCredentials = true;
 
   options.headers = setHeaders(authToken);
+
+  console.log({ options });
 
   return options;
 };
