@@ -41,7 +41,7 @@ const SidepanelContainer = styled('div')`
     color: ${({ theme }) => (theme.palette.secondary as Partial<Color>)[800]};
   }
   & .logo svg {
-    height: 64px;
+    height: 48px;
     width: 56px;
   }
 `;

@@ -38,7 +38,7 @@ const PageHeader: React.FC<{ title: string }> = ({ title }) => {
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
 
   return (
-    <div className='flex w-full items-center justify-between'>
+    <div className='flex w-full items-start justify-between'>
       <Typography
         variant='h3'
         fontWeight='bold'
