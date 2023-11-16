@@ -8,10 +8,11 @@ const lightPalette: PaletteOptions = {
     dark: '#2C22DF',
   },
   secondary: {
-    light: '#82A2FF66',
+    light: '#82A2FF',
     main: '#ffffff',
     dark: '#f6f6f6',
 
+    50: '#82A2FF1A',
     100: '#82A2FF66',
     700: '#2F63FF',
     800: '#002BAC',
