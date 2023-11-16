@@ -77,10 +77,10 @@ export const mockProjectList: IProject[] = [
     status: IProjectStatus.AUDITOR_SELECTION,
   },
   {
-    project_id: 123,
-    project_title: 'Test 1 project_title',
+    project_id: 1234,
+    project_title: 'Test 1 project_title audit in progress',
     code_link: 'Test 1 code_link',
-    status: IProjectStatus.AUDITOR_CONFIRMATION,
+    status: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
     project_id: 123,
@@ -100,7 +100,7 @@ export const mockProjectData: IProject = {
   project_id: 123,
   project_title: 'Test 1 project_title',
   code_link: 'Test 1 code_link',
-  status: IProjectStatus.AUDITOR_CONFIRMATION,
+  status: IProjectStatus.AUDIT_IN_PROGRESS,
 };
 
 export const mockClientProjectSummary: IProjectSummaryResponse = {

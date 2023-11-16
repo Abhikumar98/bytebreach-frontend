@@ -1,57 +1,47 @@
 import { Container, ThemeProvider } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 
+import { unAuthenticatedRoutes } from '@/lib/helper';
 import theme from '@/lib/styles';
 
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import AuthWrapper from '@/components/Dashboard/Wrapper/AuthWrapper';
 
 import { useAppContext } from '@/context';
-
-import { AppRoutes } from '@/types';
 
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { userInfo, isAuthenticated, isOnboarded, web3auth } = useAppContext();
+  const { userInfo } = useAppContext();
 
   const router = useRouter();
 
-  const hideDashboardFromRoutes = [
-    AppRoutes.Login,
-    AppRoutes.AuditorPage.replace('{auditorId}', '[profileId]'),
-  ] as string[];
+  const isDashboardHidden = unAuthenticatedRoutes.includes(router.pathname);
 
-  const isDashboardHidden = hideDashboardFromRoutes.includes(router.pathname);
-
-  const showDashboard = userInfo && isAuthenticated && isOnboarded;
-
-  useEffect(() => {
-    if (!showDashboard && web3auth) {
-      router.push('/login');
-    }
-  }, [showDashboard, router.pathname, web3auth]);
-
+  const showDashboard = true || userInfo;
   return (
-    <ThemeProvider theme={theme('light')}>
-      <Container
-        sx={{
-          fontFamily: 'DM Sans',
-          padding: '0 !important',
-          width: '100vw',
-          maxWidth: '100vw !important',
-          height: '100vh',
-        }}
-      >
-        {showDashboard && !isDashboardHidden ? (
-          <DashboardLayout>{children}</DashboardLayout>
-        ) : (
-          <>{children}</>
-        )}
-        <Toaster />
-      </Container>
-    </ThemeProvider>
+    <AuthWrapper>
+      <ThemeProvider theme={theme('light')}>
+        <Container
+          sx={{
+            fontFamily: 'DM Sans',
+            padding: '0 !important',
+            width: '100vw',
+            maxWidth: '100vw !important',
+            height: '100vh',
+          }}
+        >
+          {showDashboard && !isDashboardHidden ? (
+            <DashboardLayout>{children}</DashboardLayout>
+          ) : (
+            <>{children}</>
+          )}
+          <Toaster />
+        </Container>
+      </ThemeProvider>
+    </AuthWrapper>
   );
 };
 

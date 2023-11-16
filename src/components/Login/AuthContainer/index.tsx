@@ -1,9 +1,5 @@
-import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-
-import { isAuthenticatedRoute } from '@/lib/helper';
+import React from 'react';
 
 import AuditorAuth from '@/components/Login/AuditorAuth';
 import AuthNavbar from '@/components/Login/AuthContainer/AuthNavbar';
@@ -11,53 +7,29 @@ import ClientAuth from '@/components/Login/ClientAuth';
 import AuditorOnboarding from '@/components/Login/Onboarding/AuditorOnboarding';
 import ClientOnboarding from '@/components/Login/Onboarding/ClientOnboarding';
 
-import { isUserOnboarded, useAppContext } from '@/context';
+import { useAppContext } from '@/context';
 
 import { UserType } from '@/types';
 
 const AuthContainer = () => {
-  const {
-    userInfo,
-    web3auth,
-    updateUserInfo,
-    isOnboarded,
-    setIsAuthenticated,
-  } = useAppContext();
+  const { handleLogout } = useAppContext();
 
   const [authUser, setAuthUser] = React.useState<UserType>('client');
-
-  const { push, pathname } = useRouter();
-
   const [step, setStep] = React.useState<'login' | 'onboarding'>('login');
 
-  const handleSuccessfulLogin = async (
-    userInfo: Partial<OpenloginUserInfo>
-  ) => {
-    updateUserInfo(userInfo);
+  const handleSuccessfulLogin = async (userType: UserType) => {
     setStep('onboarding');
-
-    const isOnboarded = await isUserOnboarded(web3auth);
-
-    if (isOnboarded) {
-      const isAuthenticated = isAuthenticatedRoute(pathname);
-      if (!isAuthenticated) {
-        push('/');
-      }
-      setIsAuthenticated(true);
-    }
+    setAuthUser(userType);
   };
 
   const handleAuthUserUpdate = (user: UserType) => {
     setAuthUser(user);
   };
 
-  useEffect(() => {
-    if (!userInfo) {
-      setStep('login');
-    } else {
-      handleSuccessfulLogin(userInfo);
-    }
-  }, [!!userInfo, web3auth?.connected]);
+  const handleBackToLogin = async () => {
+    await handleLogout();
+    setStep('login');
+  };
 
   return (
     <div className='overflow-hidden rounded-3xl'>
@@ -78,7 +50,7 @@ const AuthContainer = () => {
             {step === 'login' ? (
               <ClientAuth onLoginSuccess={handleSuccessfulLogin} />
             ) : (
-              <ClientOnboarding />
+              <ClientOnboarding backToLogin={() => handleBackToLogin()} />
             )}
           </>
         ) : (
@@ -86,7 +58,7 @@ const AuthContainer = () => {
             {step === 'login' ? (
               <AuditorAuth onLoginSuccess={handleSuccessfulLogin} />
             ) : (
-              <AuditorOnboarding />
+              <AuditorOnboarding backToLogin={() => handleBackToLogin()} />
             )}
           </>
         )}

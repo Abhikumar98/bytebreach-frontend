@@ -81,6 +81,11 @@ const ProjectDetails = () => {
     [IProjectStatus.FINAL_PAYMENT]: <BugContainer />,
   };
 
+  console.log({
+    status: projectDetails,
+    clientProjectSectionStatusMap,
+  });
+
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />

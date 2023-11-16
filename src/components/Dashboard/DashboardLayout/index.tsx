@@ -1,5 +1,4 @@
 import {
-  Button,
   Color,
   SimplePaletteColorOptions,
   styled,
@@ -20,6 +19,7 @@ import Logout from '@/assets/logout.svg';
 import Plus from '@/assets/plus.svg';
 import Profile from '@/assets/profile.svg';
 import Project from '@/assets/project.svg';
+import Button from '@/atoms/Button';
 import { useAppContext } from '@/context';
 
 import { INavigationRoute } from '@/types';
@@ -123,7 +123,7 @@ const navigation: INavigationRoute[] = [
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { handleLogout, isClientUser } = useAppContext();
+  const { handleLogout, isClientUser, web3auth } = useAppContext();
 
   const [createProjectModalOpen, setCreateProjectModalOpen] =
     useState<boolean>(false);
@@ -208,12 +208,14 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
             </div>
           </a>
           <Button
+            isLoading={!web3auth}
             color='error'
             variant='text'
             startIcon={<Logout />}
             onClick={handleUserLogout}
             sx={{
               justifySelf: 'end',
+              paddingLeft: '24px !important',
             }}
           >
             Logout

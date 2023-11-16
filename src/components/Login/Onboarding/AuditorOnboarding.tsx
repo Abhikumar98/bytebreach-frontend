@@ -33,14 +33,8 @@ const BackButton = styled('div')`
   }
 `;
 
-const AuditorOnboarding = () => {
-  const {
-    web3auth,
-    updateUserInfo,
-    handleLogout,
-    setIsAuthenticated,
-    handleOnboardedUser,
-  } = useAppContext();
+const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
+  const { handleLogout } = useAppContext();
 
   const theme = useTheme();
 

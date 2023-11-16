@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import { Cookies } from 'react-cookie';
 
+import { COOKIES } from '@/lib/helper';
+
 const baseAppUrl = `https://dev.api.bytebreach.xyz/api/v1/`;
 
 const setHeaders = (authToken?: string) => {
@@ -12,6 +14,11 @@ const setHeaders = (authToken?: string) => {
   if (authToken) {
     additionalHeaders['Authorization'] = 'Bearer ' + authToken;
   }
+
+  const cookie = new Cookies();
+
+  additionalHeaders['sessionid'] = cookie.get(COOKIES.token);
+  additionalHeaders['csrftoken'] = cookie.get(COOKIES.csrfToken);
 
   additionalHeaders['Content-Type'] = 'application/json';
   additionalHeaders['Accept'] = 'application/json';

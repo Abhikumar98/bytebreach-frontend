@@ -1,9 +1,13 @@
+import { getPublicCompressed } from '@toruslabs/eccrypto';
 import { Web3AuthNoModal } from '@web3auth/no-modal';
 import {
   LOGIN_PROVIDER_TYPE,
   OpenloginLoginParams,
 } from '@web3auth/openlogin-adapter';
+import { Cookies } from 'react-cookie';
 import { toast } from 'react-hot-toast';
+
+import { login } from '@/services';
 
 import { AppRoutes } from '@/types';
 
@@ -47,9 +51,11 @@ export const isAuthenticatedRoute = (route: string) => {
 
   return isCurrentAuthenticatedRoutes;
 };
-import { getPublicCompressed } from '@toruslabs/eccrypto';
 
-import { login } from '@/services';
+export const COOKIES = {
+  token: 'sessionid',
+  csrfToken: 'csrftoken',
+};
 
 export const handleWeb3AuthLogin = async (
   clientType: 'client' | 'auditor',
@@ -59,7 +65,10 @@ export const handleWeb3AuthLogin = async (
   userEmail?: string
 ): Promise<{
   app_pub_key: string;
+  is_show_onboarded: boolean;
 }> => {
+  const cookie = new Cookies();
+
   await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
     loginProvider: authProvider,
     extraLoginOptions: {
@@ -77,13 +86,45 @@ export const handleWeb3AuthLogin = async (
 
   const userInfo = await web3Auth.getUserInfo();
 
+  // mockData
+
+  // const userInfo = {
+  //   idToken: 'something',
+  // };
+
+  // const app_pub_key = 'something';
+
   try {
-    await login(userInfo.idToken ?? '', app_pub_key, clientType);
+    const {
+      is_onboarding_done: is_show_onboarded,
+      csrftoken: csrfToken,
+      sessionid: token,
+    } = await login(userInfo.idToken ?? '', app_pub_key, clientType);
+
+    cookie.set(COOKIES.token, token);
+    cookie.set(COOKIES.csrfToken, csrfToken);
 
     return {
       app_pub_key,
+      is_show_onboarded,
     };
   } catch (error) {
     return Promise.reject(error);
   }
 };
+
+export const unAuthenticatedRoutes = [
+  AppRoutes.Login,
+  AppRoutes.AuditorPage.replace('{auditorId}', '[profileId]'),
+] as string[];
+
+export const authenticatedRoutes = [
+  AppRoutes.EditPage,
+  AppRoutes.ProjectDetails.replace('{projectId}', '[projectId]'),
+  AppRoutes.Homepage,
+  AppRoutes.BugDetails.replace('{projectId}', '[projectId]').replace(
+    '{bugId}',
+    '[bugId]'
+  ),
+  AppRoutes.NewBug.replace('{projectId}', '[projectId]'),
+];

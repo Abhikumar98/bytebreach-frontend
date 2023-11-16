@@ -1,176 +1,81 @@
-import { CHAIN_NAMESPACES } from '@web3auth/base';
-import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
-import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 import { Web3AuthNoModal } from '@web3auth/no-modal';
-import {
-  OpenloginAdapter,
-  OpenloginUserInfo,
-} from '@web3auth/openlogin-adapter';
 import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import Web3 from 'web3';
+import { Cookies } from 'react-cookie';
+
+import { COOKIES, defaultErrorMessage } from '@/lib/helper';
+import useWeb3Auth from '@/hooks/useWeb3Auth';
+
+import { getAuditorProfile, getClientProfile } from '@/services';
 
 import {
-  defaultErrorMessage,
-  getFromLocalStorage,
-  isAuthenticatedRoute,
-  setInLocalStorage,
-} from '@/lib/helper';
-
-import { IAppContextState } from '@/types';
+  AppRoutes,
+  IAppContextState,
+  IAuditorProfile,
+  IUserProfile,
+} from '@/types';
 
 const AppContextState = createContext<IAppContextState | null>(null);
-
-export const isUserOnboarded = async (web3Auth: Web3AuthNoModal | null) => {
-  if (!web3Auth) {
-    return null;
-  }
-
-  const web3 = new Web3(web3Auth.provider as any);
-  const accounts = await web3.eth.getAccounts();
-
-  const onboardedUsers = getFromLocalStorage('onboarded')
-    ? JSON.parse(getFromLocalStorage('onboarded') ?? '')
-    : {};
-
-  return onboardedUsers[accounts?.[0] ?? ''];
-};
 
 const AppContext: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
+
   const [connectedUserInfo, setConnectedUserInfo] = useState<
-    (Partial<OpenloginUserInfo> & { account?: string }) | any
+    IAuditorProfile | IUserProfile | null
   >(null);
   const [isClientUser, setIsClientUser] = useState<boolean>(true);
+  const cookie = new Cookies();
+  const { handleLogin } = useWeb3Auth();
 
   const { push, pathname } = useRouter();
 
   const handleLogout = async () => {
     try {
-      await web3auth?.logout();
+      const response = web3auth?.connected;
+
+      console.log({ response });
+
+      if (web3auth && web3auth.connected) {
+        await web3auth?.logout();
+      }
+
+      cookie.remove(COOKIES.csrfToken);
+      cookie.remove(COOKIES.token);
       setConnectedUserInfo(null);
-      setIsAuthenticated(false);
-      push('/login');
+
+      console.log(
+        '🚀 ~ file: index.tsx:85 ~ handleLogout ~ pathname',
+        pathname
+      );
+
+      push(AppRoutes.Login);
     } catch (error) {
       defaultErrorMessage(error);
     }
   };
 
-  const handleAuthenticationStatusUpdate = (authentication: boolean) => {
-    setInLocalStorage('authenticated', authentication.toString());
-    setIsAuthenticated(authentication);
-  };
+  const initLogin = async () => {
+    const web3AuthInstance = await handleLogin();
 
-  const handleOnboardedUser = (address: string) => {
-    const onboardedUsers = getFromLocalStorage('onboarded')
-      ? JSON.parse(getFromLocalStorage('onboarded') ?? '')
-      : {};
-
-    onboardedUsers[address] = true;
-
-    setInLocalStorage('onboarded', JSON.stringify(onboardedUsers));
-    setIsOnboarded(true);
-    setIsAuthenticated(true);
-
-    const isAuthenticated = isAuthenticatedRoute(pathname);
-
-    if (!isAuthenticated) {
-      push('/');
+    if (web3AuthInstance) {
+      setWeb3Auth(web3AuthInstance);
     }
   };
 
-  const initialiseWeb3Auth = async () => {
+  const handleFetchUser = async () => {
     try {
-      if (!process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
-        throw new Error(
-          'Missing environment variable NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID'
-        );
-      }
+      try {
+        const response = await getClientProfile();
 
-      const authenticationStatus =
-        getFromLocalStorage('authenticated') === 'true';
+        setConnectedUserInfo(response);
+        setIsClientUser(true);
+      } catch (error) {
+        const response = await getAuditorProfile();
 
-      handleAuthenticationStatusUpdate(authenticationStatus);
-
-      const chainConfig = {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: '0x1',
-        rpcTarget: 'https://rpc.ankr.com/eth',
-        displayName: 'Ethereum Mainnet',
-        blockExplorer: 'https://goerli.etherscan.io',
-        ticker: 'ETH',
-        tickerName: 'Ethereum',
-      };
-      const web3auth = new Web3AuthNoModal({
-        clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
-        chainConfig,
-        web3AuthNetwork: 'sapphire_devnet',
-      });
-
-      const privateKeyProvider = new EthereumPrivateKeyProvider({
-        config: { chainConfig },
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        privateKeyProvider,
-      });
-      web3auth.configureAdapter(openloginAdapter);
-
-      const metamaskAdapter = new MetamaskAdapter({
-        clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
-        sessionTime: 3600, // 1 hour in seconds
-        web3AuthNetwork: 'sapphire_devnet',
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: '0x1',
-          rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-      });
-
-      web3auth.configureAdapter(metamaskAdapter);
-
-      // // adding wallet connect v2 adapter
-      // const defaultWcSettings = await getWalletConnectV2Settings(
-      //   'eip155',
-      //   [1, 137, 5],
-      //   '04309ed1007e77d1f119b85205bb779d'
-      // );
-      // const walletConnectModal = new WalletConnectModal({
-      //   projectId: '04309ed1007e77d1f119b85205bb779d',
-      // });
-      // const walletConnectV2Adapter = new WalletConnectV2Adapter({
-      //   adapterSettings: {
-      //     qrcodeModal: walletConnectModal,
-      //     ...defaultWcSettings.adapterSettings,
-      //   },
-      //   loginSettings: { ...defaultWcSettings.loginSettings },
-      // });
-
-      // web3auth.configureAdapter(walletConnectV2Adapter);
-
-      await web3auth.init();
-      setWeb3Auth(web3auth);
-
-      if (web3auth.connected) {
-        const userInfo = await web3auth.getUserInfo();
-        setConnectedUserInfo(userInfo);
-
-        const userOnboarded = await isUserOnboarded(web3auth);
-
-        setIsOnboarded(!!userOnboarded);
-        setIsAuthenticated(!!userInfo);
-
-        if (userOnboarded) {
-          const isAuthenticated = isAuthenticatedRoute(pathname);
-
-          if (!isAuthenticated) {
-            push('/');
-          }
-        }
+        setConnectedUserInfo(response);
+        setIsClientUser(false);
       }
     } catch (error) {
       defaultErrorMessage(error);
@@ -178,7 +83,7 @@ const AppContext: React.FC<{
   };
 
   useEffect(() => {
-    initialiseWeb3Auth();
+    initLogin();
   }, []);
 
   return (
@@ -187,13 +92,8 @@ const AppContext: React.FC<{
         isClientUser,
         web3auth,
         handleLogout,
-        handleOnboardedUser,
         userInfo: connectedUserInfo,
-        updateUserInfo: setConnectedUserInfo,
-        isAuthenticated,
-        setIsAuthenticated: handleAuthenticationStatusUpdate,
-        isOnboarded,
-        setIsOnboarded,
+        handleFetchUser,
       }}
     >
       {children}

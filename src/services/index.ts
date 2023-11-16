@@ -22,6 +22,7 @@ import {
   IBugListItem,
   ICreateBugRequest,
   IGenericResponse,
+  ILoginResponse,
   IProject,
   IProjectCreateRequest,
   IProjectTabStateRequest,
@@ -34,7 +35,7 @@ const resourceMap = {
   BUG: '/project/bug',
 };
 
-const mockResponse = false;
+export const mockResponse = false;
 
 // auth
 const loginURL = `${resourceMap.AUTH}/login-social/`;
@@ -68,19 +69,27 @@ export const login = async (
   idToken: string,
   publicKey: string,
   loginType: 'client' | 'auditor'
-): Promise<IGenericResponse> => {
+): Promise<ILoginResponse> => {
   if (mockResponse) {
     return {
-      success: true,
+      sessionid: 'Token',
+      csrftoken: 'csrfToken',
+      is_onboarding_done: false,
     };
   }
-  const response = await axios<GenericResponse<IGenericResponse>>(
+  const response = await axios<GenericResponse<ILoginResponse>>(
     postRequest(
       loginURL,
       { public_key: publicKey, login_type: loginType },
       idToken
     )
   );
+
+  const { headers } = response;
+
+  console.log({ response });
+
+  console.log({ headers }, headers['Set-Cookie']);
 
   return response.data.data;
 };

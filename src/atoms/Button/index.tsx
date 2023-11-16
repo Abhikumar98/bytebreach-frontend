@@ -31,6 +31,7 @@ const Button: React.FC<
       size={size}
       sx={{
         borderRadius: '15rem',
+        ...props.sx,
       }}
     >
       {children}

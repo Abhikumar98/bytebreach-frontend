@@ -33,7 +33,7 @@ const BackButton = styled('div')`
   }
 `;
 
-const ClientOnboarding = () => {
+const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
   const {
     register,
     handleSubmit,
@@ -52,7 +52,7 @@ const ClientOnboarding = () => {
 
   const theme = useTheme();
 
-  const { web3auth, handleOnboardedUser, handleLogout } = useAppContext();
+  const { handleLogout } = useAppContext();
 
   const { push } = useRouter();
 

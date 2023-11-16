@@ -1,5 +1,4 @@
 import { Web3AuthNoModal } from '@web3auth/no-modal';
-import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 import { ReactNode } from 'react';
 
 import { IOption } from '@/atoms/Select';
@@ -17,19 +16,10 @@ export enum AppRoutes {
 
 export interface IAppContextState {
   web3auth: Web3AuthNoModal | null;
-  userInfo:
-    | (Partial<OpenloginUserInfo> & {
-        account?: string;
-      })
-    | null;
-  updateUserInfo: (userInfo: Partial<OpenloginUserInfo> | null) => void;
-  isAuthenticated: boolean;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
-  isOnboarded: boolean;
-  setIsOnboarded: (isOnboarded: boolean) => void;
-  handleOnboardedUser: (address: string) => void;
+  userInfo: IAuditorProfile | IUserProfile | null;
   handleLogout: () => Promise<void>;
   isClientUser: boolean;
+  handleFetchUser: () => Promise<void>;
 }
 
 export type AuthOptions = 'google' | 'github' | 'email' | 'wallet';
@@ -338,4 +328,10 @@ export type IBugListItem = Omit<
 
 export interface GenericResponse<T> {
   data: T;
+}
+
+export interface ILoginResponse {
+  is_onboarding_done: boolean;
+  csrftoken: string;
+  sessionid: string;
 }

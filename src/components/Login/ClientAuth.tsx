@@ -1,9 +1,7 @@
 import { Divider } from '@mui/material';
 import { WALLET_ADAPTERS } from '@web3auth/base';
-import {
-  LOGIN_PROVIDER_TYPE,
-  OpenloginUserInfo,
-} from '@web3auth/openlogin-adapter';
+import { LOGIN_PROVIDER_TYPE } from '@web3auth/openlogin-adapter';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { defaultErrorMessage, handleWeb3AuthLogin } from '@/lib/helper';
@@ -14,9 +12,12 @@ import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import { useAppContext } from '@/context';
 
+import { AppRoutes, UserType } from '@/types';
+
 const ClientAuth: React.FC<{
-  onLoginSuccess: (user: Partial<OpenloginUserInfo>) => void;
+  onLoginSuccess: (user: UserType) => void;
 }> = ({ onLoginSuccess }) => {
+  const { push } = useRouter();
   const { web3auth, handleLogout } = useAppContext();
   const [loginLoaders, setLoginLoaders] = useState<
     Partial<Record<LOGIN_PROVIDER_TYPE, boolean>>
@@ -42,7 +43,7 @@ const ClientAuth: React.FC<{
 
       const adapter = WALLET_ADAPTERS.OPENLOGIN;
 
-      await handleWeb3AuthLogin(
+      const { is_show_onboarded } = await handleWeb3AuthLogin(
         'client',
         web3auth,
         adapter,
@@ -50,9 +51,11 @@ const ClientAuth: React.FC<{
         userEmail
       );
 
-      const userInfo = await web3auth.getUserInfo();
+      if (is_show_onboarded) {
+        push(AppRoutes.Homepage);
+      }
 
-      onLoginSuccess(userInfo);
+      onLoginSuccess('client');
     } catch (error) {
       defaultErrorMessage(error);
       await handleLogout();
@@ -66,7 +69,7 @@ const ClientAuth: React.FC<{
   return (
     <div className=' space-y-6'>
       <Button
-        isLoading={loginLoaders['google']}
+        isLoading={loginLoaders['google'] || !web3auth}
         disabled={disableButtons}
         className='w-full'
         onClick={() => handleAuthentication('google')}
@@ -91,7 +94,7 @@ const ClientAuth: React.FC<{
 
       <div className='flex justify-center'>
         <Button
-          isLoading={loginLoaders['email_passwordless']}
+          isLoading={loginLoaders['email_passwordless'] || !web3auth}
           disabled={disableButtons}
           onClick={() => handleAuthentication('email_passwordless')}
         >

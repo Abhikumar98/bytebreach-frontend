@@ -4,8 +4,14 @@ import React from 'react';
 
 import BackButton from '@/assets/arrowLeft.svg';
 import Timeline from '@/atoms/Timeline';
+import { useAppContext } from '@/context';
 
-import { AppRoutes, clientProjectTimelineSteps, IProjectStatus } from '@/types';
+import {
+  AppRoutes,
+  auditorProjectTimelineSteps,
+  clientProjectTimelineSteps,
+  IProjectStatus,
+} from '@/types';
 
 const StyledProjectTimeline = styled('div')`
   svg {
@@ -35,6 +41,10 @@ const ProjectTimeline: React.FC<{
   projectName: string;
   projectStatus: IProjectStatus;
 }> = ({ projectName, projectStatus }) => {
+  console.log({ projectStatus });
+
+  const { isClientUser } = useAppContext();
+
   const { push } = useRouter();
 
   const backToProjects = () => {
@@ -56,7 +66,11 @@ const ProjectTimeline: React.FC<{
       </div>
       <div className='timeline-container'>
         <Timeline
-          steps={clientProjectTimelineSteps}
+          steps={
+            isClientUser
+              ? clientProjectTimelineSteps
+              : auditorProjectTimelineSteps
+          }
           currentValue={projectStatus}
         />
       </div>
