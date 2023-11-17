@@ -115,7 +115,7 @@ export const mockAuditorStatusResponse: IAuditorStatusResponse[] = [
     last_name: 'test last_name',
     status: IAuditorConfirmationStatus.PENDING,
     quotation_time: 123,
-    quotation_cost: 123,
+    quotation_amount: 123,
   },
   {
     auditor_id: 1234,
@@ -123,7 +123,7 @@ export const mockAuditorStatusResponse: IAuditorStatusResponse[] = [
     last_name: 'test last_name',
     status: IAuditorConfirmationStatus.QUOTATION_SUBMITTED,
     quotation_time: 123,
-    quotation_cost: 123,
+    quotation_amount: 123,
   },
   {
     auditor_id: 1234,
@@ -131,7 +131,7 @@ export const mockAuditorStatusResponse: IAuditorStatusResponse[] = [
     last_name: 'test last_name',
     status: IAuditorConfirmationStatus.QUOTATION_REJECTED,
     quotation_time: 123,
-    quotation_cost: 123,
+    quotation_amount: 123,
   },
 ];
 

@@ -31,7 +31,7 @@ const ProjectDetailsTile: FC<{
   }, [projectDetails?.status, projectDetails?.project_id]);
 
   const totalCost = auditors.reduce((acc, curr) => {
-    return acc + curr.quotation_cost;
+    return acc + curr.quotation_amount;
   }, 0);
 
   const platformFee = totalCost * 0.1;

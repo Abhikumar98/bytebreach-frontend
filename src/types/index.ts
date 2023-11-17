@@ -246,7 +246,7 @@ export type IClientProjectStateRequest = 'ongoing' | 'done';
 export interface IAuditorQuoteRequest {
   project_id: number;
   quotation_time: number;
-  quotation_cost: number;
+  quotation_amount: number;
   quote_action: 'accept' | 'reject';
 }
 
@@ -281,7 +281,7 @@ export interface IAuditorStatusResponse {
   last_name: string;
   status: IAuditorConfirmationStatus;
   quotation_time: number;
-  quotation_cost: number;
+  quotation_amount: number;
 }
 
 export const auditorStatusLabel = {

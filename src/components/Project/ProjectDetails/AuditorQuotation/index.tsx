@@ -31,7 +31,7 @@ const AuditorQuotation: FC<{
     Partial<IAuditorQuoteRequest>
   >({
     quotation_time: 7,
-    quotation_cost: 0,
+    quotation_amount: 0,
   });
 
   const handleAuditorQuoteChange = (key: string, value: number) => {
@@ -59,7 +59,7 @@ const AuditorQuotation: FC<{
       const auditorQuoteRequest: IAuditorQuoteRequest = {
         project_id: Number(projectId),
         quotation_time: auditorQuote.quotation_time ?? 0,
-        quotation_cost: auditorQuote.quotation_cost ?? 0,
+        quotation_amount: auditorQuote.quotation_amount ?? 0,
         quote_action: decision,
       };
 
@@ -144,7 +144,7 @@ const AuditorQuotation: FC<{
               label='Audit cost ( $ )'
               onChange={(e) =>
                 handleAuditorQuoteChange(
-                  'quotation_cost',
+                  'quotation_amount',
                   Number(e.target.value)
                 )
               }

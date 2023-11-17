@@ -41,7 +41,7 @@ const AuditorProjectTile: FC<{
         <div className='flex items-center space-x-4'>
           <Typography variant='subtitle1'>Total cost:</Typography>
           <Typography variant='subtitle1'>
-            $ {auditor?.quotation_cost}
+            $ {auditor?.quotation_amount}
           </Typography>
         </div>
       </div>

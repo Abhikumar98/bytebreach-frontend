@@ -105,11 +105,13 @@ const AuditorTable: FC<{
     },
     {
       title: 'Quote',
-      dataIndex: 'quotation_cost',
+      dataIndex: 'quotation_amount',
       render: (text, record) => {
         return (
           <Typography>
-            {record.quotation_cost ? `$ ${record.quotation_cost}` : 'Pending'}
+            {record.quotation_amount
+              ? `$ ${record.quotation_amount}`
+              : 'Pending'}
           </Typography>
         );
       },
