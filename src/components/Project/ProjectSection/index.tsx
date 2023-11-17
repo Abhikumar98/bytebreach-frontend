@@ -1,8 +1,10 @@
-import { styled } from '@mui/material';
+import { styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import ProjectStatusPill from '@/components/Project/ProjectSection/ProjectStatusPill';
+
+import Empty from '@/assets/empty.svg';
 
 import { AppRoutes, IProject } from '@/types';
 
@@ -31,6 +33,18 @@ const StyledProjectSectionItem = styled('div')`
   }
 `;
 
+const StyledEmptyContainer = styled('div')`
+  svg {
+    height: 128px;
+    width: 128px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem;
+`;
+
 const ProjectSection: React.FC<{
   projects: IProject[];
 }> = ({ projects }) => {
@@ -40,12 +54,18 @@ const ProjectSection: React.FC<{
     push(AppRoutes.ProjectDetails.replace('{projectId}', projectId));
   };
 
-  return (
+  return !projects.length ? (
+    <StyledEmptyContainer>
+      <Empty />
+      <Typography>No projects available</Typography>
+    </StyledEmptyContainer>
+  ) : (
     <div>
       <StyledProjectSectionHeader>
         <div>Project</div>
         <div>Status</div>
       </StyledProjectSectionHeader>
+
       {projects.map((project, index) => (
         <StyledProjectSectionItem
           key={index}

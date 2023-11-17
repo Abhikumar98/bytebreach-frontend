@@ -65,12 +65,14 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
     try {
       const clientProfileRequest: Partial<IUserProfile> = {
         first_name: values.fullName.split(' ')[0],
-        last_name: values.fullName.split(' ')[1],
+        last_name: values.fullName.split(' ')[1] ?? '',
         company_name: values.companyName,
-        website_url: values.website,
-        twitter_url: values.twitter,
-        github_url: values.github,
+        website_url: values.website.length ? values.website : undefined,
+        twitter_url: values.twitter.length ? values.twitter : undefined,
+        github_url: values.github.length ? values.github : undefined,
       };
+
+      console.log({ clientProfileRequest });
 
       await postClientProfile(clientProfileRequest);
 

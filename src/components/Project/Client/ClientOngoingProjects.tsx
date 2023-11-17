@@ -13,6 +13,7 @@ const ClientOngoingProjects = () => {
 
   const handleFetchOnGoingProjects = async () => {
     try {
+      console.log('Calling from here');
       const response = await getProjectList('ongoing');
 
       setOnGoingProjects(response);
