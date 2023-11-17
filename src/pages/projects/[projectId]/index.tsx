@@ -95,7 +95,11 @@ const ProjectDetails = () => {
   const showClientReport =
     isClientUser && projectDetails?.status === IProjectStatus.FINAL_PAYMENT;
 
-  console.log({ projectDetails });
+  console.log({
+    projectDetails,
+    auditorProjectSectionStatusMap,
+    clientProjectSectionStatusMap,
+  });
 
   return (
     <div className='h-full w-full'>

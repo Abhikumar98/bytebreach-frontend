@@ -143,7 +143,7 @@ export const projectCategoryMap: IOption[] = [
 ];
 
 export interface IProjectCreateRequest {
-  title: string;
+  project_title: string;
   code_link: string;
   category: IProjectCategory;
   min_budget: number;
@@ -279,7 +279,7 @@ export interface IAuditorStatusResponse {
   auditor_id: number;
   first_name: string;
   last_name: string;
-  state: IAuditorConfirmationStatus;
+  status: IAuditorConfirmationStatus;
   quotation_time: number;
   quotation_cost: number;
 }

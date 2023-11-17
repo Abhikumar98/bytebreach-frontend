@@ -85,19 +85,17 @@ const AuditorTable: FC<{
         );
       },
       disabled: (record: IAuditorStatusResponse) => {
-        return [
-          IAuditorConfirmationStatus.CLIENT_REJECTED,
-          IAuditorConfirmationStatus.QUOTATION_REJECTED,
-        ].includes(record.state);
+        return record.status === IAuditorConfirmationStatus.QUOTATION_SUBMITTED;
       },
     },
     {
       title: 'Status',
-      dataIndex: 'state',
+      dataIndex: 'status',
       render: (text, record) => {
+        console.log({ record });
         return (
           <Typography>
-            <AuditorStatusPill status={record.state} />
+            <AuditorStatusPill status={record.status} />
           </Typography>
         );
       },
@@ -106,14 +104,24 @@ const AuditorTable: FC<{
       title: 'Quote',
       dataIndex: 'quotation_cost',
       render: (text, record) => {
-        return <Typography>$ {record.quotation_cost}</Typography>;
+        return (
+          <Typography>
+            {record.quotation_cost ? `$ ${record.quotation_cost}` : 'Pending'}
+          </Typography>
+        );
       },
     },
     {
       title: 'Time',
       dataIndex: 'quotation_time',
       render: (text, record) => {
-        return <Typography>{record.quotation_time} days</Typography>;
+        return (
+          <Typography>
+            {!record.quotation_time
+              ? 'Pending'
+              : `${record.quotation_time} days`}
+          </Typography>
+        );
       },
     },
   ];

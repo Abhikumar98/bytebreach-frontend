@@ -61,7 +61,7 @@ const CreateProjectModal: React.FC<{
   const handleFormSubmit = async (values: ICreateProjectForm) => {
     try {
       const createProjectRequest: IProjectCreateRequest = {
-        title: values.title,
+        project_title: values.title,
         code_link: values.githubLink,
         category: selectedCategory,
         start_date: selectedDate.format('YYYY-MM-DD'),

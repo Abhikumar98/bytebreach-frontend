@@ -106,23 +106,23 @@ const AuditorQuotation: FC<{
 
   return (
     <ShadowCard>
-      {auditorStatus?.state ===
+      {auditorStatus?.status ===
         IAuditorConfirmationStatus.QUOTATION_SUBMITTED && (
         <div className='flex justify-center'>
           You successfully submitted the quotation
         </div>
       )}
-      {auditorStatus?.state ===
+      {auditorStatus?.status ===
         IAuditorConfirmationStatus.QUOTATION_REJECTED && (
         <div className='flex justify-center'>You rejected the quotation</div>
       )}
-      {auditorStatus?.state === IAuditorConfirmationStatus.CLIENT_REJECTED && (
+      {auditorStatus?.status === IAuditorConfirmationStatus.CLIENT_REJECTED && (
         <div className='flex justify-center'>
           You quote was rejected the client
         </div>
       )}
 
-      {auditorStatus?.state === IAuditorConfirmationStatus.PENDING && (
+      {auditorStatus?.status === IAuditorConfirmationStatus.PENDING && (
         <>
           <Typography variant='h5'>Select auditors quotation</Typography>
           <div className='space-y-4'>
