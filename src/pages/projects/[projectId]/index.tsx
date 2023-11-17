@@ -86,9 +86,10 @@ const ProjectDetails = () => {
   };
 
   const showSubmitReport =
-    !isClientUser && projectDetails?.state === IProjectStatus.MITIGATION_REVIEW;
+    !isClientUser &&
+    projectDetails?.status === IProjectStatus.MITIGATION_REVIEW;
   const showClientReport =
-    isClientUser && projectDetails?.state === IProjectStatus.FINAL_PAYMENT;
+    isClientUser && projectDetails?.status === IProjectStatus.FINAL_PAYMENT;
 
   console.log({ projectDetails });
 
@@ -97,16 +98,16 @@ const ProjectDetails = () => {
       <PageHeader title='Projects' />
       <ProjectTimeline
         projectStatus={
-          projectDetails?.state ?? IProjectStatus.AUDITOR_SELECTION
+          projectDetails?.status ?? IProjectStatus.AUDITOR_SELECTION
         }
-        projectName={projectDetails?.title ?? ''}
+        projectName={projectDetails?.project_title ?? ''}
       />
       <StyledProjectContainer>
         <div className='section-container'>
-          {projectDetails?.state &&
+          {projectDetails?.status &&
             (isClientUser
-              ? clientProjectSectionStatusMap[projectDetails?.state]
-              : auditorProjectSectionStatusMap[projectDetails?.state])}
+              ? clientProjectSectionStatusMap[projectDetails?.status]
+              : auditorProjectSectionStatusMap[projectDetails?.status])}
         </div>
         <div className='project-details-tile'>
           <ProjectDetailsTile projectDetails={projectDetails} />

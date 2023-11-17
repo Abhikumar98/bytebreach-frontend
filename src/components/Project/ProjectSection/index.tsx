@@ -71,9 +71,9 @@ const ProjectSection: React.FC<{
           key={index}
           onClick={() => handleProjectRoute(project.project_id.toString())}
         >
-          <div>{project.title}</div>
+          <div>{project.project_title}</div>
           <div>
-            <ProjectStatusPill status={project.state} />
+            <ProjectStatusPill status={project.status} />
           </div>
         </StyledProjectSectionItem>
       ))}

@@ -30,7 +30,7 @@ const AuditorProjectTile: FC<{
 
   useEffect(() => {
     handleFetchAuditorStatus();
-  }, [projectDetails?.state, projectDetails?.project_id]);
+  }, [projectDetails?.status, projectDetails?.project_id]);
 
   return (
     <>

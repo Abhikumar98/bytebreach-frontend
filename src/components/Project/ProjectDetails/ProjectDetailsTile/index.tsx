@@ -40,19 +40,27 @@ const ProjectDetailsTile: FC<{
         <Typography fontWeight='bold' component='h5'>
           Project Title
         </Typography>
-        <Typography variant='subtitle1'>{projectDetails?.title}</Typography>
+        <Typography variant='subtitle1'>
+          {projectDetails?.project_title}
+        </Typography>
       </div>
       <div className='mb-4'>
         <Typography fontWeight='bold' component='h5'>
           Code Link
         </Typography>
-        <Typography variant='subtitle1'>{projectDetails?.code_link}</Typography>
+        <a
+          href={projectDetails?.code_link}
+          target='_blank'
+          className='block no-underline'
+        >
+          <Typography variant='subtitle1'>Link to project</Typography>
+        </a>
       </div>
-      {projectDetails?.state &&
+      {projectDetails?.status &&
         ![
           IProjectStatus.AUDITOR_CONFIRMATION,
           IProjectStatus.AUDITOR_SELECTION,
-        ].includes(projectDetails?.state) && (
+        ].includes(projectDetails?.status) && (
           <>
             {isClientUser ? (
               <ClientProjectTile projectDetails={projectDetails} />

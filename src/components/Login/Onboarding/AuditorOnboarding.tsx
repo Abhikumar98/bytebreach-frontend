@@ -9,7 +9,6 @@ import ArrowLeft from '@/assets/arrowLeft.svg';
 import Github from '@/assets/github.svg';
 import Person from '@/assets/person.svg';
 import Sherlock from '@/assets/sherlock.svg';
-import Twitter from '@/assets/twitter.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
 import RangeSlider from '@/atoms/RangeSlider';
@@ -63,7 +62,6 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
       fullName: '',
       github: '',
       tariff: 0,
-      twitter: '',
       codearena: '',
       sherlock: '',
       inviteCode: '',
@@ -71,16 +69,19 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
   });
   const [sliderValue, setSliderValue] = React.useState<number[]>([100, 300]);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const { push } = useRouter();
 
   const handleFormSubmit = async (values: IAuditorOnboardingForm) => {
     try {
+      setIsLoading(true);
       const auditorProfileRequest: Partial<IAuditorProfile> = {
         first_name: values.fullName.split(' ')[0],
         last_name: values.fullName.split(' ')[1],
         github_url: values.github,
-        codeareana_url: values.codearena,
-        sherlock_url: values.sherlock,
+        codeareana_url: values.codearena.length ? values.codearena : undefined,
+        sherlock_url: values.sherlock.length ? values.sherlock : undefined,
         min_weekly_cost: sliderValue[0],
         max_weekly_cost: sliderValue[1],
       };
@@ -89,6 +90,8 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
       push(AppRoutes.Homepage);
     } catch (error) {
       defaultErrorMessage(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -167,12 +170,12 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
             </Typography>
           </div>
         </div>
-        <Input
+        {/* <Input
           {...register('twitter')}
           placeholder='@viraljohndoe'
           label='Twitter'
           icon={<Twitter />}
-        />
+        /> */}
         <div className='flex w-full space-x-6'>
           <div className='w-full'>
             <Input
@@ -213,7 +216,9 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
         />
 
         <div className='mt-4 flex justify-center space-x-4'>
-          <Button type='submit'>Submit</Button>
+          <Button isLoading={isLoading} type='submit'>
+            Submit
+          </Button>
         </div>
       </form>
     </div>

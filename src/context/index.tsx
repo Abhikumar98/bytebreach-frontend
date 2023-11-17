@@ -77,10 +77,18 @@ const AppContext: React.FC<{
       try {
         const response = await getClientProfile();
 
+        if (!response.first_name) {
+          throw new Error('no client found, try auditor');
+        }
+
         setConnectedUserInfo(response);
         setIsClientUser(true);
       } catch (error) {
         const response = await getAuditorProfile();
+
+        if (!response.first_name) {
+          throw new Error('no auditor found, invalid cookies');
+        }
 
         setConnectedUserInfo(response);
         setIsClientUser(false);

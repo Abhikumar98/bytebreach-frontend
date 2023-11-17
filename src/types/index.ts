@@ -234,9 +234,9 @@ export const auditorProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
 
 export interface IProject {
   project_id: number;
-  title: string;
+  project_title: string;
   code_link: string;
-  state: IProjectStatus;
+  status: IProjectStatus;
 }
 
 export type IProjectTabStateRequest = 'requested' | 'ongoing' | 'done';

@@ -50,6 +50,8 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
     },
   });
 
+  const [loading, setLoading] = React.useState(false);
+
   const theme = useTheme();
 
   const { handleLogout } = useAppContext();
@@ -63,6 +65,7 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
 
   const handleFormSubmit = async (values: IClientOnboardingForm) => {
     try {
+      setLoading(true);
       const clientProfileRequest: Partial<IUserProfile> = {
         first_name: values.fullName.split(' ')[0],
         last_name: values.fullName.split(' ')[1] ?? '',
@@ -79,6 +82,8 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
       push(AppRoutes.Homepage);
     } catch (error) {
       defaultErrorMessage(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,7 +172,9 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
         />
 
         <div className='mt-4 flex justify-center space-x-4'>
-          <Button type='submit'>Submit</Button>
+          <Button isLoading={loading} type='submit'>
+            Submit
+          </Button>
         </div>
       </form>
     </div>
