@@ -35,7 +35,7 @@ const resourceMap = {
   BUG: '/project/bug',
 };
 
-export const mockResponse = true;
+export const mockResponse = false;
 
 // auth
 const loginURL = `${resourceMap.AUTH}/login-social/`;

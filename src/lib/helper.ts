@@ -141,18 +141,20 @@ export const handleWeb3AuthLogin = async (
 
     cookie.set(COOKIES.token, tokenCookieSettings['sessionid'], {
       // httpOnly: true,
-      // expires: new Date(tokenCookieSettings.expires),
-      // maxAge: Number(tokenCookieSettings['Max-Age']),
-      // path: tokenCookieSettings.Path,
-      // sameSite: 'none',
+      expires: new Date(tokenCookieSettings.expires),
+      maxAge: Number(tokenCookieSettings['Max-Age']),
+      path: tokenCookieSettings.Path,
+      sameSite: 'none',
+      secure: true,
     });
 
     cookie.set(COOKIES.csrfToken, csrfTokenCookieSettings['csrftoken'], {
       // httpOnly: true,
-      // expires: new Date(csrfTokenCookieSettings.expires),
-      // maxAge: Number(csrfTokenCookieSettings['Max-Age']),
-      // path: csrfTokenCookieSettings.Path,
-      // sameSite: 'none',
+      expires: new Date(csrfTokenCookieSettings.expires),
+      maxAge: Number(csrfTokenCookieSettings['Max-Age']),
+      path: csrfTokenCookieSettings.Path,
+      sameSite: 'none',
+      secure: true,
     });
 
     return {
