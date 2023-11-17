@@ -52,10 +52,8 @@ const ChatSideTile = ({ active }: { active?: boolean }) => {
       <div className='w-full'>
         <div>Lumus Debug</div>
         <div className='flex w-full items-center justify-between'>
-          <Typography variant='subtitle1'>
-            Hi, I want make enquiries...
-          </Typography>
-          <Typography variant='subtitle2'>11:48am</Typography>
+          <Typography variant='subtitle1'>Looking forward to it</Typography>
+          <Typography variant='subtitle2'>12:44 pm</Typography>
         </div>
       </div>
     </StyledChatSideTile>

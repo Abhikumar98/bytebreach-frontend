@@ -2,7 +2,6 @@ import { styled, Typography } from '@mui/material';
 import React from 'react';
 
 import ShadowCard from '@/atoms/ShadowCard';
-import { Column } from '@/atoms/Table';
 
 const StyledAuditorWork = styled('div')`
   width: 100%;
@@ -23,37 +22,6 @@ const clients = [
   'https://imagedelivery.net/wtv4_V7VzVsxpAFaxzmpbw/14d9d215-213f-4b6b-de4d-225a668b8800/public',
   'https://imagedelivery.net/wtv4_V7VzVsxpAFaxzmpbw/b1f3fd24-fda2-4753-74e0-03dab2d5b400/public',
   'https://imagedelivery.net/wtv4_V7VzVsxpAFaxzmpbw/b1f3fd24-fda2-4753-74e0-03dab2d5b400/public',
-];
-
-interface AuditorWorkProps {
-  name: string;
-  team: string;
-  timeline: string;
-}
-
-const tableColumns: Column<AuditorWorkProps>[] = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text, record) => {
-      return <Typography>{record.name}</Typography>;
-    },
-  },
-  {
-    title: 'Status',
-    dataIndex: 'team',
-    render: (text, record) => {
-      console.log({ record });
-      return <Typography></Typography>;
-    },
-  },
-  {
-    title: 'Quote',
-    dataIndex: 'timeline',
-    render: (text, record) => {
-      return <Typography>{record.timeline}</Typography>;
-    },
-  },
 ];
 
 const AuditorWork = () => {

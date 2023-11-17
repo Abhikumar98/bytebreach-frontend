@@ -59,7 +59,7 @@ const StyledTheirChatMessage = styled('div')`
   max-width: 50%;
 `;
 
-const TheirChatMessage = ({ text }: { text: string }) => {
+const TheirChatMessage = ({ text, time }: { text: string; time: string }) => {
   return (
     <div className='relative'>
       <StyledTheirChatMessage>{text}</StyledTheirChatMessage>
@@ -71,7 +71,7 @@ const TheirChatMessage = ({ text }: { text: string }) => {
           color: '#6F6C90',
         }}
       >
-        12:35 pm
+        {time} pm
       </Typography>
     </div>
   );
@@ -91,7 +91,7 @@ const StyledOurChatMessage = styled('div')`
   margin-left: auto;
 `;
 
-const OurChatMessage = ({ text }: { text: string }) => {
+const OurChatMessage = ({ text, time }: { text: string; time: string }) => {
   return (
     <div className='relative'>
       <StyledOurChatMessage>{text}</StyledOurChatMessage>
@@ -103,7 +103,7 @@ const OurChatMessage = ({ text }: { text: string }) => {
           color: '#6F6C90',
         }}
       >
-        12:35 pm
+        {time} pm
       </Typography>
     </div>
   );
@@ -124,16 +124,17 @@ const ChatScreen = () => {
       </div>
       <div className=''>
         <div className='message-container space-y-10'>
-          <TheirChatMessage text='The project is looking good.' />
-          <OurChatMessage text='Awesome!!' />
-          <OurChatMessage text='How are we with deadline?' />
-          <TheirChatMessage text='We are on track' />
+          <TheirChatMessage time='12:39' text='The project is looking good.' />
+          <OurChatMessage time='12:40' text='Awesome!!' />
+          <OurChatMessage time='12:42' text='How are we with deadline?' />
+          <TheirChatMessage time='12:42' text='We are on track' />
           <TheirChatMessage
+            time='12:43'
             text={`You'd be able to download the whole report soon`}
           />
 
-          <OurChatMessage text='Amazing work team.' />
-          <OurChatMessage text='Looking forward to it' />
+          <OurChatMessage time='12:44' text='Amazing work team.' />
+          <OurChatMessage time='12:44' text='Looking forward to it' />
         </div>
 
         <div className='inline-flex w-full items-end space-x-4 '>
