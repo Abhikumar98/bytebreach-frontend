@@ -59,7 +59,7 @@ const auditorQuoteURL = `${resourceMap.PROJECT}/quote/`;
 const createBugURL = `${resourceMap.BUG}/create/`;
 const listBugURL = `${resourceMap.BUG}/list/`;
 const bugDetailsURL = `${resourceMap.BUG}/detail/`;
-const bugCommentURL = `/comment/`;
+const bugCommentURL = `${resourceMap.PROJECT}/comment/`;
 
 const auditorRecommendationURL = `${resourceMap.PROJECT}/auditor-recommendation/`;
 const selectedAuditorRecommendationURL = `${resourceMap.PROJECT}/select-recommendation/`;
