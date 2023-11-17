@@ -3,11 +3,11 @@ import React from 'react';
 
 import useTheme from '@/hooks/useTheme';
 
+import AuditorProfile from '@/components/Profile/ProfileDetails/AuditorProfile';
 import ClientProfile from '@/components/Profile/ProfileDetails/ClientProfile';
 
 import ShadowCard from '@/atoms/ShadowCard';
 import { useAppContext } from '@/context';
-import AuditorProfile from '@/pages/auditor/[profileId]';
 
 const ProfileDetails = () => {
   const theme = useTheme();

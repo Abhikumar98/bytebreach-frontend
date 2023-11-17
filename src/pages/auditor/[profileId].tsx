@@ -32,7 +32,7 @@ const StyledAuditorProfileLayout = styled('div')`
   }
 `;
 
-const AuditorProfile = () => {
+const AuditorPublicProfile = () => {
   return (
     <StyledAuditorProfileLayout>
       <div className='logo'>
@@ -55,4 +55,4 @@ const AuditorProfile = () => {
   );
 };
 
-export default AuditorProfile;
+export default AuditorPublicProfile;

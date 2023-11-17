@@ -1,11 +1,12 @@
-import { styled, Typography, useTheme } from '@mui/material';
-import React, { FC, useEffect } from 'react';
+import { styled, Typography } from '@mui/material';
+import React, { FC } from 'react';
 
-import { defaultErrorMessage } from '@/lib/helper';
+import AuditorProjectTile from '@/components/Project/ProjectDetails/ProjectDetailsTile/AuditorProjectTile';
+import ClientProjectTile from '@/components/Project/ProjectDetails/ProjectDetailsTile/ClientProjectTile';
 
-import { getAuditorStatus } from '@/services';
+import { useAppContext } from '@/context';
 
-import { IAuditorStatusResponse, IProject, IProjectStatus } from '@/types';
+import { IProject, IProjectStatus } from '@/types';
 
 const StyledProjectDetailsTile = styled('div')`
   box-shadow: ${({ theme }) => theme.shadows[2]};
@@ -29,31 +30,7 @@ const StyledProjectDetailsTile = styled('div')`
 const ProjectDetailsTile: FC<{
   projectDetails: IProject | null;
 }> = ({ projectDetails }) => {
-  const theme = useTheme();
-
-  const [auditors, setAuditors] = React.useState<IAuditorStatusResponse[]>([]);
-
-  const handleFetchAuditorStatus = async () => {
-    try {
-      if (!projectDetails?.project_id) return;
-
-      const response = await getAuditorStatus(projectDetails?.project_id);
-
-      setAuditors(response);
-    } catch (error) {
-      defaultErrorMessage(error);
-    }
-  };
-
-  useEffect(() => {
-    handleFetchAuditorStatus();
-  }, [projectDetails?.status, projectDetails?.project_id]);
-
-  const totalCost = auditors.reduce((acc, curr) => {
-    return acc + curr.quotation_cost;
-  }, 0);
-
-  const platformFee = totalCost * 0.1;
+  const { isClientUser } = useAppContext();
 
   return (
     <StyledProjectDetailsTile>
@@ -71,92 +48,19 @@ const ProjectDetailsTile: FC<{
         </Typography>
         <Typography variant='subtitle1'>{projectDetails?.code_link}</Typography>
       </div>
-      {projectDetails?.status !== IProjectStatus.AUDITOR_CONFIRMATION ? (
-        <>
-          <div className='mb-4'>
-            <Typography fontWeight='bold' component='h5'>
-              Audit breakup
-            </Typography>
-            <div className='flex items-center space-x-4'>
-              <Typography variant='subtitle1'>Total audit time:</Typography>
-              <Typography variant='subtitle1'>5 weeks</Typography>
-            </div>
-            <div className='flex items-center space-x-4'>
-              <Typography
-                sx={{
-                  color: theme.palette.text.disabled,
-                  width: '7rem',
-                }}
-                variant='subtitle2'
-              >
-                Audit fee:
-              </Typography>
-              <Typography
-                sx={{
-                  color: theme.palette.text.disabled,
-                }}
-                variant='subtitle2'
-              >
-                $ {totalCost}
-              </Typography>
-            </div>
-            <div className='flex items-center space-x-4'>
-              <Typography
-                sx={{
-                  color: theme.palette.text.disabled,
-                  width: '7rem',
-                }}
-                variant='subtitle2'
-              >
-                Platform fee:
-              </Typography>
-              <Typography
-                sx={{
-                  color: theme.palette.text.disabled,
-                }}
-                variant='subtitle2'
-              >
-                $ {platformFee}
-              </Typography>
-            </div>
-            <div className='flex items-center space-x-4'>
-              <Typography
-                variant='subtitle1'
-                sx={{
-                  width: '7rem',
-                }}
-              >
-                Total cost:
-              </Typography>
-              <Typography variant='subtitle1'>
-                $ {platformFee + totalCost}
-              </Typography>
-            </div>
-          </div>
-          <div className='mb-4'>
-            <Typography
-              fontWeight='bold'
-              component='h5'
-              sx={{
-                marginBottom: theme.spacing?.(2),
-              }}
-            >
-              Auditors
-            </Typography>
-            <div className='auditor'>
-              <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
-              <div className='auditor-details-container'>
-                <Typography component='h5' fontWeight='medium'>
-                  Auditor name
-                </Typography>
-                <Typography fontSize='0.75rem' fontWeight='7hin'>
-                  Auditor
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
+      {projectDetails?.status &&
+        ![
+          IProjectStatus.AUDITOR_CONFIRMATION,
+          IProjectStatus.AUDITOR_SELECTION,
+        ].includes(projectDetails?.status) && (
+          <>
+            {isClientUser ? (
+              <ClientProjectTile projectDetails={projectDetails} />
+            ) : (
+              <AuditorProjectTile projectDetails={projectDetails} />
+            )}
+          </>
+        )}
     </StyledProjectDetailsTile>
   );
 };
