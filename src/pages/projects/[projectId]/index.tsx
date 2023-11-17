@@ -40,6 +40,8 @@ const ProjectDetails = () => {
     query: { projectId },
   } = useRouter();
 
+  console.log({ projectId });
+
   const { isClientUser } = useAppContext();
 
   const [projectDetails, setProjectDetails] = React.useState<IProject | null>(
@@ -58,8 +60,10 @@ const ProjectDetails = () => {
   };
 
   useEffect(() => {
-    handleFetchProjectDetails();
-  }, []);
+    if (projectId) {
+      handleFetchProjectDetails();
+    }
+  }, [projectId]);
 
   const clientProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
     [IProjectStatus.AUDITOR_SELECTION]: <AuditorRecommendation />,

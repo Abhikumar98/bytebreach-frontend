@@ -239,7 +239,7 @@ export interface IProject {
   status: IProjectStatus;
 }
 
-export type IProjectTabStateRequest = 'requested' | 'ongoing' | 'done';
+export type IProjectTabStateRequest = 'requests' | 'ongoing' | 'done';
 
 export type IClientProjectStateRequest = 'ongoing' | 'done';
 

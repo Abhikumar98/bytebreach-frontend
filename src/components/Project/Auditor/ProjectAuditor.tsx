@@ -16,7 +16,7 @@ const ProjectTabAuditor: React.FC<{
         paddingBottom: '1rem',
       }}
     >
-      <Tab label='Requested' value={DashboardTabs.AuditorRequested} />
+      <Tab label='Requests' value={DashboardTabs.AuditorRequested} />
       <Tab label='Ongoing' value={DashboardTabs.AuditorOngoing} />
       <Tab label='Done' value={DashboardTabs.AuditorDone} />
     </Tabs>

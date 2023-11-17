@@ -15,7 +15,7 @@ const AuditorRequestedProjects = () => {
 
   const handleFetchOnGoingProjects = async () => {
     try {
-      const response = await getProjectList('requested');
+      const response = await getProjectList('requests');
 
       setRequestedProjects(response);
     } catch (error) {
