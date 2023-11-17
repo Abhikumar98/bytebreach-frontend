@@ -73,8 +73,10 @@ const BugDetailsPage = () => {
     push(AppRoutes.ProjectDetails.replace('{projectId}', String(projectId)));
 
   useEffect(() => {
-    fetchBugDetails();
-  }, []);
+    if (bugId) {
+      fetchBugDetails();
+    }
+  }, [bugId]);
 
   return (
     <div className='h-full w-full'>
