@@ -12,6 +12,8 @@ const AuditorFinalPaymentSection = () => {
   return (
     <ShadowCard>
       <Typography variant='h5'>Final Payment</Typography>
+
+      <Typography>Waiting for Final Payment to complete</Typography>
     </ShadowCard>
   );
 };
