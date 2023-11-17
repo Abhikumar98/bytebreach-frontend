@@ -123,7 +123,7 @@ const navigation: INavigationRoute[] = [
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { handleLogout, isClientUser, web3auth } = useAppContext();
+  const { handleLogout, isClientUser, web3auth, userInfo } = useAppContext();
 
   const [createProjectModalOpen, setCreateProjectModalOpen] =
     useState<boolean>(false);
@@ -168,7 +168,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
             <Logo />
             <Typography variant='h5'>Bytebreach</Typography>
           </div>
-          {isClientUser && (
+          {isClientUser && userInfo?.first_name && (
             <div className='flex w-full justify-center'>
               <Button
                 size='medium'

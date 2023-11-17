@@ -38,7 +38,7 @@ const BugContainer = () => {
 
   const projectId = query.projectId?.toString();
 
-  const { isClientUser } = useAppContext();
+  const { isClientUser, userInfo } = useAppContext();
 
   const [bugList, setBugList] = React.useState<IBugListItem[]>([]);
 
@@ -78,7 +78,7 @@ const BugContainer = () => {
           <Typography component='h5' fontSize='1.5rem'>
             Bugs
           </Typography>
-          {!isClientUser && (
+          {!isClientUser && userInfo?.first_name && (
             <Button
               onClick={handleCreateBugRoute}
               startIcon={<Plus />}

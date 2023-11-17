@@ -1,5 +1,5 @@
 import { styled } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import AuditorDoneProjects from '@/components/Project/Auditor/AuditorDoneProjects';
 import AuditorOngoingProjects from '@/components/Project/Auditor/AuditorOngoingProjects';
@@ -44,7 +44,7 @@ const StyledProjectContainer = styled('div')`
 `;
 
 const HomePage = () => {
-  const { isClientUser } = useAppContext();
+  const { isClientUser, userInfo } = useAppContext();
 
   const [currentSelectedTab, setCurrentSelectedTab] =
     React.useState<DashboardTabs>(DashboardTabs.ClientOngoing);
@@ -56,6 +56,14 @@ const HomePage = () => {
     auditor_ongoing: <AuditorOngoingProjects />,
     auditor_done: <AuditorDoneProjects />,
   };
+
+  useEffect(() => {
+    if (isClientUser) {
+      setCurrentSelectedTab(DashboardTabs.ClientOngoing);
+    } else {
+      setCurrentSelectedTab(DashboardTabs.AuditorRequested);
+    }
+  }, [isClientUser]);
 
   return (
     <div className='h-full w-full'>
@@ -74,9 +82,11 @@ const HomePage = () => {
             />
           )}
         </StyledProjectContainer>
-        <StyledProjectSectionContainer>
-          {tabComponentMapping[currentSelectedTab]}
-        </StyledProjectSectionContainer>
+        {userInfo?.first_name && (
+          <StyledProjectSectionContainer>
+            {tabComponentMapping[currentSelectedTab]}
+          </StyledProjectSectionContainer>
+        )}
       </Container>
     </div>
   );
