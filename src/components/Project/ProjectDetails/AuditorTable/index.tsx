@@ -85,7 +85,10 @@ const AuditorTable: FC<{
         );
       },
       disabled: (record: IAuditorStatusResponse) => {
-        return record.status === IAuditorConfirmationStatus.QUOTATION_SUBMITTED;
+        return [
+          IAuditorConfirmationStatus.CLIENT_REJECTED,
+          IAuditorConfirmationStatus.QUOTATION_REJECTED,
+        ].includes(record.status);
       },
     },
     {
