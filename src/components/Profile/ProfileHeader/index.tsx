@@ -51,10 +51,10 @@ const ProfileHeader = () => {
             <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
           </div>
           <div className='title'>
-            <Typography variant='h6'>Adela Parkson</Typography>
+            <Typography variant='h6'>Tabish</Typography>
           </div>
           <div className='org'>Bytebreach</div>
-          <div className='profile-type'>Client</div>
+          <div className='profile-type'>Auditor</div>
         </div>
       </ShadowCard>
     </StyledProfileHeader>

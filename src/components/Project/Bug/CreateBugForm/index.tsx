@@ -148,9 +148,9 @@ const CreateBugForm = () => {
           placeholder='Bug Title'
         />
         <Select
-          onChange={(value) => {
-            console.log({ value });
-            setBugRisk(value as unknown as IBugRiskRating);
+          onChange={(target) => {
+            console.log((target as any).value);
+            setBugRisk((target as any).value);
           }}
           value={bugRisk}
           options={riskOptions}
