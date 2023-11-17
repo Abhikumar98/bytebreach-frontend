@@ -22,24 +22,19 @@ const AppContext: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
-
   const [connectedUserInfo, setConnectedUserInfo] = useState<
     IAuditorProfile | IUserProfile | null
   >(null);
-  const [isClientUser, setIsClientUser] = useState<boolean>(false);
+  const [isClientUser, setIsClientUser] = useState<boolean>(true);
+
   const cookie = new Cookies();
+
   const { handleLogin } = useWeb3Auth();
 
-  console.log({ connectedUserInfo });
-
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
 
   const handleLogout = async () => {
     try {
-      const response = web3auth?.connected;
-
-      console.log({ response });
-
       if (web3auth && web3auth.connected) {
         await web3auth?.logout();
       }
@@ -47,11 +42,6 @@ const AppContext: React.FC<{
       cookie.remove(COOKIES.csrfToken);
       cookie.remove(COOKIES.token);
       setConnectedUserInfo(null);
-
-      console.log(
-        '🚀 ~ file: index.tsx:85 ~ handleLogout ~ pathname',
-        pathname
-      );
 
       push(AppRoutes.Login);
     } catch (error) {

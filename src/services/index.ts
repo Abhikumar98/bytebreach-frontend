@@ -257,6 +257,19 @@ export const getAuditorStatus = async (
   return response.data.data;
 };
 
+export const getCurrentProjectAuditorStatus = async (
+  projectId: number
+): Promise<IAuditorStatusResponse> => {
+  if (mockResponse) {
+    return mockAuditorStatusResponse[1];
+  }
+  const response = await axios<GenericResponse<IAuditorStatusResponse>>(
+    getRequest(`${auditorStatusURL}?project_id=${projectId}`)
+  );
+
+  return response.data.data;
+};
+
 export const postAuditorConfirmation = async (
   projectId: number,
   auditorIds: number[]

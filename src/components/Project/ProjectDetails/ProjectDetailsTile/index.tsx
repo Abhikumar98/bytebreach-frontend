@@ -1,7 +1,11 @@
 import { styled, Typography, useTheme } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
-import { IProject, IProjectStatus } from '@/types';
+import { defaultErrorMessage } from '@/lib/helper';
+
+import { getAuditorStatus } from '@/services';
+
+import { IAuditorStatusResponse, IProject, IProjectStatus } from '@/types';
 
 const StyledProjectDetailsTile = styled('div')`
   box-shadow: ${({ theme }) => theme.shadows[2]};
@@ -26,6 +30,30 @@ const ProjectDetailsTile: FC<{
   projectDetails: IProject | null;
 }> = ({ projectDetails }) => {
   const theme = useTheme();
+
+  const [auditors, setAuditors] = React.useState<IAuditorStatusResponse[]>([]);
+
+  const handleFetchAuditorStatus = async () => {
+    try {
+      if (!projectDetails?.project_id) return;
+
+      const response = await getAuditorStatus(projectDetails?.project_id);
+
+      setAuditors(response);
+    } catch (error) {
+      defaultErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchAuditorStatus();
+  }, [projectDetails?.status, projectDetails?.project_id]);
+
+  const totalCost = auditors.reduce((acc, curr) => {
+    return acc + curr.quotation_cost;
+  }, 0);
+
+  const platformFee = totalCost * 0.1;
 
   return (
     <StyledProjectDetailsTile>
@@ -69,7 +97,7 @@ const ProjectDetailsTile: FC<{
                 }}
                 variant='subtitle2'
               >
-                $ 1000
+                $ {totalCost}
               </Typography>
             </div>
             <div className='flex items-center space-x-4'>
@@ -88,7 +116,7 @@ const ProjectDetailsTile: FC<{
                 }}
                 variant='subtitle2'
               >
-                $ 234
+                $ {platformFee}
               </Typography>
             </div>
             <div className='flex items-center space-x-4'>
@@ -100,7 +128,9 @@ const ProjectDetailsTile: FC<{
               >
                 Total cost:
               </Typography>
-              <Typography variant='subtitle1'>$ 1,234</Typography>
+              <Typography variant='subtitle1'>
+                $ {platformFee + totalCost}
+              </Typography>
             </div>
           </div>
           <div className='mb-4'>
