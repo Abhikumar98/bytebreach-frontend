@@ -44,7 +44,7 @@ const AuthWrapper: React.FC<{
     try {
       if (!userInfo?.first_name) {
         // remove the argument
-        await handleFetchUser('client');
+        await handleFetchUser('auditor');
       }
     } catch (error) {
       defaultErrorMessage(error);

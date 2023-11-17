@@ -5,6 +5,9 @@ import useTheme from '@/hooks/useTheme';
 
 import Moon from '@/assets/moon.svg';
 import Sun from '@/assets/sun.svg';
+import { useAppContext } from '@/context';
+
+import { AppRoutes } from '@/types';
 
 const StyledShadowPill = styled('div')`
   box-shadow: ${({ theme }) => theme.shadows[1]};
@@ -34,8 +37,19 @@ const StyledShadowPill = styled('div')`
 
 const PageHeader: React.FC<{ title: string }> = ({ title }) => {
   const theme = useTheme();
+  const { userInfo } = useAppContext();
 
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
+
+  const handleAuditorPublicPage = () => {
+    window.open(
+      `${window.location.origin}${AppRoutes.AuditorPage.replace(
+        '{auditorId}',
+        'tabish'
+      )}`,
+      '_blank'
+    );
+  };
 
   return (
     <div className='flex w-full items-start justify-between'>
@@ -51,7 +65,11 @@ const PageHeader: React.FC<{ title: string }> = ({ title }) => {
         <div className='flex cursor-pointer items-center'>
           {isDarkMode ? <Sun /> : <Moon />}{' '}
         </div>
-        <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
+        <img
+          onClick={handleAuditorPublicPage}
+          className='cursor-pointer'
+          src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg'
+        />
       </StyledShadowPill>
     </div>
   );

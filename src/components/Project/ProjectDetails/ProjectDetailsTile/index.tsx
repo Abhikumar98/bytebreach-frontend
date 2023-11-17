@@ -13,6 +13,8 @@ const StyledProjectDetailsTile = styled('div')`
   padding: ${({ theme }) => theme.spacing(8)};
   border-radius: 1rem;
   background: ${({ theme }) => theme.palette.background.default};
+  /* max-height: calc(100vh - 34rem); */
+  overflow: auto;
 
   .auditor {
     display: flex;
