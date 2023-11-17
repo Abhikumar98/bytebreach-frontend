@@ -56,6 +56,7 @@ export const isAuthenticatedRoute = (route: string) => {
 export const COOKIES = {
   token: 'sessionid',
   csrfToken: 'csrftoken',
+  browserCsrf: 'browser-csrf',
 };
 
 export const handleWeb3AuthLogin = async (
@@ -103,9 +104,33 @@ export const handleWeb3AuthLogin = async (
       clientType
     );
 
-    if (mockResponse) {
-      const cookie = new Cookies();
+    // const csrfTokenCookieSettings = csrftoken.split(';').reduce(
+    //   (acc, property) => {
+    //     const [key, value] = property.split('=');
 
+    //     return {
+    //       ...acc,
+    //       [key.trim()]: value,
+    //     };
+    //   },
+    //   {
+    //     csrftoken: '',
+    //     expires: '',
+    //     'Max-Age': '',
+    //     Path: '',
+    //     SameSite: '',
+    //   }
+    // );
+
+    const cookie = new Cookies();
+    // cookie.set(COOKIES.browserCsrf, csrfTokenCookieSettings.csrftoken, {
+    //   // httpOnly: true,
+    //   expires: new Date(csrfTokenCookieSettings.expires),
+    //   maxAge: Number(csrfTokenCookieSettings['Max-Age']),
+    //   path: csrfTokenCookieSettings.Path,
+    // });
+
+    if (mockResponse) {
       cookie.set(COOKIES.token, 'something');
       cookie.set(COOKIES.csrfToken, 'something');
     }

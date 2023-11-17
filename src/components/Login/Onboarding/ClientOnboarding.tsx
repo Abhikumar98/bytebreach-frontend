@@ -54,6 +54,11 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
 
   const { handleLogout } = useAppContext();
 
+  const handleBackButton = () => {
+    backToLogin();
+    handleLogout();
+  };
+
   const { push } = useRouter();
 
   const handleFormSubmit = async (values: IClientOnboardingForm) => {
@@ -79,7 +84,7 @@ const ClientOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
 
   return (
     <div className=' space-y-4'>
-      <BackButton onClick={handleLogout}>
+      <BackButton onClick={handleBackButton}>
         <ArrowLeft />
       </BackButton>
       <div className='border-b border-b-gray-400 pb-4'>

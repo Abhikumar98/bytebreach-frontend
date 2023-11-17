@@ -332,6 +332,6 @@ export interface GenericResponse<T> {
 
 export interface ILoginResponse {
   is_onboarding_done: boolean;
-  csrftoken: string;
-  sessionid: string;
+  // csrftoken: string;
+  // sessionid: string;
 }

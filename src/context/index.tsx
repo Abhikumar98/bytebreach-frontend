@@ -41,6 +41,7 @@ const AppContext: React.FC<{
 
       cookie.remove(COOKIES.csrfToken);
       cookie.remove(COOKIES.token);
+
       setConnectedUserInfo(null);
 
       push(AppRoutes.Login);

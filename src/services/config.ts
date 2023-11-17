@@ -12,13 +12,15 @@ const setHeaders = (authToken?: string) => {
     additionalHeaders['Authorization'] = 'Bearer ' + authToken;
   }
 
-  const cookie = new Cookies();
+  const cookie = new Cookies('csrftoken');
+
+  console.log(cookie.getAll());
 
   // additionalHeaders['sessionid'] = cookie.get(COOKIES.token);
 
   console.log(COOKIES.csrfToken, cookie.get('csrftoken'));
 
-  additionalHeaders['X-CSRFToken'] = cookie.get('csrftoken');
+  additionalHeaders['X-CSRFToken'] = cookie.get(COOKIES.browserCsrf) ?? 'test';
 
   // additionalHeaders.cookie = `sessionid=${cookie.get(
   //   COOKIES.token

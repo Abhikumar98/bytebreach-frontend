@@ -39,12 +39,13 @@ const AuthWrapper: React.FC<{
 
     if (!isAuthenticated) {
       push(AppRoutes.Login);
+      return;
     }
 
     try {
       if (!userInfo?.first_name) {
         // remove the argument
-        await handleFetchUser('auditor');
+        await handleFetchUser();
       }
     } catch (error) {
       defaultErrorMessage(error);

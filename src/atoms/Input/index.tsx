@@ -74,8 +74,8 @@ const Input: React.FC<
             <Tooltip title={tooltipMessage}>
               <Icon
                 sx={{
-                  height: '20px',
-                  width: '20px',
+                  height: '24px',
+                  width: '24px',
                   marginLeft: '0.5rem',
                 }}
               >

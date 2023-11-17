@@ -35,7 +35,7 @@ const resourceMap = {
   BUG: '/project/bug',
 };
 
-export const mockResponse = true;
+export const mockResponse = false;
 
 // auth
 const loginURL = `${resourceMap.AUTH}/login-social/`;
@@ -72,8 +72,6 @@ export const login = async (
 ): Promise<ILoginResponse> => {
   if (mockResponse) {
     return {
-      sessionid: 'Token',
-      csrftoken: 'csrfToken',
       is_onboarding_done: false,
     };
   }
@@ -84,12 +82,6 @@ export const login = async (
       idToken
     )
   );
-
-  const { headers } = response;
-
-  console.log({ response });
-
-  console.log({ headers }, headers['Set-Cookie']);
 
   return response.data.data;
 };

@@ -12,10 +12,21 @@ import Sherlock from '@/assets/sherlock.svg';
 import Twitter from '@/assets/twitter.svg';
 import Button from '@/atoms/Button';
 import Input from '@/atoms/Input';
+import RangeSlider from '@/atoms/RangeSlider';
 import { useAppContext } from '@/context';
 import { postAuditorProfile } from '@/services';
 
 import { AppRoutes, IAuditorOnboardingForm, IAuditorProfile } from '@/types';
+
+const StyledInputValue = styled('div')`
+  input {
+    color: ${({ theme }) => theme.palette.text.secondary};
+  }
+  border-radius: 15rem;
+  border: 1px solid ${({ theme }) => theme.palette.divider};
+  padding: ${({ theme }) => `${theme.spacing(2)} ${theme.spacing(4)}`};
+  box-shadow: ${({ theme }) => theme.shadows[1]};
+`;
 
 const BackButton = styled('div')`
   cursor: pointer;
@@ -36,6 +47,11 @@ const BackButton = styled('div')`
 const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
   const { handleLogout } = useAppContext();
 
+  const handleBackButton = () => {
+    backToLogin();
+    handleLogout();
+  };
+
   const theme = useTheme();
 
   const {
@@ -53,6 +69,7 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
       inviteCode: '',
     },
   });
+  const [sliderValue, setSliderValue] = React.useState<number[]>([100, 300]);
 
   const { push } = useRouter();
 
@@ -64,8 +81,8 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
         github_url: values.github,
         codeareana_url: values.codearena,
         sherlock_url: values.sherlock,
-        min_weekly_cost: values.tariff,
-        max_weekly_cost: values.tariff,
+        min_weekly_cost: sliderValue[0],
+        max_weekly_cost: sliderValue[1],
       };
 
       await postAuditorProfile(auditorProfileRequest);
@@ -77,7 +94,7 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
 
   return (
     <div className='space-y-4'>
-      <BackButton onClick={handleLogout}>
+      <BackButton onClick={handleBackButton}>
         <ArrowLeft />
       </BackButton>
       <div className='border-b border-b-gray-400 '>
@@ -112,24 +129,44 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
           label='Github'
           icon={<Github />}
         />
-        <Input
-          {...register('tariff', {
-            required: {
-              value: true,
-              message: 'Please enter your weekly cost',
-            },
-            min: {
-              value: 1,
-              message: 'Weekly cost cannot be 0',
-            },
-            valueAsNumber: true,
-          })}
-          type='number'
-          errors={errors}
-          mandatory
-          placeholder='$5000'
-          label='Weekly Cost'
-        />
+        <div>
+          <RangeSlider
+            min={10}
+            max={10000}
+            step={10}
+            mandatory
+            label='Weekly cost'
+            value={sliderValue}
+            setValue={setSliderValue}
+          />
+          <div className='flex items-center space-x-2'>
+            <Typography color={theme.palette?.text?.secondary}>
+              <StyledInputValue>
+                $
+                <input
+                  className='w-20 border-none text-base outline-none'
+                  value={sliderValue[0]}
+                  onChange={(e) => {
+                    setSliderValue([Number(e.target.value), sliderValue[1]]);
+                  }}
+                />
+              </StyledInputValue>
+            </Typography>
+            <span>-</span>
+            <Typography color={theme.palette?.text?.secondary}>
+              <StyledInputValue>
+                $
+                <input
+                  className='w-20 border-none text-base outline-none'
+                  value={sliderValue[1]}
+                  onChange={(e) => {
+                    setSliderValue([sliderValue[0], Number(e.target.value)]);
+                  }}
+                />
+              </StyledInputValue>
+            </Typography>
+          </div>
+        </div>
         <Input
           {...register('twitter')}
           placeholder='@viraljohndoe'

@@ -5,7 +5,6 @@ import useTheme from '@/hooks/useTheme';
 
 import Moon from '@/assets/moon.svg';
 import Sun from '@/assets/sun.svg';
-import { useAppContext } from '@/context';
 
 import { AppRoutes } from '@/types';
 
@@ -37,7 +36,6 @@ const StyledShadowPill = styled('div')`
 
 const PageHeader: React.FC<{ title: string }> = ({ title }) => {
   const theme = useTheme();
-  const { userInfo } = useAppContext();
 
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
 
