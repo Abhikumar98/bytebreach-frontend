@@ -72,35 +72,35 @@ export const mockAuditorProfile: IAuditorProfile = {
 export const mockProjectList: IProject[] = [
   {
     project_id: 123,
-    project_title: 'Test 1 project_title',
+    title: 'Test 1 project_title',
     code_link: 'Test 1 code_link',
-    status: IProjectStatus.AUDITOR_SELECTION,
+    state: IProjectStatus.AUDITOR_SELECTION,
   },
   {
     project_id: 1234,
-    project_title: 'Test 1 project_title audit in progress',
+    title: 'Test 1 project_title audit in progress',
     code_link: 'Test 1 code_link',
-    status: IProjectStatus.AUDIT_IN_PROGRESS,
+    state: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
     project_id: 123,
-    project_title: 'Test 1 project_title',
+    title: 'Test 1 project_title',
     code_link: 'Test 1 code_link',
-    status: IProjectStatus.AUDIT_IN_PROGRESS,
+    state: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
     project_id: 123,
-    project_title: 'Test 1 project_title',
+    title: 'Test 1 project_title',
     code_link: 'Test 1 code_link',
-    status: IProjectStatus.PARITAL_PAYMENT,
+    state: IProjectStatus.PARITAL_PAYMENT,
   },
 ];
 
 export const mockProjectData: IProject = {
   project_id: 123,
-  project_title: 'Test 1 project_title',
+  title: 'Test 1 project_title',
   code_link: 'Test 1 code_link',
-  status: IProjectStatus.MITIGATION_REVIEW,
+  state: IProjectStatus.MITIGATION_REVIEW,
 };
 
 export const mockClientProjectSummary: IProjectSummaryResponse = {

@@ -40,9 +40,7 @@ const ProjectDetailsTile: FC<{
         <Typography fontWeight='bold' component='h5'>
           Project Title
         </Typography>
-        <Typography variant='subtitle1'>
-          {projectDetails?.project_title}
-        </Typography>
+        <Typography variant='subtitle1'>{projectDetails?.title}</Typography>
       </div>
       <div className='mb-4'>
         <Typography fontWeight='bold' component='h5'>
@@ -50,11 +48,11 @@ const ProjectDetailsTile: FC<{
         </Typography>
         <Typography variant='subtitle1'>{projectDetails?.code_link}</Typography>
       </div>
-      {projectDetails?.status &&
+      {projectDetails?.state &&
         ![
           IProjectStatus.AUDITOR_CONFIRMATION,
           IProjectStatus.AUDITOR_SELECTION,
-        ].includes(projectDetails?.status) && (
+        ].includes(projectDetails?.state) && (
           <>
             {isClientUser ? (
               <ClientProjectTile projectDetails={projectDetails} />

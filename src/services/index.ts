@@ -48,6 +48,7 @@ const auditorProfileURL = `${resourceMap.AUTH}/auditor-profile/`;
 // project
 const createProjectURL = `${resourceMap.PROJECT}/create/`;
 const projectListURL = `${resourceMap.PROJECT}/list/`;
+const projectDetailURL = `${resourceMap.PROJECT}/detail/`;
 
 // project details
 
@@ -337,7 +338,7 @@ export const getProjectDetails = async (
     return mockProjectData;
   }
   const response = await axios<GenericResponse<IProject>>(
-    getRequest(`${projectListURL}?project_id=${projectId}`)
+    getRequest(`${projectDetailURL}?project_id=${projectId}`)
   );
 
   return response.data.data;

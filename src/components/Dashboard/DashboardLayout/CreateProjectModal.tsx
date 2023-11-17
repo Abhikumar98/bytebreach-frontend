@@ -64,7 +64,7 @@ const CreateProjectModal: React.FC<{
         title: values.title,
         code_link: values.githubLink,
         category: selectedCategory,
-        start_date: selectedDate.toISOString(),
+        start_date: selectedDate.format('YYYY-MM-DD'),
         min_budget: sliderValue[0],
         max_budget: sliderValue[1],
       };

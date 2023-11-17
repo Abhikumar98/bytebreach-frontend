@@ -6,6 +6,7 @@ import { defaultErrorMessage } from '@/lib/helper';
 
 import BugContainer from '@/components/Project/Bug/BugContainer';
 import AuditorQuotation from '@/components/Project/ProjectDetails/AuditorQuotation';
+import AuditorRecommendation from '@/components/Project/ProjectDetails/AuditorRecommendation';
 import AuditorTable from '@/components/Project/ProjectDetails/AuditorTable';
 import AuditorFinalPaymentSection from '@/components/Project/ProjectDetails/FinalPaymentSection/AuditorFinalPaymentSection';
 import ClientFinalPaymentSection from '@/components/Project/ProjectDetails/FinalPaymentSection/ClientFinalPaymentSection';
@@ -47,6 +48,7 @@ const ProjectDetails = () => {
 
   const handleFetchProjectDetails = async () => {
     try {
+      console.log({ projectId });
       const response = await getProjectDetails(projectId as string);
 
       setProjectDetails(response);
@@ -60,9 +62,7 @@ const ProjectDetails = () => {
   }, []);
 
   const clientProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
-    [IProjectStatus.AUDITOR_SELECTION]: (
-      <div className='flex items-center gap-2' />
-    ),
+    [IProjectStatus.AUDITOR_SELECTION]: <AuditorRecommendation />,
     [IProjectStatus.AUDITOR_CONFIRMATION]: (
       <AuditorTable handleUpdateProject={handleFetchProjectDetails} />
     ),
@@ -74,7 +74,7 @@ const ProjectDetails = () => {
 
   const auditorProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
     [IProjectStatus.AUDITOR_SELECTION]: (
-      <div className='flex items-center gap-2' />
+      <div className='flex items-center gap-2'>Auditor status 1</div>
     ),
     [IProjectStatus.AUDITOR_CONFIRMATION]: (
       <AuditorQuotation handleUpdateProject={handleFetchProjectDetails} />
@@ -86,26 +86,27 @@ const ProjectDetails = () => {
   };
 
   const showSubmitReport =
-    !isClientUser &&
-    projectDetails?.status === IProjectStatus.MITIGATION_REVIEW;
+    !isClientUser && projectDetails?.state === IProjectStatus.MITIGATION_REVIEW;
   const showClientReport =
-    isClientUser && projectDetails?.status === IProjectStatus.FINAL_PAYMENT;
+    isClientUser && projectDetails?.state === IProjectStatus.FINAL_PAYMENT;
+
+  console.log({ projectDetails });
 
   return (
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
       <ProjectTimeline
         projectStatus={
-          projectDetails?.status ?? IProjectStatus.AUDITOR_SELECTION
+          projectDetails?.state ?? IProjectStatus.AUDITOR_SELECTION
         }
-        projectName={projectDetails?.project_title ?? ''}
+        projectName={projectDetails?.title ?? ''}
       />
       <StyledProjectContainer>
         <div className='section-container'>
-          {projectDetails?.status &&
+          {projectDetails?.state &&
             (isClientUser
-              ? clientProjectSectionStatusMap[projectDetails?.status]
-              : auditorProjectSectionStatusMap[projectDetails?.status])}
+              ? clientProjectSectionStatusMap[projectDetails?.state]
+              : auditorProjectSectionStatusMap[projectDetails?.state])}
         </div>
         <div className='project-details-tile'>
           <ProjectDetailsTile projectDetails={projectDetails} />

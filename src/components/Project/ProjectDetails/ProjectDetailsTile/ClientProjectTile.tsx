@@ -28,7 +28,7 @@ const ProjectDetailsTile: FC<{
 
   useEffect(() => {
     handleFetchAuditorStatus();
-  }, [projectDetails?.status, projectDetails?.project_id]);
+  }, [projectDetails?.state, projectDetails?.project_id]);
 
   const totalCost = auditors.reduce((acc, curr) => {
     return acc + curr.quotation_cost;

@@ -79,7 +79,7 @@ const ClientProfile = () => {
         />
         <InlineEdit
           label='Twitter'
-          value={clientInfo?.github_url ?? ''}
+          value={clientInfo?.twitter_url ?? ''}
           onSave={(value) =>
             handlePartialClientStateUpdate('twitter_url', value)
           }
