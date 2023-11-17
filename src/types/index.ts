@@ -19,7 +19,7 @@ export interface IAppContextState {
   userInfo: IAuditorProfile | IUserProfile | null;
   handleLogout: () => Promise<void>;
   isClientUser: boolean;
-  handleFetchUser: () => Promise<void>;
+  handleFetchUser: (type?: UserType) => Promise<void>;
 }
 
 export type AuthOptions = 'google' | 'github' | 'email' | 'wallet';

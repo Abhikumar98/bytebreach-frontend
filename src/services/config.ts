@@ -16,9 +16,9 @@ const setHeaders = (authToken?: string) => {
 
   // additionalHeaders['sessionid'] = cookie.get(COOKIES.token);
 
-  console.log(COOKIES.csrfToken, cookie.get(COOKIES.csrfToken));
+  console.log(COOKIES.csrfToken, cookie.get('csrftoken'));
 
-  additionalHeaders['X-CSRFToken'] = cookie.get(COOKIES.csrfToken);
+  additionalHeaders['X-CSRFToken'] = cookie.get('csrftoken');
 
   // additionalHeaders.cookie = `sessionid=${cookie.get(
   //   COOKIES.token

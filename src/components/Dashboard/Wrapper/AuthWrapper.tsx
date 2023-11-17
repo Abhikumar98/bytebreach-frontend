@@ -2,7 +2,13 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 
-import { authenticatedRoutes, COOKIES } from '@/lib/helper';
+import {
+  authenticatedRoutes,
+  COOKIES,
+  defaultErrorMessage,
+} from '@/lib/helper';
+
+import { useAppContext } from '@/context';
 
 import { AppRoutes } from '@/types';
 
@@ -10,19 +16,15 @@ const AuthWrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const { pathname, push } = useRouter();
-
-  console.log('🚀 ~ file: AuthWrapper.tsx:13 ~ pathname:', pathname);
+  const { handleFetchUser, userInfo } = useAppContext();
 
   const cookie = new Cookies();
 
-  const validateAuthentication = () => {
+  const validateAuthentication = async () => {
     const cookies = cookie.getAll();
-
-    console.log(authenticatedRoutes.includes(pathname));
 
     if (cookies[COOKIES.csrfToken] && cookies[COOKIES.token]) {
       if (!authenticatedRoutes.includes(pathname)) {
-        console.log('Authenticated user');
         push(AppRoutes.Homepage);
       }
 
@@ -32,26 +34,26 @@ const AuthWrapper: React.FC<{
     return false;
   };
 
-  const validateAuthenticationAndRedirect = () => {
+  const validateAuthenticationAndRedirect = async () => {
     const isAuthenticated = validateAuthentication();
 
-    console.log({ isAuthenticated });
-
     if (!isAuthenticated) {
-      console.log(
-        'Unauthenticated user, redirecting to login',
-        isAuthenticated
-      );
       push(AppRoutes.Login);
+    }
+
+    try {
+      if (!userInfo?.first_name) {
+        await handleFetchUser();
+      }
+    } catch (error) {
+      defaultErrorMessage(error);
     }
   };
 
   useEffect(() => {
     if (pathname === AppRoutes.Login) {
-      console.log('Login path');
       validateAuthentication();
     } else if (authenticatedRoutes.includes(pathname)) {
-      console.log('should be authenticated path');
       validateAuthenticationAndRedirect();
     }
   }, [pathname]);

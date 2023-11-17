@@ -9,18 +9,13 @@ import theme from '@/lib/styles';
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 import AuthWrapper from '@/components/Dashboard/Wrapper/AuthWrapper';
 
-import { useAppContext } from '@/context';
-
 const Wrapper: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { userInfo } = useAppContext();
-
   const router = useRouter();
 
   const isDashboardHidden = unAuthenticatedRoutes.includes(router.pathname);
 
-  const showDashboard = true || userInfo;
   return (
     <AuthWrapper>
       <ThemeProvider theme={theme('light')}>
@@ -33,7 +28,7 @@ const Wrapper: React.FC<{
             height: '100vh',
           }}
         >
-          {showDashboard && !isDashboardHidden ? (
+          {!isDashboardHidden ? (
             <DashboardLayout>{children}</DashboardLayout>
           ) : (
             <>{children}</>

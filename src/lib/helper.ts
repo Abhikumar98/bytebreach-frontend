@@ -3,11 +3,12 @@ import { Web3AuthNoModal } from '@web3auth/no-modal';
 import {
   LOGIN_PROVIDER_TYPE,
   OpenloginLoginParams,
+  OpenloginUserInfo,
 } from '@web3auth/openlogin-adapter';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-hot-toast';
 
-import { login } from '@/services';
+import { login, mockResponse } from '@/services';
 
 import { AppRoutes } from '@/types';
 
@@ -67,95 +68,47 @@ export const handleWeb3AuthLogin = async (
   app_pub_key: string;
   is_show_onboarded: boolean;
 }> => {
-  const cookie = new Cookies();
+  let userInfo: Partial<OpenloginUserInfo>;
+  let app_pub_key: string;
 
-  await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
-    loginProvider: authProvider,
-    extraLoginOptions: {
-      login_hint: userEmail,
-    },
-  });
+  if (!mockResponse) {
+    await web3Auth.connectTo<OpenloginLoginParams>(adapter, {
+      loginProvider: authProvider,
+      extraLoginOptions: {
+        login_hint: userEmail,
+      },
+    });
 
-  const app_scoped_privkey = await web3Auth.provider?.request({
-    method: 'eth_private_key', // use "private_key" for other non-evm chains
-  });
+    const app_scoped_privkey = await web3Auth.provider?.request({
+      method: 'eth_private_key', // use "private_key" for other non-evm chains
+    });
 
-  const app_pub_key = getPublicCompressed(
-    Buffer.from((app_scoped_privkey as any).padStart(64, '0'), 'hex')
-  ).toString('hex');
+    app_pub_key = getPublicCompressed(
+      Buffer.from((app_scoped_privkey as any).padStart(64, '0'), 'hex')
+    ).toString('hex');
 
-  const userInfo = await web3Auth.getUserInfo();
+    userInfo = await web3Auth.getUserInfo();
+  } else {
+    userInfo = {
+      idToken: 'something',
+    };
 
-  // mockData
-
-  // const userInfo = {
-  //   idToken: 'something',
-  // };
-
-  // const app_pub_key = 'something';
+    app_pub_key = 'something';
+  }
 
   try {
-    const {
-      is_onboarding_done: is_show_onboarded,
-      csrftoken: csrfToken,
-      sessionid: token,
-    } = await login(userInfo.idToken ?? '', app_pub_key, clientType);
-
-    const tokenCookieSettings = token.split(';').reduce(
-      (acc, property) => {
-        const [key, value] = property.split('=');
-
-        return {
-          ...acc,
-          [key.trim()]: value,
-        };
-      },
-      {
-        sessionid: '',
-        expires: '',
-        'Max-Age': '',
-        Path: '',
-        SameSite: '',
-      }
+    const { is_onboarding_done: is_show_onboarded } = await login(
+      userInfo.idToken ?? '',
+      app_pub_key,
+      clientType
     );
 
-    const csrfTokenCookieSettings = csrfToken.split(';').reduce(
-      (acc, property) => {
-        const [key, value] = property.split('=');
+    if (mockResponse) {
+      const cookie = new Cookies();
 
-        return {
-          ...acc,
-          [key.trim()]: value,
-        };
-      },
-      {
-        csrftoken: '',
-        expires: '',
-        'Max-Age': '',
-        Path: '',
-        SameSite: '',
-      }
-    );
-
-    console.log({ tokenCookieSettings, csrfTokenCookieSettings });
-
-    cookie.set(COOKIES.token, tokenCookieSettings['sessionid'], {
-      // httpOnly: true,
-      expires: new Date(tokenCookieSettings.expires),
-      maxAge: Number(tokenCookieSettings['Max-Age']),
-      path: tokenCookieSettings.Path,
-      sameSite: 'none',
-      secure: true,
-    });
-
-    cookie.set(COOKIES.csrfToken, csrfTokenCookieSettings['csrftoken'], {
-      // httpOnly: true,
-      expires: new Date(csrfTokenCookieSettings.expires),
-      maxAge: Number(csrfTokenCookieSettings['Max-Age']),
-      path: csrfTokenCookieSettings.Path,
-      sameSite: 'none',
-      secure: true,
-    });
+      cookie.set(COOKIES.token, 'something');
+      cookie.set(COOKIES.csrfToken, 'something');
+    }
 
     return {
       app_pub_key,

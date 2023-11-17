@@ -13,6 +13,7 @@ import {
   IAppContextState,
   IAuditorProfile,
   IUserProfile,
+  UserType,
 } from '@/types';
 
 const AppContextState = createContext<IAppContextState | null>(null);
@@ -28,6 +29,8 @@ const AppContext: React.FC<{
   const [isClientUser, setIsClientUser] = useState<boolean>(false);
   const cookie = new Cookies();
   const { handleLogin } = useWeb3Auth();
+
+  console.log({ connectedUserInfo });
 
   const { push, pathname } = useRouter();
 
@@ -64,8 +67,22 @@ const AppContext: React.FC<{
     }
   };
 
-  const handleFetchUser = async () => {
+  const handleFetchUser = async (type?: UserType) => {
     try {
+      if (type === 'client') {
+        const response = await getClientProfile();
+        setConnectedUserInfo(response);
+        setIsClientUser(true);
+        return;
+      }
+
+      if (type === 'auditor') {
+        const response = await getAuditorProfile();
+        setConnectedUserInfo(response);
+        setIsClientUser(false);
+        return;
+      }
+
       try {
         const response = await getClientProfile();
 
