@@ -15,11 +15,14 @@ const setHeaders = (authToken?: string) => {
   const cookie = new Cookies();
 
   // additionalHeaders['sessionid'] = cookie.get(COOKIES.token);
-  // additionalHeaders['csrftoken'] = cookie.get(COOKIES.csrfToken);
 
-  additionalHeaders.cookie = `sessionid=${cookie.get(
-    COOKIES.token
-  )}; csrftoken=${cookie.get(COOKIES.csrfToken)}`;
+  console.log(COOKIES.csrfToken, cookie.get(COOKIES.csrfToken));
+
+  additionalHeaders['X-CSRFToken'] = cookie.get(COOKIES.csrfToken);
+
+  // additionalHeaders.cookie = `sessionid=${cookie.get(
+  //   COOKIES.token
+  // )}; csrftoken=${cookie.get(COOKIES.csrfToken)}`;
 
   additionalHeaders['Content-Type'] = 'application/json';
   additionalHeaders['Accept'] = 'application/json';
