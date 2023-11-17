@@ -120,18 +120,20 @@ const ChatScreen = () => {
             <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
           </div>
         </div>
-        <Typography variant='h5'>Group 1</Typography>
+        <Typography variant='h5'>Lumus Debug</Typography>
       </div>
       <div className=''>
         <div className='message-container space-y-10'>
-          <TheirChatMessage text='test message' />
-          <OurChatMessage text='test message' />
-          <OurChatMessage text='test message' />
-          <TheirChatMessage text='test message' />
-          <TheirChatMessage text='test message' />
+          <TheirChatMessage text='The project is looking good.' />
+          <OurChatMessage text='Awesome!!' />
+          <OurChatMessage text='How are we with deadline?' />
+          <TheirChatMessage text='We are on track' />
+          <TheirChatMessage
+            text={`You'd be able to download the whole report soon`}
+          />
 
-          <OurChatMessage text='test message' />
-          <OurChatMessage text='test message' />
+          <OurChatMessage text='Amazing work team.' />
+          <OurChatMessage text='Looking forward to it' />
         </div>
 
         <div className='inline-flex w-full items-end space-x-4 '>

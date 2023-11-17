@@ -114,7 +114,7 @@ const CreateProjectModal: React.FC<{
           mandatory
           label='GitHub Link'
           errors={errors}
-          placeholder='https://github.com/xyz'
+          placeholder='https://github.com/abcd'
         />
         <Select
           value={selectedCategory}

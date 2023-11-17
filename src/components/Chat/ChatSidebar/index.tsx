@@ -50,10 +50,10 @@ const ChatSideTile = ({ active }: { active?: boolean }) => {
         <img src='https://xsgames.co/randomusers/assets/avatars/male/27.jpg' />
       </div>
       <div className='w-full'>
-        <div>Group Chat 1</div>
+        <div>Lumus Debug</div>
         <div className='flex w-full items-center justify-between'>
           <Typography variant='subtitle1'>
-            Hi, i want make enquiries...
+            Hi, I want make enquiries...
           </Typography>
           <Typography variant='subtitle2'>11:48am</Typography>
         </div>
@@ -77,8 +77,6 @@ const ChatSidebar = () => {
       <Input placeholder='Search' size='small' sx={{}} />
       <div className='my-4'>
         <ChatSideTile active />
-        <ChatSideTile />
-        <ChatSideTile />
       </div>
     </StyledSidebarLayout>
   );

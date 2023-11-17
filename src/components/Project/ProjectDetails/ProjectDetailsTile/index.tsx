@@ -51,7 +51,7 @@ const ProjectDetailsTile: FC<{
         <a
           href={projectDetails?.code_link}
           target='_blank'
-          className='block no-underline'
+          className='block cursor-pointer underline'
         >
           <Typography variant='subtitle1'>Link to project</Typography>
         </a>

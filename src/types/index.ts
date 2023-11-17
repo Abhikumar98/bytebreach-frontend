@@ -223,7 +223,7 @@ export const auditorProjectTimelineSteps: TimelineStep<IProjectStatus>[] = [
     value: IProjectStatus.AUDIT_IN_PROGRESS,
   },
   {
-    label: 'Audit Ends Mitigation review',
+    label: 'Mitigation review',
     value: IProjectStatus.MITIGATION_REVIEW,
   },
   {

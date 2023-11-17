@@ -128,7 +128,7 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
           })}
           mandatory
           errors={errors}
-          placeholder='@codejohndoe'
+          placeholder='https://github.com/detective'
           label='Github'
           icon={<Github />}
         />
@@ -180,7 +180,7 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
           <div className='w-full'>
             <Input
               {...register('sherlock')}
-              placeholder='@detectiveJohnDoe'
+              placeholder='https://sherlock.com/detective'
               label='Sherlock'
               icon={<Sherlock />}
               fullWidth
@@ -190,7 +190,7 @@ const AuditorOnboarding = ({ backToLogin }: { backToLogin: () => void }) => {
           <div className='w-full'>
             <Input
               {...register('codearena')}
-              placeholder='@codingJohnDoe'
+              placeholder='https://codearean.com/detective'
               label='Codearena'
               fullWidth
               tooltipMessage='We will import your details from Code Arena.'
