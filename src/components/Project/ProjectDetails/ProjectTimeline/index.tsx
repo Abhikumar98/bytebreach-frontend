@@ -1,6 +1,9 @@
-import { styled, Typography } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Icon, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
+
+import { defaultErrorMessage } from '@/lib/helper';
 
 import BackButton from '@/assets/arrowLeft.svg';
 import Timeline from '@/atoms/Timeline';
@@ -38,10 +41,24 @@ const StyledProjectTimeline = styled('div')`
 `;
 
 const ProjectTimeline: React.FC<{
+  handleProjectRefresh: () => void;
   projectName: string;
   projectStatus: IProjectStatus;
-}> = ({ projectName, projectStatus }) => {
+}> = ({ projectName, projectStatus, handleProjectRefresh }) => {
   console.log({ projectStatus });
+
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
+  const handleDataRefresh = async () => {
+    try {
+      setIsLoaded(true);
+      await handleProjectRefresh();
+    } catch (error) {
+      defaultErrorMessage(error);
+    } finally {
+      setIsLoaded(false);
+    }
+  };
 
   const { isClientUser } = useAppContext();
 
@@ -53,7 +70,7 @@ const ProjectTimeline: React.FC<{
 
   return (
     <StyledProjectTimeline>
-      <div className='back-container flex items-center gap-2'>
+      <div className='back-container relative flex items-center gap-2'>
         <div
           onClick={backToProjects}
           className='back-button-container cursor-pointer'
@@ -63,6 +80,17 @@ const ProjectTimeline: React.FC<{
         <Typography variant='h5' fontWeight='medium'>
           {projectName}
         </Typography>
+
+        <div
+          onClick={handleDataRefresh}
+          className={`absolute right-0 cursor-pointer ${
+            isLoaded ? 'animate-spin' : ''
+          }`}
+        >
+          <Icon>
+            <RefreshIcon />
+          </Icon>
+        </div>
       </div>
       <div className='timeline-container'>
         <Timeline

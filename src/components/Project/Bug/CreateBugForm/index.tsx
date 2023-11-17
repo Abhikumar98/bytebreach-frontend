@@ -82,15 +82,15 @@ const CreateBugForm = () => {
   const riskOptions: IOption[] = [
     {
       label: 'Low',
-      value: 'low',
+      value: 1,
     },
     {
       label: 'Medium',
-      value: 'medium',
+      value: 2,
     },
     {
       label: 'High',
-      value: 'high',
+      value: 3,
     },
   ];
 

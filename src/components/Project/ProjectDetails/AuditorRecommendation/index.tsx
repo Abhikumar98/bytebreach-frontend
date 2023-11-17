@@ -1,10 +1,11 @@
 import { Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { defaultErrorMessage } from '@/lib/helper';
 
 import AutoComplete from '@/atoms/AutoComplete';
+import Button from '@/atoms/Button';
 import ShadowCard from '@/atoms/ShadowCard';
 import TableComponent, { Column } from '@/atoms/Table';
 import { getAuditorRecommendation, postSelectRecommendation } from '@/services';
@@ -40,7 +41,9 @@ const columns: Column<IAuditorRecommendationProfile>[] = [
   },
 ];
 
-const AuditorRecommendation = () => {
+const AuditorRecommendation: FC<{
+  handleUpdateProject: () => Promise<void>;
+}> = ({ handleUpdateProject }) => {
   const [allAuditors, setAllAuditors] = React.useState<
     IAuditorRecommendationProfile[]
   >([]);
@@ -64,6 +67,7 @@ const AuditorRecommendation = () => {
       const auditorIds = selectedAuditors.map((auditor) => auditor.auditor_id);
 
       await postSelectRecommendation(auditorIds, Number(projectId));
+      await handleUpdateProject();
     } catch (error) {
       defaultErrorMessage(error);
     }
@@ -127,6 +131,10 @@ const AuditorRecommendation = () => {
           <Typography>Project Cost</Typography>
           <Typography>{`$${minMaxAuditorFee.min} - $${minMaxAuditorFee.max}`}</Typography>
         </div>
+      </div>
+
+      <div className='items-cent flex justify-center'>
+        <Button onClick={handleModalSubmit}>Proceed</Button>
       </div>
     </ShadowCard>
   );

@@ -1,4 +1,5 @@
-import { styled, Typography } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Icon, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -42,6 +43,8 @@ const BugContainer = () => {
 
   const [bugList, setBugList] = React.useState<IBugListItem[]>([]);
 
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
   const handleCreateBugRoute = () => {
     push(AppRoutes.NewBug.replace('{projectId}', projectId as string));
   };
@@ -57,11 +60,15 @@ const BugContainer = () => {
 
   const handleGetBugList = async () => {
     try {
+      setIsLoaded(true);
+
       const response = await getBugList(Number(projectId));
 
       setBugList(response);
     } catch (error) {
       defaultErrorMessage(error);
+    } finally {
+      setIsLoaded(false);
     }
   };
 
@@ -74,20 +81,32 @@ const BugContainer = () => {
   return (
     <ShadowCard>
       <StyledBugContainer>
-        <div className='flex items-center justify-between'>
+        <div className='relative flex items-center justify-between'>
           <Typography component='h5' fontSize='1.5rem'>
             Bugs
           </Typography>
-          {!isClientUser && userInfo?.first_name && (
-            <Button
-              onClick={handleCreateBugRoute}
-              startIcon={<Plus />}
-              variant='outlined'
-              size='small'
+          <div className='flex items-center space-x-4'>
+            <div
+              onClick={handleGetBugList}
+              className={`right-0 cursor-pointer ${
+                isLoaded ? 'animate-spin' : ''
+              }`}
             >
-              Create Bug
-            </Button>
-          )}
+              <Icon>
+                <RefreshIcon />
+              </Icon>
+            </div>
+            {!isClientUser && userInfo?.first_name && (
+              <Button
+                onClick={handleCreateBugRoute}
+                startIcon={<Plus />}
+                variant='outlined'
+                size='small'
+              >
+                Create Bug
+              </Button>
+            )}
+          </div>
         </div>
         <div>
           {bugList.map((bug, index) => (

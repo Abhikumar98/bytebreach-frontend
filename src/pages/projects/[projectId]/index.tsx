@@ -66,7 +66,9 @@ const ProjectDetails = () => {
   }, [projectId]);
 
   const clientProjectSectionStatusMap: Record<IProjectStatus, ReactNode> = {
-    [IProjectStatus.AUDITOR_SELECTION]: <AuditorRecommendation />,
+    [IProjectStatus.AUDITOR_SELECTION]: (
+      <AuditorRecommendation handleUpdateProject={handleFetchProjectDetails} />
+    ),
     [IProjectStatus.AUDITOR_CONFIRMATION]: (
       <AuditorTable handleUpdateProject={handleFetchProjectDetails} />
     ),
@@ -105,6 +107,7 @@ const ProjectDetails = () => {
     <div className='h-full w-full'>
       <PageHeader title='Projects' />
       <ProjectTimeline
+        handleProjectRefresh={handleFetchProjectDetails}
         projectStatus={
           projectDetails?.status ?? IProjectStatus.AUDITOR_SELECTION
         }
