@@ -94,7 +94,7 @@ const CreateBugForm = () => {
     },
   ];
 
-  const [bugRisk, setBugRisk] = React.useState<IBugRiskRating>('low');
+  const [bugRisk, setBugRisk] = React.useState<IBugRiskRating>(1);
 
   const handleFormSubmit = async (values: ICreateBugForm) => {
     try {

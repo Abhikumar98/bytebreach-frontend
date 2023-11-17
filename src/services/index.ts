@@ -32,7 +32,7 @@ import {
 const resourceMap = {
   AUTH: '/auth',
   PROJECT: '/project',
-  BUG: '/project/bug',
+  BUG: '/project_bug',
 };
 
 export const mockResponse = false;

@@ -292,7 +292,7 @@ export const auditorStatusLabel = {
   [IAuditorConfirmationStatus.CLIENT_REJECTED]: 'Client Rejected',
 };
 
-export type IBugRiskRating = 'low' | 'medium' | 'high';
+export type IBugRiskRating = 1 | 2 | 3;
 
 export interface IBug {
   first_name: string;

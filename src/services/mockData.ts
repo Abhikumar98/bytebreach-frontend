@@ -151,7 +151,7 @@ export const mockBug: IBug = {
   project_id: 1234,
   title: 'This is weird bug title',
   description: 'test bug description',
-  risk_rating: 'low',
+  risk_rating: 1,
   code_section_link: 'test bug code_section_link',
   comments: [mockComment, mockComment, mockComment],
   user_id: 12356,
